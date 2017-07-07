@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">YaHomePjct</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="nav_head_settings">Настройки</string>
+    <string name="nav_head_about">О приложении</string>
+    <string name="author">Denis V.</string>
+    <string name="about_dialog_head">О приложении</string>
+    <string name="about_dialog_decs">Здесь будет описание приложения. \n\n<b>Погода</b></string>
+</resources>
