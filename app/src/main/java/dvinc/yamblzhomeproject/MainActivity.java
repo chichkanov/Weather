@@ -13,36 +13,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * TODO: Описание класса
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // В будущем можно применить Butterknife
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        setTitle(R.string.activity_main_title);
+        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Здесь что-нибудь будет", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @OnClick(R.id.fab)
+    void onFabClick(View view) {
+        Snackbar.make(view, "Здесь что-нибудь будет", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     @Override

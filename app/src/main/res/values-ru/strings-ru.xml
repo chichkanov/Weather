@@ -13,4 +13,6 @@
     <string name="author">Denis V.</string>
     <string name="about_dialog_head">О приложении</string>
     <string name="about_dialog_decs">Здесь будет описание приложения. \n\n<b>Погода</b></string>
+
+    <string name="activity_main_title">Погода</string>
 </resources>
