@@ -1,8 +1,11 @@
 package dvinc.yamblzhomeproject;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,6 +19,9 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dvinc.yamblzhomeproject.fragments.AboutFragment;
+import dvinc.yamblzhomeproject.fragments.SettingsFragment;
+import dvinc.yamblzhomeproject.fragments.WeatherFragment;
 
 /**
  * TODO: Описание класса
@@ -34,7 +40,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         setTitle(R.string.activity_main_title);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -52,7 +57,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -66,12 +70,27 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_weather){
 
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().
+                    beginTransaction();
+            WeatherFragment myFragment = new WeatherFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, myFragment);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_settings) {
-            // Настройки
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().
+                    beginTransaction();
+            SettingsFragment myFragment = new SettingsFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, myFragment);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_about) {
-            showAboutDialog();
+            
+            AboutFragment aboutFragment = new AboutFragment();
+            aboutFragment.show(getSupportFragmentManager(), "tag");
+
+            //showAboutDialog();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
