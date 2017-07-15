@@ -33,4 +33,6 @@ dependencies {
     compile "com.jakewharton:butterknife-compiler:$rootProject.butterknife_version"
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.evernote:android-job:1.1.11'
+    compile "com.google.android.gms:play-services-gcm:10.2.6"
 }

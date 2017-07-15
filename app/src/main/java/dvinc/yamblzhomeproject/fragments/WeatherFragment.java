@@ -37,7 +37,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
-import static dvinc.yamblzhomeproject.App.SHARED_PREFERENCES_NAME;
 
 public class WeatherFragment extends Fragment {
 
@@ -53,6 +52,7 @@ public class WeatherFragment extends Fragment {
     private static final String BASE_URL = "http://api.openweathermap.org/";
     private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
     private static final String CITY = "Moscow";
+    public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
     @Nullable
     @Override
@@ -74,7 +74,7 @@ public class WeatherFragment extends Fragment {
     }
 
     @OnClick(R.id.getDataButton)
-    public void getData(){
+    public void getData() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -94,6 +94,7 @@ public class WeatherFragment extends Fragment {
                 if (contex != null) {
                     SharedPreferences.Editor editor = contex.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
                     editor.putString("JSON", callbackStringFromJSON);
+                    Log.v("Retrofit", callbackStringFromJSON);
                     long currentTimeMillis = System.currentTimeMillis();
                     editor.putLong("LAST UPDATE TIME", currentTimeMillis);
                     editor.apply();
@@ -108,7 +109,7 @@ public class WeatherFragment extends Fragment {
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), getResources().getString(R.string.load_weather_error), Toast.LENGTH_LONG).show();
             }
-    });
+        });
     }
 
     public void updateData(WeatherResponse weatherResponse, long lastUpdateTime){

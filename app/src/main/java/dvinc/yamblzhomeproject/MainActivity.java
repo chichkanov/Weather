@@ -1,13 +1,7 @@
 package dvinc.yamblzhomeproject;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,10 +12,10 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dvinc.yamblzhomeproject.fragments.AboutFragment;
 import dvinc.yamblzhomeproject.fragments.SettingsFragment;
 import dvinc.yamblzhomeproject.fragments.WeatherFragment;
+import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 
 /**
  * TODO: Описание класса
@@ -40,6 +34,9 @@ public class MainActivity extends AppCompatActivity
         setTitle(R.string.activity_main_title);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
+        // Run background task
+        BGSyncJob.schedulePeriodic();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -88,21 +85,8 @@ public class MainActivity extends AppCompatActivity
 
             AboutFragment aboutFragment = new AboutFragment();
             aboutFragment.show(getSupportFragmentManager(), "tag");
-
-            //showAboutDialog();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-//    /**
-//     * Диалог "О Приложении". Показывает диалог с описанием приложения.
-//     */
-//    private void showAboutDialog(){
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(R.string.about_dialog_head);
-//        builder.setMessage(R.string.about_dialog_decs);
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
 }
