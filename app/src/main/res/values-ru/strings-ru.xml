@@ -10,7 +10,7 @@
     <string name="nav_head_weather">Погода</string>
     <string name="nav_head_settings">Настройки</string>
     <string name="nav_head_about">О приложении</string>
-    <string name="author">Denis V.</string>
+    <string name="author">Денис В.</string>
     <string name="about_dialog_head">О приложении</string>
     <string name="about_dialog_decs">Здесь будет описание приложения. \n\n<b>Погода</b></string>
 
@@ -20,4 +20,16 @@
     <string name="pressure_unit">" мм рт. ст."</string>
     <string name="humidity_unit">" %"</string>
     <string name="wind_speed_unit">" км"</string>
+
+    <string name="pressure">Давление</string>
+    <string name="humidity">Влажность</string>
+    <string name="wind">Ветер</string>
+    <string name="visibility">Видимость</string>
+    <string name="max_temp">Макс. темп.</string>
+    <string name="min_temp">Мин. темп.</string>
+    <string name="last_update">Обновлено</string>
+    <string name="city_name">Москва, Россия</string>
+    <string name="update_button">Обновить</string>
+    <string name="data_update">Данные обновлены</string>
+    <string name="load_weather_error">Что-то пошло не так. Возможно, проблемы с интернетом.</string>
 </resources>

@@ -4,6 +4,7 @@ package dvinc.yamblzhomeproject.fragments;
  * 13.07.2017
  */
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -87,19 +88,23 @@ public class WeatherFragment extends Fragment {
                 Gson jsonObject = new Gson();
                 String callbackStringFromJSON = jsonObject.toJson(weatherResponse);
 
-                SharedPreferences.Editor editor = getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
-                editor.putString("JSON", callbackStringFromJSON);
-                long currentTimeMillis = System.currentTimeMillis();
-                editor.putLong("LAST UPDATE TIME", currentTimeMillis);
-                editor.apply();
-
-                updateData(weatherResponse, currentTimeMillis);
-                Toast.makeText(getActivity(), "Данные обновлены", Toast.LENGTH_LONG).show();
+                Context contex = getActivity();
+                if (contex != null) {
+                    SharedPreferences.Editor editor = contex.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+                    editor.putString("JSON", callbackStringFromJSON);
+                    long currentTimeMillis = System.currentTimeMillis();
+                    editor.putLong("LAST UPDATE TIME", currentTimeMillis);
+                    editor.apply();
+                    updateData(weatherResponse, currentTimeMillis);
+                    Toast.makeText(getActivity(), getResources().getString(R.string.data_update), Toast.LENGTH_LONG).show();
+                } else {
+                    Log.v("Retrofit", "Load data crush");
+                }
             }
 
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), "Что-то еррорнулось", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.load_weather_error), Toast.LENGTH_LONG).show();
             }
     });
     }

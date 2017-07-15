@@ -20,4 +20,17 @@
     <string name="pressure_unit">" mm Hg"</string>
     <string name="humidity_unit">" %"</string>
     <string name="wind_speed_unit">" km"</string>
+
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind</string>
+    <string name="visibility">Visibility</string>
+    <string name="max_temp">Max. temp.</string>
+    <string name="min_temp">Min. temp.</string>
+    <string name="last_update">Update</string>
+    <string name="city_name">Moscow, Russia</string>
+    <string name="update_button">Update</string>
+    <string name="data_update">Data was update</string>
+    <string name="load_weather_error">Something going wrong. Maybe internet problem.</string>
+
 </resources>
