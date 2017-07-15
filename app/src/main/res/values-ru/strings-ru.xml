@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">iWeather</string>
+    <string name="app_name">яПогода</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,4 +15,9 @@
     <string name="about_dialog_decs">Здесь будет описание приложения. \n\n<b>Погода</b></string>
 
     <string name="activity_main_title">Погода</string>
+
+    <string name="temperature_celsius">" ℃"</string>
+    <string name="pressure_unit">" мм рт. ст."</string>
+    <string name="humidity_unit">" %"</string>
+    <string name="wind_speed_unit">" км"</string>
 </resources>

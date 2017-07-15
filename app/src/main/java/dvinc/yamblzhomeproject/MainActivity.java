@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
 
@@ -47,12 +46,13 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
-    @OnClick(R.id.fab)
-    void onFabClick(View view) {
-        Snackbar.make(view, "Здесь что-нибудь будет", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        // Дубликат, для теста
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().
+                beginTransaction();
+        WeatherFragment myFragment = new WeatherFragment();
+        fragmentTransaction.replace(R.id.fragmentContainer, myFragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_about) {
-            
+
             AboutFragment aboutFragment = new AboutFragment();
             aboutFragment.show(getSupportFragmentManager(), "tag");
 
@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Диалог "О Приложении". Показывает диалог с описанием приложения.
-     */
-    private void showAboutDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.about_dialog_head);
-        builder.setMessage(R.string.about_dialog_decs);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
+//    /**
+//     * Диалог "О Приложении". Показывает диалог с описанием приложения.
+//     */
+//    private void showAboutDialog(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(R.string.about_dialog_head);
+//        builder.setMessage(R.string.about_dialog_decs);
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }
 }

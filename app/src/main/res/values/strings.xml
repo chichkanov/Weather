@@ -15,4 +15,9 @@
     <string name="about_dialog_decs">Here will be description. \n\n<b>Weather</b></string>
 
     <string name="activity_main_title">Weather</string>
+    
+    <string name="temperature_celsius">" ℃"</string>
+    <string name="pressure_unit">" mm Hg"</string>
+    <string name="humidity_unit">" %"</string>
+    <string name="wind_speed_unit">" km"</string>
 </resources>
