@@ -72,6 +72,14 @@
         app:layout_constraintLeft_toLeftOf="@+id/textView4"/>
 
     <TextView
+        android:id="@+id/windTextView"
+        style="@style/WeatherParameters_Style"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/humidityTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        android:layout_marginBottom="0dp"/>
+
+    <TextView
         style="@style/WeatherParameters_Style"
         android:text="@string/visibility"
         android:id="@+id/textView8"
@@ -80,6 +88,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         android:layout_marginStart="-4dp"
         app:layout_constraintLeft_toLeftOf="@+id/textView3"/>
+
+    <TextView
+        android:id="@+id/visibilityTextView"
+        style="@style/WeatherParameters_Style"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/textView8"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/textView9"
+        android:layout_marginRight="8dp"/>
 
     <TextView
         android:layout_width="wrap_content"

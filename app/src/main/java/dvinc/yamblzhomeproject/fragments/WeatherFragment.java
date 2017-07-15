@@ -48,6 +48,8 @@ public class WeatherFragment extends Fragment {
     @BindView(R.id.pressureTextView) TextView pressureTextView;
     @BindView(R.id.humidityTextView) TextView humidityTextVIew;
     @BindView(R.id.lastUpdateWeatherTextView) TextView lastUpdateWeatherTextView;
+    @BindView(R.id.visibilityTextView) TextView visibilityTextView;
+    @BindView(R.id.windTextView) TextView windTextView;
     private static final String BASE_URL = "http://api.openweathermap.org/";
     private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
     private static final String CITY = "Moscow";
@@ -115,12 +117,17 @@ public class WeatherFragment extends Fragment {
         int tempMin = (int) (weatherResponse.getMain().getTempMin() - 273);
         int pressure = weatherResponse.getMain().getPressure();
         int humidity = weatherResponse.getMain().getHumidity();
+        float visibility = weatherResponse.getVisibility()/1000;
+        float wind = weatherResponse.getWind().getSpeed();
 
         String temperature = temp + getResources().getString(R.string.temperature_celsius);
         String temperatureMax = tempMax + getResources().getString(R.string.temperature_celsius);
         String temperatureMin = tempMin + getResources().getString(R.string.temperature_celsius);
         String pressureString = pressure + getResources().getString(R.string.pressure_unit);
         String humidityString = humidity + getResources().getString(R.string.humidity_unit);
+        String visibilityString = visibility + getResources().getString(R.string.wind_speed_unit);
+        String windString = wind + getResources().getString(R.string.wind_speed_unit);
+
         Date date = new Date(lastUpdateTime);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()); // the format of your date
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+3")); // give a timezone reference for formating (see comment at the bottom
@@ -132,5 +139,7 @@ public class WeatherFragment extends Fragment {
         pressureTextView.setText(pressureString);
         humidityTextVIew.setText(humidityString);
         lastUpdateWeatherTextView.setText(formattedDate);
+        visibilityTextView.setText(visibilityString);
+        windTextView.setText(windString);
     }
 }

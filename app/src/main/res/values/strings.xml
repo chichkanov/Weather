@@ -19,7 +19,8 @@
     <string name="temperature_celsius">" ℃"</string>
     <string name="pressure_unit">" mm Hg"</string>
     <string name="humidity_unit">" %"</string>
-    <string name="wind_speed_unit">" km"</string>
+    <string name="wind_speed_unit">" m/s"</string>
+    <string name="visibility_unit">" km."</string>
 
     <string name="pressure">Pressure</string>
     <string name="humidity">Humidity</string>

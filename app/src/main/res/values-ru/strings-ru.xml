@@ -19,7 +19,8 @@
     <string name="temperature_celsius">" ℃"</string>
     <string name="pressure_unit">" мм рт. ст."</string>
     <string name="humidity_unit">" %"</string>
-    <string name="wind_speed_unit">" км"</string>
+    <string name="wind_speed_unit">" м/с"</string>
+    <string name="visibility_unit">" км."</string>
 
     <string name="pressure">Давление</string>
     <string name="humidity">Влажность</string>
