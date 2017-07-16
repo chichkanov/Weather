@@ -55,6 +55,9 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Method for set up spinner with time period chooser.
+     */
     private void setupTimeSpinner(){
         String[] array = getResources().getStringArray(R.array.settings_time_array);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, array);
@@ -67,6 +70,9 @@ public class SettingsFragment extends Fragment {
         MINUTES = (String) parent.getItemAtPosition(position);
     }
 
+    /**
+     * Method for applying new settings.
+     */
     @OnClick(R.id.button_apply_new_settings)
     void onClickApply(){
         SharedPreferences.Editor editor = getContext().getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();

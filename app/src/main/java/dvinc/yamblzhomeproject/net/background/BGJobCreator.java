@@ -15,7 +15,7 @@ public class BGJobCreator implements JobCreator {
     public Job create(String tag) {
         switch (tag) {
             case BGSyncJob.TAG:
-                Log.v("BACKGROUND JOB", "BG JOB IS START");
+                //Log.v("BACKGROUND JOB", "BG JOB IS START");
                 return new BGSyncJob();
             default:
                 return null;

@@ -57,16 +57,23 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(getContext() != null) updateData();
+        updateData();
     }
 
+    /**
+     * Method for get new data and update ui.
+     */
     @OnClick(R.id.getDataButton)
     public void getData() {
-        // TODO: Для юи применяются прошлые данные, это плохо, надо пофиксить
+        // TODO: Для заполнения вьюх используются старые данные т.к. ретрофит работает в бэкграунде и новые не успевают приехать до обновления
+        // TODO: Чтобы пофиксить это, нужно передать архитектуру на rx и mvp
         new RetrofitJob().run(getContext());
         updateData();
     }
 
+    /**
+     * Method for getting data from shared preference and update ui.
+     */
     public void updateData(){
         SharedPreferences str = getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         String string = str.getString("JSON", "");
