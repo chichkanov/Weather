@@ -33,5 +33,17 @@
     <string name="update_button">Update</string>
     <string name="data_update">Data was update</string>
     <string name="load_weather_error">Something going wrong. Maybe internet problem.</string>
+    
+    <string name="settings_update_frequency">Frequency of weather update</string>
+    <string name="settings_button_apply">Apply</string>
+    <string name="settings_new_settings_save">New settings save</string>
 
+    <string-array name="settings_time_array">
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
 </resources>

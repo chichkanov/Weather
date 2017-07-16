@@ -33,4 +33,17 @@
     <string name="update_button">Обновить</string>
     <string name="data_update">Данные обновлены</string>
     <string name="load_weather_error">Что-то пошло не так. Возможно, проблемы с интернетом.</string>
+
+    <string name="settings_update_frequency">Частота обновления погоды</string>
+    <string name="settings_button_apply">Применить</string>
+    <string name="settings_new_settings_save">Новые настройки сохранены</string>
+
+    <string-array name="settings_time_array">
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
 </resources>

@@ -51,7 +51,6 @@ public class WeatherFragment extends Fragment {
                 container, false);
         ButterKnife.bind(this, view);
 
-        if(getContext() != null) updateData();
         return view;
     }
 
@@ -63,6 +62,7 @@ public class WeatherFragment extends Fragment {
 
     @OnClick(R.id.getDataButton)
     public void getData() {
+        // TODO: Для юи применяются прошлые данные, это плохо, надо пофиксить
         new RetrofitJob().run(getContext());
         updateData();
     }

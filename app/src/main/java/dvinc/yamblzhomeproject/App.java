@@ -6,6 +6,7 @@ package dvinc.yamblzhomeproject;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.JobManager;
@@ -39,5 +40,9 @@ public class App extends Application {
 
         api = retrofit.create(RetrofitApi.class);
         JobManager.create(this).addJobCreator(new BGJobCreator());
+
+        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("UPDATE TIME MINUTES", MODE_PRIVATE).edit();
+        editor.putInt("UPDATE TIME", 15);
+        editor.apply();
     }
 }
