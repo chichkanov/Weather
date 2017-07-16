@@ -13,6 +13,7 @@ import com.evernote.android.job.JobManager;
 
 import dvinc.yamblzhomeproject.net.RetrofitApi;
 import dvinc.yamblzhomeproject.net.background.BGJobCreator;
+import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -37,12 +38,19 @@ public class App extends Application {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         api = retrofit.create(RetrofitApi.class);
         JobManager.create(this).addJobCreator(new BGJobCreator());
+        SharedPreferences str = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE);
 
-        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("UPDATE TIME MINUTES", MODE_PRIVATE).edit();
-        editor.putInt("UPDATE TIME", 15);
-        editor.apply();
+        // Initial setup of the application
+        if (str.getInt("UPDATE TIME", 0) == 0) {
+            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
+            editor.putInt("UPDATE TIME", 15);
+            editor.putBoolean("AUTOUPDATE", true);
+            editor.apply();
+            new RetrofitJob().run(getApplicationContext());
+            // Run background task
+            BGSyncJob.schedulePeriodic(15);
+        }
     }
 }

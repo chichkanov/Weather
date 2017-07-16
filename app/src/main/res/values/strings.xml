@@ -37,6 +37,7 @@
     <string name="settings_update_frequency">Frequency of weather update</string>
     <string name="settings_button_apply">Apply</string>
     <string name="settings_new_settings_save">New settings save</string>
+    <string name="settings_autoUpdate">Autoupdate</string>
 
     <string-array name="settings_time_array">
         <item>15</item>

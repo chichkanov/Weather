@@ -80,7 +80,7 @@ public class WeatherFragment extends Fragment {
             int temp = (int) (weatherResponse.getMain().getTemp() - 273);
             int tempMax = (int) (weatherResponse.getMain().getTempMax() - 273);
             int tempMin = (int) (weatherResponse.getMain().getTempMin() - 273);
-            int pressure = weatherResponse.getMain().getPressure();
+            int pressure =(int) (weatherResponse.getMain().getPressure()*0.75f);
             int humidity = weatherResponse.getMain().getHumidity();
             float visibility = weatherResponse.getVisibility() / 1000;
             float wind = weatherResponse.getWind().getSpeed();

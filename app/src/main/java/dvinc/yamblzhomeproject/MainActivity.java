@@ -31,12 +31,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle(R.string.activity_main_title);
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        // Run background task
-        BGSyncJob.schedulePeriodic();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -44,12 +41,15 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Дубликат, для теста
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().
-                beginTransaction();
-        WeatherFragment myFragment = new WeatherFragment();
-        fragmentTransaction.replace(R.id.fragmentContainer, myFragment);
-        fragmentTransaction.commit();
+        if (savedInstanceState == null) {
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().
+                    beginTransaction();
+            WeatherFragment myFragment = new WeatherFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, myFragment);
+            fragmentTransaction.commit();
+
+        }
     }
 
     @Override

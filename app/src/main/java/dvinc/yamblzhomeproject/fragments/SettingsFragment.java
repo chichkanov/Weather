@@ -15,13 +15,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.evernote.android.job.JobManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import dvinc.yamblzhomeproject.R;
+import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -29,7 +34,8 @@ public class SettingsFragment extends Fragment {
 
     @BindView(R.id.settingsUpdateTimeSpinner) Spinner frequencyTimeSpinner;
     @BindView(R.id.button_apply_new_settings) Button applyNewSettingsButton;
-    private static String MINUTES;
+    @BindView(R.id.updateCheckbox) CheckBox updateCheckbox;
+    private static String MINUTES = "15";
 
     @Nullable
     @Override
@@ -38,6 +44,14 @@ public class SettingsFragment extends Fragment {
                 container, false);
         ButterKnife.bind(this, view);
         setupTimeSpinner();
+
+        SharedPreferences str = getActivity().getSharedPreferences("SETTINGS", MODE_PRIVATE);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.settings_time_array));
+        int position = adapter.getPosition(""+str.getInt("UPDATE TIME", 0));
+
+        frequencyTimeSpinner.setSelection(position);
+        updateCheckbox.setChecked(str.getBoolean("AUTOUPDATE", false));
+
         return view;
     }
 
@@ -55,8 +69,19 @@ public class SettingsFragment extends Fragment {
 
     @OnClick(R.id.button_apply_new_settings)
     void onClickApply(){
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("UPDATE TIME MINUTES", MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
         editor.putInt("UPDATE TIME", Integer.parseInt(MINUTES));
+
+        if (!updateCheckbox.isChecked()){
+            //Cancel all background job with this tag
+            JobManager.instance().cancelAllForTag(BGSyncJob.TAG);
+            editor.putBoolean("AUTOUPDATE", !updateCheckbox.isChecked());
+        } else {
+            BGSyncJob.schedulePeriodic(Integer.parseInt(MINUTES));
+            editor.putBoolean("AUTOUPDATE", updateCheckbox.isChecked());
+        }
         editor.apply();
+
+        Toast.makeText(getContext(), R.string.settings_new_settings_save, Toast.LENGTH_LONG).show();
     }
 }

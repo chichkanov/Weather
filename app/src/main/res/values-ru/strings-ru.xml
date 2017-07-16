@@ -37,6 +37,7 @@
     <string name="settings_update_frequency">Частота обновления погоды</string>
     <string name="settings_button_apply">Применить</string>
     <string name="settings_new_settings_save">Новые настройки сохранены</string>
+    <string name="settings_autoUpdate">Автообновление</string>
 
     <string-array name="settings_time_array">
         <item>15</item>
