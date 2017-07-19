@@ -51,6 +51,7 @@ public class SettingsFragment extends Fragment {
 
         frequencyTimeSpinner.setSelection(position);
         updateCheckbox.setChecked(str.getBoolean("AUTOUPDATE", false));
+        Log.v("CHECKBOX",str.getBoolean("AUTOUPDATE", false) + "");
 
         return view;
     }
@@ -81,7 +82,7 @@ public class SettingsFragment extends Fragment {
         if (!updateCheckbox.isChecked()){
             //Cancel all background job with this tag
             JobManager.instance().cancelAllForTag(BGSyncJob.TAG);
-            editor.putBoolean("AUTOUPDATE", !updateCheckbox.isChecked());
+            editor.putBoolean("AUTOUPDATE", updateCheckbox.isChecked());
         } else {
             BGSyncJob.schedulePeriodic(Integer.parseInt(MINUTES));
             editor.putBoolean("AUTOUPDATE", updateCheckbox.isChecked());
