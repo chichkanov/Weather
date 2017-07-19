@@ -14,6 +14,7 @@ import com.evernote.android.job.JobManager;
 import dvinc.yamblzhomeproject.net.RetrofitApi;
 import dvinc.yamblzhomeproject.net.background.BGJobCreator;
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
+import dvinc.yamblzhomeproject.repository.RepositoryImpl;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,12 +24,19 @@ public class App extends Application {
     private RetrofitApi api;
     private static final String BASE_URL = "http://api.openweathermap.org/";
 
+    private RepositoryImpl repositoryImpl;
+
     public static App get(@NonNull Context context) {
         return (App) context.getApplicationContext();
     }
 
     public RetrofitApi getApi() {
         return api;
+    }
+
+    //Trying to add repository Singelton
+    public RepositoryImpl getRepositoryImpl(){
+        return repositoryImpl;
     }
 
     @Override
@@ -48,9 +56,11 @@ public class App extends Application {
             editor.putInt("UPDATE TIME", 15);
             editor.putBoolean("AUTOUPDATE", true);
             editor.apply();
-            new RetrofitJob().run(getApplicationContext());
             // Run background task
             BGSyncJob.schedulePeriodic(15);
         }
+
+        //Trying to add repository Singelton
+        repositoryImpl = new RepositoryImpl();
     }
 }

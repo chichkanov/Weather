@@ -14,8 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,13 +24,15 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.RetrofitJob;
-import dvinc.yamblzhomeproject.model.WeatherResponse;
+import dvinc.yamblzhomeproject.interfaces.WeatherInterface;
+import dvinc.yamblzhomeproject.repository.CallbackWeather;
+import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class WeatherFragment extends Fragment {
+public class WeatherFragment extends Fragment implements WeatherInterface {
 
     @BindView(R.id.getDataButton) Button getDataButton;
     @BindView(R.id.temperatureTextView) TextView temperatureTextView;
@@ -57,40 +58,44 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateData();
+        updateData(App.get(getContext()).getRepositoryImpl().getData(getContext()));
     }
 
     /**
-     * Method for get new data and update ui.
+     * Method for getting new data from Repository.
      */
     @OnClick(R.id.getDataButton)
     public void getData() {
         // TODO: Для заполнения вьюх используются старые данные т.к. ретрофит работает в бэкграунде и новые не успевают приехать до обновления
         // TODO: Чтобы пофиксить это, нужно передать архитектуру на rx и mvp
-        new RetrofitJob().run(getContext());
-        updateData();
+        App.get(getContext()).getRepositoryImpl().getDataFromWeb(getContext(), new CallbackWeather() {
+            @Override
+            public void onSuccess(WeatherResponse weatherResponse) {
+                updateData(weatherResponse);
+            }
+            @Override
+            public void onError() {
+                Toast.makeText(getContext(), "Ошибка подключения", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
-     * Method for getting data from shared preference and update ui.
+     * Method for updating ui.
+     * @param weatherData weather data from Repository.
      */
-    public void updateData(){
+    public void updateData(WeatherResponse weatherData){
         SharedPreferences str = getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        String string = str.getString("JSON", "");
         long lastUpdateTime = str.getLong("LAST UPDATE TIME", 0L);
-        Gson jsonObject = new Gson();
-        WeatherResponse weatherResponse = jsonObject.fromJson(string, WeatherResponse.class);
 
-        Log.v("JSON LOAD FROM SHARED", string);
-
-        if (weatherResponse != null) {
-            int temp = (int) (weatherResponse.getMain().getTemp() - 273);
-            int tempMax = (int) (weatherResponse.getMain().getTempMax() - 273);
-            int tempMin = (int) (weatherResponse.getMain().getTempMin() - 273);
-            int pressure =(int) (weatherResponse.getMain().getPressure()*0.75f);
-            int humidity = weatherResponse.getMain().getHumidity();
-            float visibility = weatherResponse.getVisibility() / 1000;
-            float wind = weatherResponse.getWind().getSpeed();
+        if (weatherData != null) {
+            int temp = (int) (weatherData.getMain().getTemp() - 273);
+            int tempMax = (int) (weatherData.getMain().getTempMax() - 273);
+            int tempMin = (int) (weatherData.getMain().getTempMin() - 273);
+            int pressure =(int) (weatherData.getMain().getPressure()*0.75f);
+            int humidity = weatherData.getMain().getHumidity();
+            float visibility = weatherData.getVisibility() / 1000;
+            float wind = weatherData.getWind().getSpeed();
 
             String temperature = temp + getResources().getString(R.string.temperature_celsius);
             String temperatureMax = tempMax + getResources().getString(R.string.temperature_celsius);
