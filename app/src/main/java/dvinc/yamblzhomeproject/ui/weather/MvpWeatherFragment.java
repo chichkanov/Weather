@@ -1,14 +1,13 @@
-package dvinc.yamblzhomeproject.fragments;
+package dvinc.yamblzhomeproject.ui.weather;
 /*
  * Created by DV on Space 5 
- * 13.07.2017
+ * 19.07.2017
  */
 
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +23,12 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.interfaces.WeatherInterface;
-import dvinc.yamblzhomeproject.repository.CallbackWeather;
 import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class WeatherFragment extends Fragment implements WeatherInterface {
+public class MvpWeatherFragment extends Fragment implements WeatherView {
 
     @BindView(R.id.getDataButton) Button getDataButton;
     @BindView(R.id.temperatureTextView) TextView temperatureTextView;
@@ -45,46 +41,45 @@ public class WeatherFragment extends Fragment implements WeatherInterface {
     @BindView(R.id.windTextView) TextView windTextView;
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
+    public WeatherPresenterImpl<WeatherView> weatherPresenter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather,
                 container, false);
         ButterKnife.bind(this, view);
-
+        weatherPresenter = new WeatherPresenterImpl<>();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateData(App.get(getContext()).getRepositoryImpl().getData(getContext()));
+        weatherPresenter.attachView(this);
+        weatherPresenter.getWeatherDataFromCache(getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        weatherPresenter.detachView();
     }
 
     /**
-     * Method for getting new data from Repository.
+     * Method for getting new data from Repository (From internet).
      */
     @OnClick(R.id.getDataButton)
     public void getData() {
-        // TODO: Для заполнения вьюх используются старые данные т.к. ретрофит работает в бэкграунде и новые не успевают приехать до обновления
-        // TODO: Чтобы пофиксить это, нужно передать архитектуру на rx и mvp
-        App.get(getContext()).getRepositoryImpl().getDataFromWeb(getContext(), new CallbackWeather() {
-            @Override
-            public void onSuccess(WeatherResponse weatherResponse) {
-                updateData(weatherResponse);
-            }
-            @Override
-            public void onError() {
-                Toast.makeText(getContext(), "Ошибка подключения", Toast.LENGTH_LONG).show();
-            }
-        });
+        weatherPresenter.getWeatherFromInternet(getContext());
     }
 
     /**
      * Method for updating ui.
      * @param weatherData weather data from Repository.
      */
-    public void updateData(WeatherResponse weatherData){
+    @Override
+    public void updateWeatherParameters(WeatherResponse weatherData) {
         SharedPreferences str = getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         long lastUpdateTime = str.getLong("LAST UPDATE TIME", 0L);
 
@@ -119,5 +114,10 @@ public class WeatherFragment extends Fragment implements WeatherInterface {
             visibilityTextView.setText(visibilityString);
             windTextView.setText(windString);
         }
+    }
+
+    @Override
+    public void showError(String string) {
+        Toast.makeText(getContext(), string, Toast.LENGTH_LONG).show();
     }
 }

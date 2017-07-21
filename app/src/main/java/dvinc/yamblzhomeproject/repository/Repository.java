@@ -10,7 +10,7 @@ import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
  */
 interface Repository {
 
-    WeatherResponse getData(Context context);
+    WeatherResponse getDataFromCache(Context context);
 
     void getDataFromWeb(Context context, CallbackWeather callbackWeather);
 

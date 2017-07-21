@@ -34,7 +34,6 @@ public class App extends Application {
         return api;
     }
 
-    //Trying to add repository Singelton
     public RepositoryImpl getRepositoryImpl(){
         return repositoryImpl;
     }
@@ -60,7 +59,6 @@ public class App extends Application {
             BGSyncJob.schedulePeriodic(15);
         }
 
-        //Trying to add repository Singelton
         repositoryImpl = new RepositoryImpl();
     }
 }

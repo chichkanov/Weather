@@ -24,12 +24,14 @@ public class RepositoryImpl implements Repository {
     private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
     private static final String CITY = "Moscow";
     private static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
+    private static final String JSON = "JSON";
+    private static final String LAST_UPDATE_TIME = "LAST UPDATE TIME";
 
     @Override
-    public WeatherResponse getData(Context context) {
+    public WeatherResponse getDataFromCache(Context context) {
 
         SharedPreferences str = context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        String string = str.getString("JSON", "");
+        String string = str.getString(JSON, "");
         Gson jsonObject = new Gson();
         WeatherResponse weatherResponse = jsonObject.fromJson(string, WeatherResponse.class);
 
@@ -48,14 +50,13 @@ public class RepositoryImpl implements Repository {
                 String callbackStringFromJSON = jsonObject.toJson(weatherResponse);
 
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
-                editor.putString("JSON", callbackStringFromJSON);
+                editor.putString(JSON, callbackStringFromJSON);
                 //Log.v("Retrofit", callbackStringFromJSON);
                 long currentTimeMillis = System.currentTimeMillis();
-                editor.putLong("LAST UPDATE TIME", currentTimeMillis);
+                editor.putLong(LAST_UPDATE_TIME, currentTimeMillis);
                 editor.apply();
                 callbackWeather.onSuccess(weatherResponse);
             }
-
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.v("Retrofit", "Retrofit failure");
@@ -76,9 +77,9 @@ public class RepositoryImpl implements Repository {
                 String callbackStringFromJSON = jsonObject.toJson(weatherResponse);
 
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
-                editor.putString("JSON", callbackStringFromJSON);
+                editor.putString(JSON, callbackStringFromJSON);
                 long currentTimeMillis = System.currentTimeMillis();
-                editor.putLong("LAST UPDATE TIME", currentTimeMillis);
+                editor.putLong(LAST_UPDATE_TIME, currentTimeMillis);
                 editor.apply();
             }
 

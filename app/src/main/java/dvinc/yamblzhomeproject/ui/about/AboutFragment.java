@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.fragments;
+package dvinc.yamblzhomeproject.ui.about;
 /*
  * Created by DV on Space 5 
  * 13.07.2017
