@@ -5,14 +5,13 @@ package dvinc.yamblzhomeproject.net.background;
  */
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 
 import java.util.concurrent.TimeUnit;
 
-import dvinc.yamblzhomeproject.RetrofitJob;
+import dvinc.yamblzhomeproject.App;
 
 public class BGSyncJob extends Job {
 
@@ -21,8 +20,7 @@ public class BGSyncJob extends Job {
     @Override
     @NonNull
     protected Result onRunJob(Params params) {
-        // Background job start run here
-        new RetrofitJob().run(getContext());
+        App.get(getContext()).getRepositoryImpl().updateWeatherData(getContext());
         //Log.v("BACKGROUND", "onRunJob is start");
         return Result.SUCCESS;
     }

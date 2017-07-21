@@ -4,7 +4,7 @@ package dvinc.yamblzhomeproject.net;
  * 14.07.2017
  */
 
-import dvinc.yamblzhomeproject.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -11,8 +15,20 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug { // тип сборки
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -30,7 +46,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile "com.jakewharton:butterknife:$rootProject.butterknife_version"
-    compile "com.jakewharton:butterknife-compiler:$rootProject.butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife_version"
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.evernote:android-job:1.1.11'

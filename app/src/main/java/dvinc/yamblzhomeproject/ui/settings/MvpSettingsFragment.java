@@ -1,14 +1,12 @@
-package dvinc.yamblzhomeproject.fragments;
+package dvinc.yamblzhomeproject.ui.settings;
 /*
  * Created by DV on Space 5 
- * 13.07.2017
+ * 20.07.2017
  */
 
-import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,23 +17,18 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.evernote.android.job.JobManager;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class SettingsFragment extends Fragment {
-
+public class MvpSettingsFragment extends Fragment implements ViewSettings {
     @BindView(R.id.settingsUpdateTimeSpinner) Spinner frequencyTimeSpinner;
     @BindView(R.id.button_apply_new_settings) Button applyNewSettingsButton;
     @BindView(R.id.updateCheckbox) CheckBox updateCheckbox;
     private static String MINUTES = "15";
+    private PresenterSettingsImpl<ViewSettings> settingsPresenter;
 
     @Nullable
     @Override
@@ -44,15 +37,21 @@ public class SettingsFragment extends Fragment {
                 container, false);
         ButterKnife.bind(this, view);
         setupTimeSpinner();
-
-        SharedPreferences str = getActivity().getSharedPreferences("SETTINGS", MODE_PRIVATE);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.settings_time_array));
-        int position = adapter.getPosition(""+str.getInt("UPDATE TIME", 0));
-
-        frequencyTimeSpinner.setSelection(position);
-        updateCheckbox.setChecked(str.getBoolean("AUTOUPDATE", false));
-
+        settingsPresenter = new PresenterSettingsImpl<>();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        settingsPresenter.attachView(this);
+        settingsPresenter.loadSettingsFromPrefs(getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        settingsPresenter.detachView();
     }
 
     /**
@@ -70,24 +69,22 @@ public class SettingsFragment extends Fragment {
         MINUTES = (String) parent.getItemAtPosition(position);
     }
 
-    /**
-     * Method for applying new settings.
-     */
     @OnClick(R.id.button_apply_new_settings)
     void onClickApply(){
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
-        editor.putInt("UPDATE TIME", Integer.parseInt(MINUTES));
+        setNewSettings();
+    }
 
-        if (!updateCheckbox.isChecked()){
-            //Cancel all background job with this tag
-            JobManager.instance().cancelAllForTag(BGSyncJob.TAG);
-            editor.putBoolean("AUTOUPDATE", !updateCheckbox.isChecked());
-        } else {
-            BGSyncJob.schedulePeriodic(Integer.parseInt(MINUTES));
-            editor.putBoolean("AUTOUPDATE", updateCheckbox.isChecked());
-        }
-        editor.apply();
+    @Override
+    public void loadSettings(boolean autoUpdate, int minutes) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.settings_time_array));
+        int position = adapter.getPosition(minutes+"");
+        frequencyTimeSpinner.setSelection(position);
+        updateCheckbox.setChecked(autoUpdate);
+    }
 
+    @Override
+    public void setNewSettings() {
+        settingsPresenter.updateSettingsInPrefs(getContext(), updateCheckbox.isChecked(), Integer.parseInt(MINUTES));
         Toast.makeText(getContext(), R.string.settings_new_settings_save, Toast.LENGTH_LONG).show();
     }
 }

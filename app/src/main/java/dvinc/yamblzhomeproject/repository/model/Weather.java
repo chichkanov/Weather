@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.model;
+package dvinc.yamblzhomeproject.repository.model;
 /*
  * Created by DV on Space 5 
  * 14.07.2017

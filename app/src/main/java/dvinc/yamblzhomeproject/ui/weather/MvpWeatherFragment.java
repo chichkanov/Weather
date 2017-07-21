@@ -1,21 +1,19 @@
-package dvinc.yamblzhomeproject.fragments;
+package dvinc.yamblzhomeproject.ui.weather;
 /*
  * Created by DV on Space 5 
- * 13.07.2017
+ * 19.07.2017
  */
 
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,12 +24,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.RetrofitJob;
-import dvinc.yamblzhomeproject.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class WeatherFragment extends Fragment {
+public class MvpWeatherFragment extends Fragment implements WeatherView {
 
     @BindView(R.id.getDataButton) Button getDataButton;
     @BindView(R.id.temperatureTextView) TextView temperatureTextView;
@@ -44,53 +41,56 @@ public class WeatherFragment extends Fragment {
     @BindView(R.id.windTextView) TextView windTextView;
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
+    public WeatherPresenterImpl<WeatherView> weatherPresenter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather,
                 container, false);
         ButterKnife.bind(this, view);
-
+        weatherPresenter = new WeatherPresenterImpl<>();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateData();
+        weatherPresenter.attachView(this);
+        weatherPresenter.getWeatherDataFromCache(getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        weatherPresenter.detachView();
     }
 
     /**
-     * Method for get new data and update ui.
+     * Method for getting new data from Repository (From internet).
      */
     @OnClick(R.id.getDataButton)
     public void getData() {
-        // TODO: Для заполнения вьюх используются старые данные т.к. ретрофит работает в бэкграунде и новые не успевают приехать до обновления
-        // TODO: Чтобы пофиксить это, нужно передать архитектуру на rx и mvp
-        new RetrofitJob().run(getContext());
-        updateData();
+        weatherPresenter.getWeatherFromInternet(getContext());
     }
 
     /**
-     * Method for getting data from shared preference and update ui.
+     * Method for updating ui.
+     * @param weatherData weather data from Repository.
      */
-    public void updateData(){
+    @Override
+    public void updateWeatherParameters(WeatherResponse weatherData) {
         SharedPreferences str = getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        String string = str.getString("JSON", "");
         long lastUpdateTime = str.getLong("LAST UPDATE TIME", 0L);
-        Gson jsonObject = new Gson();
-        WeatherResponse weatherResponse = jsonObject.fromJson(string, WeatherResponse.class);
 
-        Log.v("JSON LOAD FROM SHARED", string);
-
-        if (weatherResponse != null) {
-            int temp = (int) (weatherResponse.getMain().getTemp() - 273);
-            int tempMax = (int) (weatherResponse.getMain().getTempMax() - 273);
-            int tempMin = (int) (weatherResponse.getMain().getTempMin() - 273);
-            int pressure =(int) (weatherResponse.getMain().getPressure()*0.75f);
-            int humidity = weatherResponse.getMain().getHumidity();
-            float visibility = weatherResponse.getVisibility() / 1000;
-            float wind = weatherResponse.getWind().getSpeed();
+        if (weatherData != null) {
+            int temp = (int) (weatherData.getMain().getTemp() - 273);
+            int tempMax = (int) (weatherData.getMain().getTempMax() - 273);
+            int tempMin = (int) (weatherData.getMain().getTempMin() - 273);
+            int pressure =(int) (weatherData.getMain().getPressure()*0.75f);
+            int humidity = weatherData.getMain().getHumidity();
+            float visibility = weatherData.getVisibility() / 1000;
+            float wind = weatherData.getWind().getSpeed();
 
             String temperature = temp + getResources().getString(R.string.temperature_celsius);
             String temperatureMax = tempMax + getResources().getString(R.string.temperature_celsius);
@@ -114,5 +114,10 @@ public class WeatherFragment extends Fragment {
             visibilityTextView.setText(visibilityString);
             windTextView.setText(windString);
         }
+    }
+
+    @Override
+    public void showError(String string) {
+        Toast.makeText(getContext(), string, Toast.LENGTH_LONG).show();
     }
 }
