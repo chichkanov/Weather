@@ -8,5 +8,6 @@ import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
 public interface CallbackWeather {
     void onSuccess(WeatherResponse weatherResponse);
+
     void onError();
 }

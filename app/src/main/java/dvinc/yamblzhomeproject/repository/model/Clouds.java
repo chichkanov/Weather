@@ -3,10 +3,11 @@ package dvinc.yamblzhomeproject.repository.model;
  * Created by DV on Space 5
  * 14.07.2017
  */
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Clouds {
+class Clouds {
 
     @SerializedName("all")
     @Expose

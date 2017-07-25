@@ -5,9 +5,9 @@ package dvinc.yamblzhomeproject.ui.weather;
  */
 
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,15 +30,24 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MvpWeatherFragment extends Fragment implements WeatherView {
 
-    @BindView(R.id.getDataButton) Button getDataButton;
-    @BindView(R.id.temperatureTextView) TextView temperatureTextView;
-    @BindView(R.id.tempMaxTextView) TextView tempMaxTextView;
-    @BindView(R.id.tempMinTextView) TextView tempMinTextView;
-    @BindView(R.id.pressureTextView) TextView pressureTextView;
-    @BindView(R.id.humidityTextView) TextView humidityTextVIew;
-    @BindView(R.id.lastUpdateWeatherTextView) TextView lastUpdateWeatherTextView;
-    @BindView(R.id.visibilityTextView) TextView visibilityTextView;
-    @BindView(R.id.windTextView) TextView windTextView;
+    @BindView(R.id.getDataButton)
+    Button getDataButton;
+    @BindView(R.id.temperatureTextView)
+    TextView temperatureTextView;
+    @BindView(R.id.tempMaxTextView)
+    TextView tempMaxTextView;
+    @BindView(R.id.tempMinTextView)
+    TextView tempMinTextView;
+    @BindView(R.id.pressureTextView)
+    TextView pressureTextView;
+    @BindView(R.id.humidityTextView)
+    TextView humidityTextVIew;
+    @BindView(R.id.lastUpdateWeatherTextView)
+    TextView lastUpdateWeatherTextView;
+    @BindView(R.id.visibilityTextView)
+    TextView visibilityTextView;
+    @BindView(R.id.windTextView)
+    TextView windTextView;
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
     public WeatherPresenterImpl<WeatherView> weatherPresenter;
@@ -76,6 +85,7 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
 
     /**
      * Method for updating ui.
+     *
      * @param weatherData weather data from Repository.
      */
     @Override
@@ -87,7 +97,7 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
             int temp = (int) (weatherData.getMain().getTemp() - 273);
             int tempMax = (int) (weatherData.getMain().getTempMax() - 273);
             int tempMin = (int) (weatherData.getMain().getTempMin() - 273);
-            int pressure =(int) (weatherData.getMain().getPressure()*0.75f);
+            int pressure = (int) (weatherData.getMain().getPressure() * 0.75f);
             int humidity = weatherData.getMain().getHumidity();
             float visibility = weatherData.getVisibility() / 1000;
             float wind = weatherData.getWind().getSpeed();

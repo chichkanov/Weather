@@ -24,9 +24,12 @@ import butterknife.OnItemSelected;
 import dvinc.yamblzhomeproject.R;
 
 public class MvpSettingsFragment extends Fragment implements ViewSettings {
-    @BindView(R.id.settingsUpdateTimeSpinner) Spinner frequencyTimeSpinner;
-    @BindView(R.id.button_apply_new_settings) Button applyNewSettingsButton;
-    @BindView(R.id.updateCheckbox) CheckBox updateCheckbox;
+    @BindView(R.id.settingsUpdateTimeSpinner)
+    Spinner frequencyTimeSpinner;
+    @BindView(R.id.button_apply_new_settings)
+    Button applyNewSettingsButton;
+    @BindView(R.id.updateCheckbox)
+    CheckBox updateCheckbox;
     private static String MINUTES = "15";
     private PresenterSettingsImpl<ViewSettings> settingsPresenter;
 
@@ -57,7 +60,7 @@ public class MvpSettingsFragment extends Fragment implements ViewSettings {
     /**
      * Method for set up spinner with time period chooser.
      */
-    private void setupTimeSpinner(){
+    private void setupTimeSpinner() {
         String[] array = getResources().getStringArray(R.array.settings_time_array);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -65,19 +68,19 @@ public class MvpSettingsFragment extends Fragment implements ViewSettings {
     }
 
     @OnItemSelected(R.id.settingsUpdateTimeSpinner)
-    void onClickItemSpinner(AdapterView<?> parent, View view, int position, long id){
+    void onClickItemSpinner(AdapterView<?> parent, View view, int position, long id) {
         MINUTES = (String) parent.getItemAtPosition(position);
     }
 
     @OnClick(R.id.button_apply_new_settings)
-    void onClickApply(){
+    void onClickApply() {
         setNewSettings();
     }
 
     @Override
     public void loadSettings(boolean autoUpdate, int minutes) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.settings_time_array));
-        int position = adapter.getPosition(minutes+"");
+        int position = adapter.getPosition(minutes + "");
         frequencyTimeSpinner.setSelection(position);
         updateCheckbox.setChecked(autoUpdate);
     }

@@ -13,7 +13,7 @@ import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class PresenterSettingsImpl<T extends ViewSettings> implements PresenterSettings<T> {
+class PresenterSettingsImpl<T extends ViewSettings> implements PresenterSettings<T> {
 
     private static final String UPDATE_TIME = "UPDATE TIME";
     private static final String AUTOUPDATE = "AUTOUPDATE";
@@ -42,13 +42,12 @@ public class PresenterSettingsImpl<T extends ViewSettings> implements PresenterS
     public void updateSettingsInPrefs(Context context, boolean autoUpdate, int minutes) {
         SharedPreferences.Editor editor = context.getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
         editor.putInt(UPDATE_TIME, minutes);
-        if (autoUpdate){
+        if (autoUpdate) {
             BGSyncJob.schedulePeriodic(minutes);
-            editor.putBoolean(AUTOUPDATE, autoUpdate);
         } else {
             JobManager.instance().cancelAllForTag(BGSyncJob.TAG);
-            editor.putBoolean(AUTOUPDATE, autoUpdate);
         }
+        editor.putBoolean(AUTOUPDATE, autoUpdate);
         editor.apply();
     }
 }

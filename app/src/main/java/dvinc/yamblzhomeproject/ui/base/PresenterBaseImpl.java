@@ -8,7 +8,7 @@ import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 import dvinc.yamblzhomeproject.ui.settings.MvpSettingsFragment;
 import dvinc.yamblzhomeproject.ui.weather.MvpWeatherFragment;
 
-public class PresenterBaseImpl<T extends ViewBase> implements PresenterBase<T> {
+class PresenterBaseImpl<T extends ViewBase> implements PresenterBase<T> {
 
     private T view;
 
@@ -23,7 +23,7 @@ public class PresenterBaseImpl<T extends ViewBase> implements PresenterBase<T> {
     }
 
     @Override
-    public void openWeatherFragment(){
+    public void openWeatherFragment() {
         view.showFragment(new MvpWeatherFragment());
     }
 

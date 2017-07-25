@@ -10,7 +10,7 @@ import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.repository.CallbackWeather;
 import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
-public class WeatherPresenterImpl<T extends WeatherView> implements WeatherPresenter<T>  {
+class WeatherPresenterImpl<T extends WeatherView> implements WeatherPresenter<T> {
 
     private T view;
 
@@ -31,6 +31,7 @@ public class WeatherPresenterImpl<T extends WeatherView> implements WeatherPrese
             public void onSuccess(WeatherResponse weatherResponse) {
                 view.updateWeatherParameters(weatherResponse);
             }
+
             @Override
             public void onError() {
                 view.showError("Network error");

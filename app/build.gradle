@@ -28,27 +28,27 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug { // тип сборки
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        debug {
         }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+
     compile "com.android.support:appcompat-v7:$rootProject.support_version"
     compile "com.android.support:design:$rootProject.support_version"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
+
+    compile "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout_version"
 
     compile "com.jakewharton:butterknife:$rootProject.butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife_version"
+
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.evernote:android-job:1.1.11'
-    compile "com.google.android.gms:play-services-gcm:10.2.6"
+
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.gson_converter_version"
+
+    compile "com.evernote:android-job:$rootProject.androidjob_version"
+
+    compile "com.google.android.gms:play-services-gcm:$rootProject.services_gcm_version"
 }

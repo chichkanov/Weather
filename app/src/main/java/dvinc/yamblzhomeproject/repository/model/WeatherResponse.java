@@ -4,9 +4,10 @@ package dvinc.yamblzhomeproject.repository.model;
  * 14.07.2017
  */
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class WeatherResponse {
 

@@ -34,7 +34,7 @@ public class App extends Application {
         return api;
     }
 
-    public RepositoryImpl getRepositoryImpl(){
+    public RepositoryImpl getRepositoryImpl() {
         return repositoryImpl;
     }
 

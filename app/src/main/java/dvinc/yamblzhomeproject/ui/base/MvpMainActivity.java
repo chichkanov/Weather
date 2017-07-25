@@ -24,9 +24,12 @@ import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 
 public class MvpMainActivity extends AppCompatActivity implements ViewBase, NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
 
     public PresenterBaseImpl<ViewBase> basePresenterImpl;
 
@@ -47,13 +50,14 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
         basePresenterImpl.attachView(this);
 
         if (savedInstanceState == null) {
-            basePresenterImpl.openWeatherFragment();
+            navigationView.getMenu().getItem(0).setChecked(true);
+            onNavigationItemSelected(navigationView.getMenu().getItem(0));
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
         } else {
             super.onBackPressed();
@@ -63,7 +67,7 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_weather){
+        if (id == R.id.nav_weather) {
             basePresenterImpl.openWeatherFragment();
         } else if (id == R.id.nav_settings) {
             basePresenterImpl.openSettingsFragment();
@@ -74,12 +78,12 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
         return true;
     }
 
-    public void showFragment(Fragment fragment){
-        String backStateName =  fragment.getClass().getName();
+    public void showFragment(Fragment fragment) {
+        String backStateName = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
+        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
 
-        if (!fragmentPopped && manager.findFragmentByTag(backStateName) == null){ //fragment not in back stack, create it.
+        if (!fragmentPopped && manager.findFragmentByTag(backStateName) == null) { //fragment not in back stack, create it.
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(R.id.fragmentContainer, fragment, backStateName);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -88,7 +92,7 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
         }
     }
 
-    public void showAboutFragment(AboutFragment fragment){
+    public void showAboutFragment(AboutFragment fragment) {
         fragment.show(getSupportFragmentManager(), "Tag");
     }
 }

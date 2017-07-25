@@ -8,11 +8,10 @@
     tools:context="dvinc.yamblzhomeproject.ui.base.MvpMainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:orientation="horizontal" />
 
 </LinearLayout>

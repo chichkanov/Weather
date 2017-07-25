@@ -33,9 +33,8 @@ public class RepositoryImpl implements Repository {
         SharedPreferences str = context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         String string = str.getString(JSON, "");
         Gson jsonObject = new Gson();
-        WeatherResponse weatherResponse = jsonObject.fromJson(string, WeatherResponse.class);
 
-        return weatherResponse;
+        return jsonObject.fromJson(string, WeatherResponse.class);
     }
 
     @Override
@@ -57,6 +56,7 @@ public class RepositoryImpl implements Repository {
                 editor.apply();
                 callbackWeather.onSuccess(weatherResponse);
             }
+
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.v("Retrofit", "Retrofit failure");
