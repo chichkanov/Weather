@@ -23,6 +23,7 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
@@ -48,16 +49,19 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
     TextView visibilityTextView;
     @BindView(R.id.windTextView)
     TextView windTextView;
+
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
     public WeatherPresenterImpl<WeatherView> weatherPresenter;
+
+    private Unbinder unbinder;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather,
                 container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         weatherPresenter = new WeatherPresenterImpl<>();
         return view;
     }
@@ -73,6 +77,12 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
     public void onPause() {
         super.onPause();
         weatherPresenter.detachView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

@@ -39,6 +39,8 @@
     <string name="settings_new_settings_save">New settings save</string>
     <string name="settings_autoUpdate">Autoupdate</string>
 
+    <string name="select_city_head">City selection</string>
+
     <string-array name="settings_time_array">
         <item>15</item>
         <item>30</item>

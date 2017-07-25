@@ -15,4 +15,6 @@ public interface PresenterBase<T extends ViewBase> {
     void openSettingsFragment();
 
     void openAboutFragment();
+
+    void openSelectCityFragment();
 }
