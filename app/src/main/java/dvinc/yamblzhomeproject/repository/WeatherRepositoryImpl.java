@@ -10,9 +10,12 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import javax.inject.Inject;
+
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.utils.Settings;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,10 +25,16 @@ import static android.content.Context.MODE_PRIVATE;
 public class WeatherRepositoryImpl implements WeatherRepository {
 
     private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
-    private static final String CITY = "Moscow";
     private static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
     private static final String JSON = "JSON";
     private static final String LAST_UPDATE_TIME = "LAST UPDATE TIME";
+
+    @Inject
+    Settings settings;
+
+    public WeatherRepositoryImpl(){
+        App.getComponent().inject(this);
+    }
 
     @Override
     public WeatherResponse getDataFromCache(Context context) {
@@ -40,7 +49,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public void getDataFromWeb(final Context context, final CallbackWeather callbackWeather) {
         WeatherApi api = App.get(context).getApi();
-        Call<WeatherResponse> weatherResponseCall = api.getTranslate(CITY, API_KEY);
+        Call<WeatherResponse> weatherResponseCall = api.getTranslate(settings.getCurrentCity(), API_KEY);
         weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -58,7 +67,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                Log.v("Retrofit", "Retrofit failure");
+                Log.v("Retrofit", t.getMessage());
                 callbackWeather.onError();
             }
         });
@@ -67,7 +76,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public void updateWeatherData(final Context context) {
         WeatherApi api = App.get(context).getApi();
-        Call<WeatherResponse> weatherResponseCall = api.getTranslate(CITY, API_KEY);
+        Call<WeatherResponse> weatherResponseCall = api.getTranslate(settings.getCurrentCity(), API_KEY);
         weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {

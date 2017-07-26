@@ -11,4 +11,6 @@ interface SelectCityView {
     void showList(List<Prediction> predictions);
 
     void showError();
+
+    void goToWeather();
 }

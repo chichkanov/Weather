@@ -20,12 +20,16 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.utils.Settings;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -49,12 +53,21 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
     TextView visibilityTextView;
     @BindView(R.id.windTextView)
     TextView windTextView;
+    @BindView(R.id.textView10)
+    TextView cityName;
+
+    @Inject
+    Settings settings;
 
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
     public WeatherPresenterImpl<WeatherView> weatherPresenter;
 
     private Unbinder unbinder;
+
+    public MvpWeatherFragment(){
+        App.getComponent().inject(this);
+    }
 
     @Nullable
     @Override
@@ -63,7 +76,14 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
                 container, false);
         unbinder = ButterKnife.bind(this, view);
         weatherPresenter = new WeatherPresenterImpl<>();
+        cityName.setText(settings.getCurrentCity());
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.nav_head_weather);
     }
 
     @Override
@@ -71,6 +91,7 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
         super.onResume();
         weatherPresenter.attachView(this);
         weatherPresenter.getWeatherDataFromCache(getContext());
+        weatherPresenter.getWeatherFromInternet(getContext());
     }
 
     @Override
@@ -109,8 +130,8 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
             int tempMin = (int) (weatherData.getMain().getTempMin() - 273);
             int pressure = (int) (weatherData.getMain().getPressure() * 0.75f);
             int humidity = weatherData.getMain().getHumidity();
-            float visibility = weatherData.getVisibility() / 1000;
-            float wind = weatherData.getWind().getSpeed();
+            double visibility = weatherData.getVisibility() / 1000;
+            double wind = weatherData.getWind().getSpeed();
 
             String temperature = temp + getResources().getString(R.string.temperature_celsius);
             String temperatureMax = tempMax + getResources().getString(R.string.temperature_celsius);

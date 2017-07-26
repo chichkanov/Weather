@@ -13,6 +13,7 @@ import com.evernote.android.job.JobManager;
 
 import dvinc.yamblzhomeproject.di.AppComponent;
 import dvinc.yamblzhomeproject.di.DaggerAppComponent;
+import dvinc.yamblzhomeproject.di.modules.ApplicationModule;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.net.background.BGJobCreator;
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
@@ -26,7 +27,7 @@ public class App extends Application {
 
     private Retrofit retrofit;
     private WeatherApi api;
-    private static final String BASE_URL = "http://api.openweathermap.org/";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
     private WeatherRepositoryImpl repositoryImpl;
 
@@ -46,13 +47,17 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        appComponent = DaggerAppComponent.create();
+        appComponent = DaggerAppComponent.builder()
+                .applicationModule(new ApplicationModule(getApplicationContext()))
+                .build();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         api = retrofit.create(WeatherApi.class);
+
         JobManager.create(this).addJobCreator(new BGJobCreator());
         SharedPreferences str = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE);
 

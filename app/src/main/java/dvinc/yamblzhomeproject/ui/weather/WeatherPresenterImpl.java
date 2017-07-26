@@ -29,12 +29,12 @@ class WeatherPresenterImpl<T extends WeatherView> implements WeatherPresenter<T>
         App.get(context).getRepositoryImpl().getDataFromWeb(context, new CallbackWeather() {
             @Override
             public void onSuccess(WeatherResponse weatherResponse) {
-                view.updateWeatherParameters(weatherResponse);
+                if (view != null) view.updateWeatherParameters(weatherResponse);
             }
 
             @Override
             public void onError() {
-                view.showError("Network error");
+                if (view != null) view.showError("Network error");
             }
         });
     }

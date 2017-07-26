@@ -57,6 +57,12 @@ public class MvpSettingsFragment extends Fragment implements ViewSettings {
         settingsPresenter.detachView();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.nav_head_settings);
+    }
+
     /**
      * Method for set up spinner with time period chooser.
      */

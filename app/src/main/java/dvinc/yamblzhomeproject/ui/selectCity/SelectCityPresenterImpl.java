@@ -1,11 +1,11 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
-import android.util.Log;
-
 import java.util.concurrent.TimeUnit;
 
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
+import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -18,10 +18,13 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
     private T view;
     private Disposable subscription;
 
-    SelectCityRepositoryImpl repository;
+    private SelectCityRepositoryImpl repository;
+
+    Settings settings;
 
     SelectCityPresenterImpl() {
         repository = App.getComponent().getCityRepository();
+        settings = App.getComponent().getSettings();
     }
 
     @Override
@@ -48,8 +51,14 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
                             }
                         },
                         error -> {
-                            Log.i("Error", error.getMessage());
                             if (view != null) view.showError();
                         });
+    }
+
+    @Override
+    public void citySelected(Prediction item) {
+        String city = item.getDescription();
+        settings.setCurrentCity(city);
+        view.goToWeather();
     }
 }

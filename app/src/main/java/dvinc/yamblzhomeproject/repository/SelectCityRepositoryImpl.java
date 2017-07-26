@@ -6,6 +6,7 @@ import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.net.PredictionsApi;
 import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
 import dvinc.yamblzhomeproject.utils.Constants;
+import dvinc.yamblzhomeproject.utils.WeatherUtils;
 import io.reactivex.Observable;
 
 public class SelectCityRepositoryImpl implements SelectCityRepository {
@@ -19,6 +20,6 @@ public class SelectCityRepositoryImpl implements SelectCityRepository {
 
     @Override
     public Observable<CityPrediction> getPrediction(String cityName) {
-        return predictionsApi.getPrediction(Constants.PLACES_API_KEY, "(cities)", cityName);
+        return predictionsApi.getPrediction(Constants.PLACES_API_KEY, WeatherUtils.getLocale(), cityName);
     }
 }

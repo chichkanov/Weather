@@ -1,14 +1,17 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.ui.weather.MvpWeatherFragment;
 
 public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
 
@@ -75,7 +79,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     }
 
     private void initRecyclerView(){
-        adapter = new SelectCityAdapter(new ArrayList<>());
+        adapter = new SelectCityAdapter(new ArrayList<>(), position -> presenter.citySelected(adapter.getItem(position)));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
 
@@ -97,5 +101,19 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     @Override
     public void showError() {
         Toast.makeText(getContext(), R.string.load_weather_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void goToWeather() {
+        hideKeyboard();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, new MvpWeatherFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .commit();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etSelectCity.getWindowToken(), 0);
     }
 }
