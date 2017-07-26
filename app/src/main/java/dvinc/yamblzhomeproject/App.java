@@ -14,7 +14,7 @@ import com.evernote.android.job.JobManager;
 import dvinc.yamblzhomeproject.net.RetrofitApi;
 import dvinc.yamblzhomeproject.net.background.BGJobCreator;
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
-import dvinc.yamblzhomeproject.repository.RepositoryImpl;
+import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,7 +24,7 @@ public class App extends Application {
     private RetrofitApi api;
     private static final String BASE_URL = "http://api.openweathermap.org/";
 
-    private RepositoryImpl repositoryImpl;
+    private WeatherRepositoryImpl repositoryImpl;
 
     public static App get(@NonNull Context context) {
         return (App) context.getApplicationContext();
@@ -34,7 +34,7 @@ public class App extends Application {
         return api;
     }
 
-    public RepositoryImpl getRepositoryImpl() {
+    public WeatherRepositoryImpl getRepositoryImpl() {
         return repositoryImpl;
     }
 
@@ -59,6 +59,6 @@ public class App extends Application {
             BGSyncJob.schedulePeriodic(15);
         }
 
-        repositoryImpl = new RepositoryImpl();
+        repositoryImpl = new WeatherRepositoryImpl();
     }
 }

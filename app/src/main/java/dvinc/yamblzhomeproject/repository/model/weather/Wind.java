@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.repository.model;
+package dvinc.yamblzhomeproject.repository.model.weather;
 /*
  * Created by DV on Space 5 
  * 14.07.2017

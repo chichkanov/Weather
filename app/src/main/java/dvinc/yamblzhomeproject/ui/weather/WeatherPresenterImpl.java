@@ -8,7 +8,7 @@ import android.content.Context;
 
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.repository.CallbackWeather;
-import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
 class WeatherPresenterImpl<T extends WeatherView> implements WeatherPresenter<T> {
 

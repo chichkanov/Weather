@@ -2,13 +2,13 @@ package dvinc.yamblzhomeproject.repository;
 
 import android.content.Context;
 
-import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
 /*
  * Created by DV on Space 5 
  * 19.07.2017
  */
-interface Repository {
+interface WeatherRepository {
 
     WeatherResponse getDataFromCache(Context context);
 

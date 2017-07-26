@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
 import static android.content.Context.MODE_PRIVATE;
 

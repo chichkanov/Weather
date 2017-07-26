@@ -12,14 +12,14 @@ import com.google.gson.Gson;
 
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.net.RetrofitApi;
-import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class RepositoryImpl implements Repository {
+public class WeatherRepositoryImpl implements WeatherRepository {
 
     private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
     private static final String CITY = "Moscow";
@@ -50,7 +50,6 @@ public class RepositoryImpl implements Repository {
 
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
                 editor.putString(JSON, callbackStringFromJSON);
-                //Log.v("Retrofit", callbackStringFromJSON);
                 long currentTimeMillis = System.currentTimeMillis();
                 editor.putLong(LAST_UPDATE_TIME, currentTimeMillis);
                 editor.apply();

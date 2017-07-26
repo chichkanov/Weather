@@ -4,9 +4,9 @@ package dvinc.yamblzhomeproject.ui.weather;
  * 20.07.2017
  */
 
-import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
-public interface WeatherView {
+interface WeatherView {
 
     void updateWeatherParameters(WeatherResponse weatherData);
 
