@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class StructuredFormatting {
+public class StructuredFormatting {
 
     @SerializedName("main_text")
     @Expose

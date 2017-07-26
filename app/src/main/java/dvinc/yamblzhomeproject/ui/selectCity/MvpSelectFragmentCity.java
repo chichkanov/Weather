@@ -3,6 +3,8 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,6 +30,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     @BindView(R.id.rv_select_city)
     RecyclerView rvCityList;
 
+    private SelectCityAdapter adapter;
     private Unbinder unbinder;
 
     private SelectCityPresenterImpl<SelectCityView> presenter;
@@ -49,6 +53,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.select_city_head);
+        initRecyclerView();
     }
 
     @Override
@@ -69,6 +74,16 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
         unbinder.unbind();
     }
 
+    private void initRecyclerView(){
+        adapter = new SelectCityAdapter(new ArrayList<>());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+
+        rvCityList.setLayoutManager(layoutManager);
+        rvCityList.addItemDecoration(decoration);
+        rvCityList.setAdapter(adapter);
+    }
+
     @Override
     public void setCityNameObservable() {
         presenter.setObservable(RxTextView.textChanges(etSelectCity));
@@ -76,7 +91,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
 
     @Override
     public void showList(List<Prediction> predictions) {
-        Toast.makeText(getContext(), "Show list", Toast.LENGTH_SHORT).show();
+        adapter.setDataset(predictions);
     }
 
     @Override

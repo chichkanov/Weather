@@ -7,7 +7,7 @@ import retrofit2.http.Query;
 
 public interface PredictionsApi {
 
-    @GET("json?")
+    @GET("json")
     Observable<CityPrediction> getPrediction(@Query("key") String key, @Query("types") String filterType, @Query("input") String input);
 
 }

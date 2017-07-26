@@ -1,5 +1,7 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import dvinc.yamblzhomeproject.App;
@@ -18,7 +20,7 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
 
     SelectCityRepositoryImpl repository;
 
-    SelectCityPresenterImpl(){
+    SelectCityPresenterImpl() {
         repository = App.getComponent().getCityRepository();
     }
 
@@ -38,8 +40,7 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
         this.subscription = observable
                 .subscribeOn(Schedulers.io())
                 .debounce(API_CALL_DELAY, TimeUnit.MILLISECONDS)
-                .filter(charSequence -> charSequence.length() > 0)
-                .switchMap(charSequence -> repository.getPrediction(charSequence.toString()))
+                .switchMap(charSequence -> repository.getPrediction(charSequence.toString()).subscribeOn(Schedulers.io()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
                             if (view != null) {
@@ -47,6 +48,7 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
                             }
                         },
                         error -> {
+                            Log.i("Error", error.getMessage());
                             if (view != null) view.showError();
                         });
     }
