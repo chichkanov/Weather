@@ -11,7 +11,9 @@ import android.support.annotation.NonNull;
 
 import com.evernote.android.job.JobManager;
 
-import dvinc.yamblzhomeproject.net.RetrofitApi;
+import dvinc.yamblzhomeproject.di.AppComponent;
+import dvinc.yamblzhomeproject.di.DaggerAppComponent;
+import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.net.background.BGJobCreator;
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
@@ -20,8 +22,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class App extends Application {
 
+    private static AppComponent appComponent;
+
     private Retrofit retrofit;
-    private RetrofitApi api;
+    private WeatherApi api;
     private static final String BASE_URL = "http://api.openweathermap.org/";
 
     private WeatherRepositoryImpl repositoryImpl;
@@ -30,7 +34,7 @@ public class App extends Application {
         return (App) context.getApplicationContext();
     }
 
-    public RetrofitApi getApi() {
+    public WeatherApi getApi() {
         return api;
     }
 
@@ -41,11 +45,14 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        appComponent = DaggerAppComponent.create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        api = retrofit.create(RetrofitApi.class);
+        api = retrofit.create(WeatherApi.class);
         JobManager.create(this).addJobCreator(new BGJobCreator());
         SharedPreferences str = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE);
 
@@ -60,5 +67,9 @@ public class App extends Application {
         }
 
         repositoryImpl = new WeatherRepositoryImpl();
+    }
+
+    public static AppComponent getComponent() {
+        return appComponent;
     }
 }

@@ -11,7 +11,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import dvinc.yamblzhomeproject.App;
-import dvinc.yamblzhomeproject.net.RetrofitApi;
+import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +39,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public void getDataFromWeb(final Context context, final CallbackWeather callbackWeather) {
-        RetrofitApi api = App.get(context).getApi();
+        WeatherApi api = App.get(context).getApi();
         Call<WeatherResponse> weatherResponseCall = api.getTranslate(CITY, API_KEY);
         weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
             @Override
@@ -66,7 +66,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public void updateWeatherData(final Context context) {
-        RetrofitApi api = App.get(context).getApi();
+        WeatherApi api = App.get(context).getApi();
         Call<WeatherResponse> weatherResponseCall = api.getTranslate(CITY, API_KEY);
         weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
             @Override

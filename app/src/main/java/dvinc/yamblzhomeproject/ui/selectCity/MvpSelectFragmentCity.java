@@ -12,11 +12,13 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
+import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
 
 public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
 
@@ -52,7 +54,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     @Override
     public void onResume() {
         super.onResume();
-        presenter.attachView(this, new SelectCityRepositoryImpl());
+        presenter.attachView(this);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     }
 
     @Override
-    public void showList() {
+    public void showList(List<Prediction> predictions) {
         Toast.makeText(getContext(), "Show list", Toast.LENGTH_SHORT).show();
     }
 

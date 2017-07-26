@@ -2,6 +2,7 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 
 import java.util.concurrent.TimeUnit;
 
+import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,12 +15,16 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
 
     private T view;
     private Disposable subscription;
-    private SelectCityRepositoryImpl repository;
+
+    SelectCityRepositoryImpl repository;
+
+    SelectCityPresenterImpl(){
+        repository = App.getComponent().getCityRepository();
+    }
 
     @Override
-    public void attachView(T view, SelectCityRepositoryImpl repository) {
+    public void attachView(T view) {
         this.view = view;
-        this.repository = repository;
     }
 
     @Override
@@ -38,7 +43,7 @@ class SelectCityPresenterImpl<T extends SelectCityView> implements SelectCityPre
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
                             if (view != null) {
-                                view.showList();
+                                view.showList(next.getPredictions());
                             }
                         },
                         error -> {
