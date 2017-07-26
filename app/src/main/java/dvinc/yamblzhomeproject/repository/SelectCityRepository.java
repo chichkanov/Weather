@@ -1,4 +1,9 @@
 package dvinc.yamblzhomeproject.repository;
 
-public interface SelectCityRepository {
+import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
+import io.reactivex.Observable;
+
+interface SelectCityRepository {
+
+    Observable<CityPrediction> getPrediction(String cityName);
 }

@@ -40,6 +40,7 @@
     <string name="settings_autoUpdate">Автообновление</string>
 
     <string name="select_city_head">Выбор города</string>
+    <string name="select_city_hint">Введите название города</string>
 
     <string-array name="settings_time_array">
         <item>15</item>

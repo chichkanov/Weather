@@ -4,6 +4,23 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -31,6 +48,10 @@ android {
         debug {
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -45,10 +66,15 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife_version"
 
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
-
     compile "com.squareup.retrofit2:converter-gson:$rootProject.gson_converter_version"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
 
     compile "com.evernote:android-job:$rootProject.androidjob_version"
 
     compile "com.google.android.gms:play-services-gcm:$rootProject.services_gcm_version"
+
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroid_version"
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava_version"
+    compile "com.jakewharton.rxbinding2:rxbinding:$rootProject.rxbindings_version"
+
 }

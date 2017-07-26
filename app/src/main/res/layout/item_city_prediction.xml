@@ -4,15 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_select_city"
+    <TextView
+        android:id="@+id/item_select_city_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/select_city_hint"
-        android:maxLines="1" />
+        android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_select_city"
+    <TextView
+        android:id="@+id/item_select_city_desc"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

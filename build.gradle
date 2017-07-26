@@ -31,4 +31,7 @@ ext{
     androidjob_version = "1.1.11"
     gson_converter_version = "2.0.2"
     services_gcm_version = "11.0.2"
+    rxandroid_version = "2.0.1"
+    rxjava_version = "2.1.0"
+    rxbindings_version = "2.0.0"
 }
