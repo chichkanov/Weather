@@ -3,7 +3,6 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
-import dvinc.yamblzhomeproject.ui.weather.MvpWeatherFragment;
+import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
 
-public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
+public class SelectCityFragment extends MvpAppCompatFragment implements SelectCityView {
 
     @BindView(R.id.et_select_city)
     EditText etSelectCity;
@@ -37,10 +38,11 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     private SelectCityAdapter adapter;
     private Unbinder unbinder;
 
-    private SelectCityPresenterImpl<SelectCityView> presenter;
+    @InjectPresenter
+    SelectCityPresenter presenter;
 
-    public static MvpSelectFragmentCity newInstance() {
-        return new MvpSelectFragmentCity();
+    public static SelectCityFragment newInstance() {
+        return new SelectCityFragment();
     }
 
     @Nullable
@@ -48,7 +50,6 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_city_select, container, false);
         unbinder = ButterKnife.bind(this, v);
-        presenter = new SelectCityPresenterImpl<>();
         setCityNameObservable();
         return v;
     }
@@ -61,24 +62,12 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.attachView(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        presenter.detachView();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         adapter = new SelectCityAdapter(new ArrayList<>(), position -> presenter.citySelected(adapter.getItem(position)));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
@@ -107,7 +96,7 @@ public class MvpSelectFragmentCity extends Fragment implements SelectCityView {
     public void goToWeather() {
         hideKeyboard();
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, new MvpWeatherFragment())
+                .replace(R.id.fragmentContainer, new WeatherFragment())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                 .commit();
     }

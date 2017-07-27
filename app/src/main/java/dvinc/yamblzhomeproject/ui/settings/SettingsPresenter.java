@@ -7,39 +7,28 @@ package dvinc.yamblzhomeproject.ui.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
 import com.evernote.android.job.JobManager;
 
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
 
 import static android.content.Context.MODE_PRIVATE;
 
-class PresenterSettingsImpl<T extends ViewSettings> implements PresenterSettings<T> {
+@InjectViewState
+public class SettingsPresenter extends MvpPresenter<SettingsView> {
 
     private static final String UPDATE_TIME = "UPDATE TIME";
     private static final String AUTOUPDATE = "AUTOUPDATE";
 
-    private T view;
-
-    @Override
-    public void attachView(T mvpView) {
-        view = mvpView;
-    }
-
-    @Override
-    public void detachView() {
-        view = null;
-    }
-
-    @Override
-    public void loadSettingsFromPrefs(Context context) {
+    void loadSettingsFromPrefs(Context context) {
         SharedPreferences str = context.getSharedPreferences("SETTINGS", MODE_PRIVATE);
         boolean autoUpdate = str.getBoolean(AUTOUPDATE, false);
         int minutes = str.getInt(UPDATE_TIME, 0);
-        view.loadSettings(autoUpdate, minutes);
+        getViewState().loadSettings(autoUpdate, minutes);
     }
 
-    @Override
-    public void updateSettingsInPrefs(Context context, boolean autoUpdate, int minutes) {
+    void updateSettingsInPrefs(Context context, boolean autoUpdate, int minutes) {
         SharedPreferences.Editor editor = context.getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
         editor.putInt(UPDATE_TIME, minutes);
         if (autoUpdate) {

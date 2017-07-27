@@ -5,9 +5,9 @@ package dvinc.yamblzhomeproject.ui.base;
  */
 
 import dvinc.yamblzhomeproject.ui.about.AboutFragment;
-import dvinc.yamblzhomeproject.ui.selectCity.MvpSelectFragmentCity;
-import dvinc.yamblzhomeproject.ui.settings.MvpSettingsFragment;
-import dvinc.yamblzhomeproject.ui.weather.MvpWeatherFragment;
+import dvinc.yamblzhomeproject.ui.selectCity.SelectCityFragment;
+import dvinc.yamblzhomeproject.ui.settings.SettingsFragment;
+import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
 
 class PresenterBaseImpl<T extends ViewBase> implements PresenterBase<T> {
 
@@ -25,12 +25,12 @@ class PresenterBaseImpl<T extends ViewBase> implements PresenterBase<T> {
 
     @Override
     public void openWeatherFragment() {
-        view.showFragment(new MvpWeatherFragment());
+        view.showFragment(new WeatherFragment());
     }
 
     @Override
     public void openSettingsFragment() {
-        view.showFragment(new MvpSettingsFragment());
+        view.showFragment(new SettingsFragment());
     }
 
     @Override
@@ -40,6 +40,6 @@ class PresenterBaseImpl<T extends ViewBase> implements PresenterBase<T> {
 
     @Override
     public void openSelectCityFragment() {
-        view.showFragment(MvpSelectFragmentCity.newInstance());
+        view.showFragment(SelectCityFragment.newInstance());
     }
 }

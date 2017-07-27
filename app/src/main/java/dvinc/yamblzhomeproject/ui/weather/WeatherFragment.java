@@ -7,13 +7,15 @@ package dvinc.yamblzhomeproject.ui.weather;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +35,7 @@ import dvinc.yamblzhomeproject.utils.Settings;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class MvpWeatherFragment extends Fragment implements WeatherView {
+public class WeatherFragment extends MvpAppCompatFragment implements WeatherView {
 
     @BindView(R.id.getDataButton)
     Button getDataButton;
@@ -61,11 +63,12 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
 
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
-    public WeatherPresenterImpl<WeatherView> weatherPresenter;
+    @InjectPresenter
+    public WeatherPresenterImpl weatherPresenter;
 
     private Unbinder unbinder;
 
-    public MvpWeatherFragment(){
+    public WeatherFragment() {
         App.getComponent().inject(this);
     }
 
@@ -75,7 +78,6 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
         View view = inflater.inflate(R.layout.fragment_weather,
                 container, false);
         unbinder = ButterKnife.bind(this, view);
-        weatherPresenter = new WeatherPresenterImpl<>();
         cityName.setText(settings.getCurrentCity());
         return view;
     }
@@ -89,15 +91,8 @@ public class MvpWeatherFragment extends Fragment implements WeatherView {
     @Override
     public void onResume() {
         super.onResume();
-        weatherPresenter.attachView(this);
         weatherPresenter.getWeatherDataFromCache(getContext());
         weatherPresenter.getWeatherFromInternet(getContext());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        weatherPresenter.detachView();
     }
 
     @Override

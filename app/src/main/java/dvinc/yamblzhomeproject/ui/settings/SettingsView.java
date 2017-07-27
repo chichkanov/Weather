@@ -4,7 +4,9 @@ package dvinc.yamblzhomeproject.ui.settings;
  * 20.07.2017
  */
 
-public interface ViewSettings {
+import com.arellomobile.mvp.MvpView;
+
+interface SettingsView extends MvpView {
 
     void loadSettings(boolean autoUpdate, int minutes);
 

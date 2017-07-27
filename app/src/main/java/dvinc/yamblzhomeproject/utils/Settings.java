@@ -3,7 +3,6 @@ package dvinc.yamblzhomeproject.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import javax.inject.Singleton;
 
@@ -29,7 +28,6 @@ public class Settings {
     }
 
     public String getCurrentCity() {
-        Log.i("Settings", prefsDefault.getString(CURRENT_CITY_KEY, ""));
         return prefsDefault.getString(CURRENT_CITY_KEY, context.getResources().getString(R.string.default_city));
     }
 

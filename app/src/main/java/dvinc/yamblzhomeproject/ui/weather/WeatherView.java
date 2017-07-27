@@ -4,9 +4,11 @@ package dvinc.yamblzhomeproject.ui.weather;
  * 20.07.2017
  */
 
+import com.arellomobile.mvp.MvpView;
+
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
-interface WeatherView {
+interface WeatherView extends MvpView {
 
     void updateWeatherParameters(WeatherResponse weatherData);
 

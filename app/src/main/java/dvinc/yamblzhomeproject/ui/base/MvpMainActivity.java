@@ -72,7 +72,7 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
             basePresenterImpl.openSettingsFragment();
         } else if (id == R.id.nav_about) {
             basePresenterImpl.openAboutFragment();
-        } else if(id == R.id.nav_select_city){
+        } else if (id == R.id.nav_select_city) {
             basePresenterImpl.openSelectCityFragment();
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -101,4 +101,5 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
     public void showAboutFragment(AboutFragment fragment) {
         fragment.show(getSupportFragmentManager(), "Tag");
     }
+
 }

@@ -6,42 +6,32 @@ package dvinc.yamblzhomeproject.ui.weather;
 
 import android.content.Context;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.repository.CallbackWeather;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
-class WeatherPresenterImpl<T extends WeatherView> implements WeatherPresenter<T> {
+@InjectViewState
+public class WeatherPresenterImpl extends MvpPresenter<WeatherView> {
 
-    private T view;
-
-    @Override
-    public void attachView(T mvpView) {
-        view = mvpView;
-    }
-
-    @Override
-    public void detachView() {
-        view = null;
-    }
-
-    @Override
-    public void getWeatherFromInternet(Context context) {
+    void getWeatherFromInternet(Context context) {
         App.get(context).getRepositoryImpl().getDataFromWeb(context, new CallbackWeather() {
             @Override
             public void onSuccess(WeatherResponse weatherResponse) {
-                if (view != null) view.updateWeatherParameters(weatherResponse);
+                getViewState().updateWeatherParameters(weatherResponse);
             }
 
             @Override
             public void onError() {
-                if (view != null) view.showError("Network error");
+                getViewState().showError("Network error");
             }
         });
     }
 
-    @Override
-    public void getWeatherDataFromCache(Context context) {
+    void getWeatherDataFromCache(Context context) {
         WeatherResponse weatherResponse = App.get(context).getRepositoryImpl().getDataFromCache(context);
-        view.updateWeatherParameters(weatherResponse);
+        getViewState().updateWeatherParameters(weatherResponse);
     }
 }

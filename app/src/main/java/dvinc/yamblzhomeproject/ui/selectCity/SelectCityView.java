@@ -1,10 +1,12 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
+import com.arellomobile.mvp.MvpView;
+
 import java.util.List;
 
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
 
-interface SelectCityView {
+interface SelectCityView extends MvpView {
 
     void setCityNameObservable();
 

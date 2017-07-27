@@ -6,7 +6,6 @@ package dvinc.yamblzhomeproject.ui.settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,16 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import dvinc.yamblzhomeproject.R;
 
-public class MvpSettingsFragment extends Fragment implements ViewSettings {
+public class SettingsFragment extends MvpAppCompatFragment implements SettingsView {
     @BindView(R.id.settingsUpdateTimeSpinner)
     Spinner frequencyTimeSpinner;
     @BindView(R.id.button_apply_new_settings)
@@ -31,7 +33,9 @@ public class MvpSettingsFragment extends Fragment implements ViewSettings {
     @BindView(R.id.updateCheckbox)
     CheckBox updateCheckbox;
     private static String MINUTES = "15";
-    private PresenterSettingsImpl<ViewSettings> settingsPresenter;
+
+    @InjectPresenter
+    SettingsPresenter settingsPresenter;
 
     @Nullable
     @Override
@@ -40,21 +44,13 @@ public class MvpSettingsFragment extends Fragment implements ViewSettings {
                 container, false);
         ButterKnife.bind(this, view);
         setupTimeSpinner();
-        settingsPresenter = new PresenterSettingsImpl<>();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        settingsPresenter.attachView(this);
         settingsPresenter.loadSettingsFromPrefs(getContext());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        settingsPresenter.detachView();
     }
 
     @Override
