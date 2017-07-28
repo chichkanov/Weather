@@ -49,7 +49,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public void getDataFromWeb(final Context context, final CallbackWeather callbackWeather) {
         WeatherApi api = App.get(context).getApi();
-        Call<WeatherResponse> weatherResponseCall = api.getTranslate(settings.getCurrentCity(), API_KEY);
+        Call<WeatherResponse> weatherResponseCall = api.getTranslate(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
         weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -76,7 +76,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public void updateWeatherData(final Context context) {
         WeatherApi api = App.get(context).getApi();
-        Call<WeatherResponse> weatherResponseCall = api.getTranslate(settings.getCurrentCity(), API_KEY);
+        Call<WeatherResponse> weatherResponseCall = api.getTranslate(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
         weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {

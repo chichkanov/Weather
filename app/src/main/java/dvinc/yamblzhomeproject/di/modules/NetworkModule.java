@@ -34,7 +34,7 @@ public class NetworkModule {
     @Singleton
     @Named("retrofitPrediction")
     Retrofit provideRetrofitPrediction(Retrofit.Builder builder) {
-        return builder.baseUrl("https://maps.googleapis.com/maps/api/place/autocomplete/")
+        return builder.baseUrl("https://maps.googleapis.com/maps/api/place/")
                 .build();
     }
 

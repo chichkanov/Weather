@@ -3,7 +3,6 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -95,10 +94,8 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     @Override
     public void goToWeather() {
         hideKeyboard();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, new WeatherFragment())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                .commit();
+        String backStateName = WeatherFragment.class.getName();
+        getActivity().getSupportFragmentManager().popBackStackImmediate(backStateName, 0);
     }
 
     private void hideKeyboard() {

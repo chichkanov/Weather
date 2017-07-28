@@ -21,7 +21,8 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
 
     private static final int API_CALL_DELAY = 400;
 
-    private Disposable subscription;
+    private Disposable subscriptionPlace;
+    private Disposable subscriptionPlaceCoords;
 
     @Inject
     SelectCityRepositoryImpl repository;
@@ -36,11 +37,12 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     @Override
     public void detachView(SelectCityView view) {
         super.detachView(view);
-        subscription.dispose();
+        subscriptionPlace.dispose();
+        subscriptionPlaceCoords.dispose();
     }
 
     void setObservable(Observable<CharSequence> observable) {
-        this.subscription = observable
+        this.subscriptionPlace = observable
                 .subscribeOn(Schedulers.io())
                 .debounce(API_CALL_DELAY, TimeUnit.MILLISECONDS)
                 .switchMap(charSequence -> repository.getPrediction(charSequence.toString()).subscribeOn(Schedulers.io()))
@@ -50,8 +52,16 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     }
 
     void citySelected(Prediction item) {
-        String city = item.getDescription();
-        settings.setCurrentCity(city);
-        getViewState().goToWeather();
+        subscriptionPlaceCoords = repository
+                .getPredictionCoord(item.getPlaceId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next -> {
+                    String city = item.getDescription();
+                    settings.setCurrentCity(city);
+                    settings.setCurrentCityLocationLong(next.getResult().getGeometry().getLocation().getLng());
+                    settings.setCurrentCityLocationLat(next.getResult().getGeometry().getLocation().getLat());
+                    getViewState().goToWeather();
+                });
     }
 }
