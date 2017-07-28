@@ -2,7 +2,6 @@ package dvinc.yamblzhomeproject.repository;
 
 import javax.inject.Inject;
 
-import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.net.PredictionsApi;
 import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
 import dvinc.yamblzhomeproject.utils.Constants;
@@ -14,8 +13,8 @@ public class SelectCityRepositoryImpl implements SelectCityRepository {
     @Inject
     PredictionsApi predictionsApi;
 
+    @Inject
     public SelectCityRepositoryImpl(){
-        App.getComponent().inject(this);
     }
 
     @Override

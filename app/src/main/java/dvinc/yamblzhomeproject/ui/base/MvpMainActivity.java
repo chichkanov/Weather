@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -80,8 +81,7 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
     }
 
     public void showFragment(Fragment fragment) {
-        // Твой бэкстэк неправильно работает: он просто добавляет друг на друга фрагменты
-        /*String backStateName = fragment.getClass().getName();
+        String backStateName = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
         boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
 
@@ -91,11 +91,7 @@ public class MvpMainActivity extends AppCompatActivity implements ViewBase, Navi
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.addToBackStack(backStateName);
             ft.commit();
-        }*/
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragmentContainer, fragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
+        }
     }
 
     public void showAboutFragment(AboutFragment fragment) {

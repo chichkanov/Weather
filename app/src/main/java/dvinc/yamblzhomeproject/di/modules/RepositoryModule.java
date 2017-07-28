@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dvinc.yamblzhomeproject.repository.SelectCityRepository;
 import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
 
 @Module
@@ -11,7 +12,7 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    SelectCityRepositoryImpl providesSelectCityRepository(){
+    SelectCityRepository providesSelectCityRepository(){
         return new SelectCityRepositoryImpl();
     }
 }

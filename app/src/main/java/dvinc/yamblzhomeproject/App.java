@@ -25,7 +25,6 @@ public class App extends Application {
 
     private static AppComponent appComponent;
 
-    private Retrofit retrofit;
     private WeatherApi api;
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
@@ -51,7 +50,7 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
 
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
