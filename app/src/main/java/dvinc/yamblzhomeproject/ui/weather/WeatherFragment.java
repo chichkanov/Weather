@@ -86,13 +86,12 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.nav_head_weather);
+        if(savedInstanceState ==  null) weatherPresenter.getWeather();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        weatherPresenter.getWeatherDataFromCache();
-        weatherPresenter.getWeatherFromInternet();
     }
 
     @Override
@@ -106,7 +105,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
      */
     @OnClick(R.id.getDataButton)
     public void getData() {
-        weatherPresenter.getWeatherFromInternet();
+        weatherPresenter.getWeather();
     }
 
     /**
@@ -153,7 +152,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     }
 
     @Override
-    public void showError(String string) {
-        Toast.makeText(getContext(), string, Toast.LENGTH_LONG).show();
+    public void showError() {
+        Toast.makeText(getContext(), getResources().getString(R.string.network_error_message), Toast.LENGTH_LONG).show();
     }
 }

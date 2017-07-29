@@ -88,5 +88,5 @@ dependencies {
     compile "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
     annotationProcessor "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
 
-    testCompile "org.robolectric:robolectric:3.4"
+    testCompile "org.robolectric:robolectric:$rootProject.robolectric_version"
 }

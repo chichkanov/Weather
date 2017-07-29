@@ -42,6 +42,7 @@
     <string name="select_city_head">City selection</string>
     <string name="select_city_hint">Enther the city</string>
     <string name="default_city">Moscow</string>
+    <string name="network_error_message">Network error</string>
 
     <string-array name="settings_time_array">
         <item>15</item>

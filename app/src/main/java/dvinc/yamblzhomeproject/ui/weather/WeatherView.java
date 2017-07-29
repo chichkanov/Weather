@@ -12,6 +12,6 @@ interface WeatherView extends MvpView {
 
     void updateWeatherParameters(WeatherResponse weatherData);
 
-    void showError(String string);
+    void showError();
 
 }

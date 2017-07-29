@@ -1,6 +1,7 @@
 package dvinc.yamblzhomeproject.repository;
 
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import io.reactivex.Observable;
 
 /*
  * Created by DV on Space 5 
@@ -10,7 +11,7 @@ public interface WeatherRepository {
 
     WeatherResponse getDataFromCache();
 
-    void getDataFromWeb(CallbackWeather callbackWeather);
+    Observable<WeatherResponse> getDataFromWeb();
 
-    void updateWeatherData();
+    Observable<WeatherResponse> updateWeatherData();
 }

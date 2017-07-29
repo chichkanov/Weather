@@ -4,15 +4,20 @@ package dvinc.yamblzhomeproject.ui.weather;
  * 20.07.2017
  */
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
 import dvinc.yamblzhomeproject.App;
-import dvinc.yamblzhomeproject.repository.CallbackWeather;
 import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.utils.Settings;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
@@ -20,26 +25,34 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     @Inject
     WeatherRepositoryImpl repository;
 
-    WeatherPresenter(){
+    @Inject
+    Settings settings;
+
+    private Disposable dataSubscription;
+
+    WeatherPresenter() {
         App.getComponent().inject(this);
     }
 
-    void getWeatherFromInternet() {
-        repository.getDataFromWeb(new CallbackWeather() {
-            @Override
-            public void onSuccess(WeatherResponse weatherResponse) {
-                getViewState().updateWeatherParameters(weatherResponse);
-            }
-
-            @Override
-            public void onError() {
-                getViewState().showError("Network error");
-            }
-        });
+    void getWeather() {
+        dataSubscription = repository.getDataFromWeb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next -> {
+                            getViewState().updateWeatherParameters(next);
+                            settings.saveWeather(new Gson().toJson(next));
+                        },
+                        error -> {
+                            Log.i("Error", error.getMessage());
+                            getViewState().showError();
+                        });
     }
 
-    void getWeatherDataFromCache() {
-        WeatherResponse weatherResponse = repository.getDataFromCache();
-        getViewState().updateWeatherParameters(weatherResponse);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dataSubscription != null) {
+            dataSubscription.dispose();
+        }
     }
 }
