@@ -4,20 +4,28 @@ package dvinc.yamblzhomeproject.ui.weather;
  * 20.07.2017
  */
 
-import android.content.Context;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
+import javax.inject.Inject;
+
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.repository.CallbackWeather;
+import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 
 @InjectViewState
-public class WeatherPresenterImpl extends MvpPresenter<WeatherView> {
+public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
-    void getWeatherFromInternet(Context context) {
-        App.get(context).getRepositoryImpl().getDataFromWeb(context, new CallbackWeather() {
+    @Inject
+    WeatherRepositoryImpl repository;
+
+    WeatherPresenter(){
+        App.getComponent().inject(this);
+    }
+
+    void getWeatherFromInternet() {
+        repository.getDataFromWeb(new CallbackWeather() {
             @Override
             public void onSuccess(WeatherResponse weatherResponse) {
                 getViewState().updateWeatherParameters(weatherResponse);
@@ -30,8 +38,8 @@ public class WeatherPresenterImpl extends MvpPresenter<WeatherView> {
         });
     }
 
-    void getWeatherDataFromCache(Context context) {
-        WeatherResponse weatherResponse = App.get(context).getRepositoryImpl().getDataFromCache(context);
+    void getWeatherDataFromCache() {
+        WeatherResponse weatherResponse = repository.getDataFromCache();
         getViewState().updateWeatherParameters(weatherResponse);
     }
 }

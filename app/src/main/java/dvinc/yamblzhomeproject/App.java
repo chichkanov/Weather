@@ -8,6 +8,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.evernote.android.job.JobManager;
 
@@ -75,5 +76,10 @@ public class App extends Application {
 
     public static AppComponent getComponent() {
         return appComponent;
+    }
+
+    @VisibleForTesting
+    public static void setAppComponent(AppComponent component) {
+        appComponent = component;
     }
 }

@@ -20,7 +20,7 @@ public class BGSyncJob extends Job {
     @Override
     @NonNull
     protected Result onRunJob(Params params) {
-        App.get(getContext()).getRepositoryImpl().updateWeatherData(getContext());
+        App.get(getContext()).getRepositoryImpl().updateWeatherData();
         //Log.v("BACKGROUND", "onRunJob is start");
         return Result.SUCCESS;
     }

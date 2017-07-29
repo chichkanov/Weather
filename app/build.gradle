@@ -57,6 +57,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    testCompile "junit:junit:$rootProject.junit_version"
+    testCompile "org.mockito:mockito-core:$rootProject.mockito_version"
+
     compile "com.android.support:appcompat-v7:$rootProject.support_version"
     compile "com.android.support:design:$rootProject.support_version"
 
@@ -84,4 +87,6 @@ dependencies {
     compile "com.arello-mobile:moxy:$rootProject.moxy_version"
     compile "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
     annotationProcessor "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
+
+    testCompile "org.robolectric:robolectric:3.4"
 }

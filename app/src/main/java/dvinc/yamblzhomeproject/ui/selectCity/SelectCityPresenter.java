@@ -37,8 +37,12 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     @Override
     public void detachView(SelectCityView view) {
         super.detachView(view);
-        subscriptionPlace.dispose();
-        subscriptionPlaceCoords.dispose();
+        if (subscriptionPlace != null) {
+            subscriptionPlace.dispose();
+        }
+        if (subscriptionPlaceCoords != null) {
+            subscriptionPlaceCoords.dispose();
+        }
     }
 
     void setObservable(Observable<CharSequence> observable) {

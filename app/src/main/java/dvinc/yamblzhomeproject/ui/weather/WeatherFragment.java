@@ -64,7 +64,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME";
 
     @InjectPresenter
-    public WeatherPresenterImpl weatherPresenter;
+    public WeatherPresenter weatherPresenter;
 
     private Unbinder unbinder;
 
@@ -91,8 +91,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     @Override
     public void onResume() {
         super.onResume();
-        weatherPresenter.getWeatherDataFromCache(getContext());
-        weatherPresenter.getWeatherFromInternet(getContext());
+        weatherPresenter.getWeatherDataFromCache();
+        weatherPresenter.getWeatherFromInternet();
     }
 
     @Override
@@ -106,7 +106,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
      */
     @OnClick(R.id.getDataButton)
     public void getData() {
-        weatherPresenter.getWeatherFromInternet(getContext());
+        weatherPresenter.getWeatherFromInternet();
     }
 
     /**
