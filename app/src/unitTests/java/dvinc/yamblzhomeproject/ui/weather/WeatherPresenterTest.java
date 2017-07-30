@@ -86,6 +86,17 @@ public class WeatherPresenterTest {
         verify(weatherViewState, only()).showError();
     }
 
+    @Test
+    public void shouldNotCrashWhenViewDetached(){
+        when(repository.getData()).thenReturn(Observable.error(new Throwable()));
+
+        presenter.getWeather();
+        presenter.detachView(weatherViewState);
+        presenter.destroyView(weatherViewState);
+
+        verify(weatherViewState).showError();
+    }
+
     private AppComponent testAppComponent() {
         return new TestComponent() {
             @Override

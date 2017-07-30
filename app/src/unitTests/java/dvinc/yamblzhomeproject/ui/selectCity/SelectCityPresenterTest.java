@@ -57,6 +57,8 @@ public class SelectCityPresenterTest {
     public void shouldShowLoadAndShowDataWhenNetworkOn() {
         when(repository.getPrediction(anyString())).thenReturn(Observable.just(new CityPrediction()));
         presenter.setObservable(Observable.just("Any city"));
+
+        verify(repository).getPrediction(anyString());
         verify(selectCityViewState).showList(any());
         verify(selectCityViewState, never()).showError();
     }
@@ -65,6 +67,8 @@ public class SelectCityPresenterTest {
     public void shouldShowShowErrorWhenSomethingWrong() {
         when(repository.getPrediction(anyString())).thenReturn(Observable.error(new Throwable()));
         presenter.setObservable(Observable.just("Any city"));
+
+        verify(repository).getPrediction(anyString());
         verify(selectCityViewState).showError();
     }
 
@@ -76,6 +80,17 @@ public class SelectCityPresenterTest {
         presenter.citySelected(new Prediction());
 
         verify(repository).getPredictionCoord(any());
+    }
+
+    @Test
+    public void shouldNotCrashWhenViewDetached(){
+        when(repository.getPrediction(anyString())).thenReturn(Observable.error(new Throwable()));
+        presenter.setObservable(Observable.just("Any city"));
+
+        presenter.detachView(selectCityViewState);
+        presenter.destroyView(selectCityViewState);
+
+        verify(selectCityViewState).showError();
     }
 
     private AppComponent testAppComponent() {
