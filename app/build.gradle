@@ -52,6 +52,11 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+    sourceSets {
+        // Unit tests live in src/unitTest.
+        test.java.srcDir 'src/unitTests/java'
+        androidTest.setRoot('src/androidTest')
+    }
 }
 
 dependencies {
@@ -59,6 +64,17 @@ dependencies {
 
     testCompile "junit:junit:$rootProject.junit_version"
     testCompile "org.mockito:mockito-core:$rootProject.mockito_version"
+    testCompile "org.robolectric:robolectric:$rootProject.robolectric_version"
+    androidTestCompile ("com.android.support.test.espresso:espresso-core:$rootProject.espresso_version",{
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile ('com.android.support.test:runner:0.5'){
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:rules:0.5'){
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile "org.mockito:mockito-android:$rootProject.mockito_version"
 
     compile "com.android.support:appcompat-v7:$rootProject.support_version"
     compile "com.android.support:design:$rootProject.support_version"
@@ -88,5 +104,5 @@ dependencies {
     compile "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
     annotationProcessor "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
 
-    testCompile "org.robolectric:robolectric:$rootProject.robolectric_version"
+
 }
