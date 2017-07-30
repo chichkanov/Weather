@@ -3,7 +3,6 @@ package dvinc.yamblzhomeproject.ui;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,12 +21,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MvpMainActivityTest {
 
     @Rule
-    public ActivityTestRule<MvpMainActivity> mActivityTestRule = new ActivityTestRule<>(MvpMainActivity.class);
+    public ActivityTestRule<MvpMainActivity> ActivityTestRule = new ActivityTestRule<>(MvpMainActivity.class);
 
     @Test
     public void checkFragmentSwitchCorrect() {
