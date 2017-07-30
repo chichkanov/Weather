@@ -9,9 +9,7 @@ import io.reactivex.Observable;
  */
 public interface WeatherRepository {
 
-    WeatherResponse getDataFromCache();
-
-    Observable<WeatherResponse> getDataFromWeb();
+    Observable<WeatherResponse> getData();
 
     Observable<WeatherResponse> updateWeatherData();
 }

@@ -61,11 +61,12 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
-                    String city = item.getDescription();
-                    settings.setCurrentCity(city);
-                    settings.setCurrentCityLocationLong(next.getResult().getGeometry().getLocation().getLng());
-                    settings.setCurrentCityLocationLat(next.getResult().getGeometry().getLocation().getLat());
-                    getViewState().goToWeather();
-                });
+                            String city = item.getDescription();
+                            settings.setCurrentCity(city);
+                            settings.setCurrentCityLocationLong(next.getResult().getGeometry().getLocation().getLng());
+                            settings.setCurrentCityLocationLat(next.getResult().getGeometry().getLocation().getLat());
+                            getViewState().goToWeather();
+                        },
+                        error -> getViewState().showError());
     }
 }

@@ -21,24 +21,27 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     WeatherApi weatherApi;
 
     @Inject
-    public WeatherRepositoryImpl(){
-        
+    public WeatherRepositoryImpl() {
+
     }
 
     @Override
-    public WeatherResponse getDataFromCache() {
-        return settings.getWeather();
-    }
+    public Observable<WeatherResponse> getData() {
+        Observable<WeatherResponse> internetObserbavle = weatherApi.getWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
+        WeatherResponse cache = settings.getWeather();
 
-    @Override
-    public Observable<WeatherResponse> getDataFromWeb() {
-        Observable<WeatherResponse> internetObserbavle = weatherApi.getTranslate(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
-        Observable<WeatherResponse> dbObservable = Observable.just(settings.getWeather());
-        return Observable.concat(internetObserbavle, dbObservable);
+        // If first start - cache will be null
+        if (cache != null) {
+            Observable<WeatherResponse> dbObservable = Observable.just(cache);
+            return Observable.concat(dbObservable, internetObserbavle);
+        } else {
+            return internetObserbavle;
+        }
+
     }
 
     @Override
     public Observable<WeatherResponse> updateWeatherData() {
-        return weatherApi.getTranslate(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
+        return weatherApi.getWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
     }
 }

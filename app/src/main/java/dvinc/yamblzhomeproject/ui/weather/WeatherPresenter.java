@@ -35,9 +35,9 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     }
 
     void getWeather() {
-        dataSubscription = repository.getDataFromWeb()
+        dataSubscription = repository.getData()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(next -> {
                             getViewState().updateWeatherParameters(next);
                             settings.saveWeather(new Gson().toJson(next));

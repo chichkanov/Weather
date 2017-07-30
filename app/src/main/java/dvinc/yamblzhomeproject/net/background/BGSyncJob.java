@@ -36,15 +36,11 @@ public class BGSyncJob extends Job {
         App.get(getContext()).getRepositoryImpl().updateWeatherData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next -> {
-                    settings.saveWeather(new Gson().toJson(next));
-                });
-        //Log.v("BACKGROUND", "onRunJob is start");
+                .subscribe(next -> settings.saveWeather(new Gson().toJson(next)));
         return Result.SUCCESS;
     }
 
     public static void schedulePeriodic(int minutes) {
-        //Log.v("BACKGROUND", "schedulePeriodic is start");
         new JobRequest.Builder(BGSyncJob.TAG)
                 .setUpdateCurrent(true)
                 .setPeriodic(TimeUnit.MINUTES.toMillis(minutes), TimeUnit.MINUTES.toMillis(5))

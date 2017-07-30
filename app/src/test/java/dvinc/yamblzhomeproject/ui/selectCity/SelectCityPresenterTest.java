@@ -1,7 +1,5 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
-import android.accounts.NetworkErrorException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,6 +13,8 @@ import dvinc.yamblzhomeproject.di.TestComponent;
 import dvinc.yamblzhomeproject.di.TestComponentRule;
 import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
 import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
+import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.PlaceInfoResponse;
 import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,14 +63,19 @@ public class SelectCityPresenterTest {
 
     @Test
     public void shouldShowShowErrorWhenSomethingWrong() {
-        when(repository.getPrediction(anyString())).thenReturn(Observable.error(new NetworkErrorException()));
+        when(repository.getPrediction(anyString())).thenReturn(Observable.error(new Throwable()));
         presenter.setObservable(Observable.just("Any city"));
         verify(selectCityViewState).showError();
     }
 
     @Test
-    public void shouldSaveCityAndGoBackToWeatherWhetElementSelected() {
-        //make
+    public void shouldAskForPlaceInfo() {
+        Observable<PlaceInfoResponse> info = Observable.just(mock(PlaceInfoResponse.class));
+
+        when(repository.getPredictionCoord(any())).thenReturn(info);
+        presenter.citySelected(new Prediction());
+
+        verify(repository).getPredictionCoord(any());
     }
 
     private AppComponent testAppComponent() {
