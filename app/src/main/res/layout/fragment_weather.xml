@@ -9,7 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/tv_weather_temperature"
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_toRightOf="@+id/tv_weather_temperature"
-            custom:weatherIconColor="@android:color/white"
+            custom:weatherIconColor="@color/darkFont"
             custom:weatherIconResource="@string/wi_day_sunny_overcast"
             custom:weatherIconSize="64" />
 
@@ -54,7 +55,7 @@
             android:layout_below="@id/tv_weather_desc"
             android:layout_marginRight="3dp"
             android:layout_marginTop="10dp"
-            custom:weatherIconColor="@android:color/white"
+            custom:weatherIconColor="@color/darkFont"
             custom:weatherIconResource="@string/wi_windy"
             custom:weatherIconSize="18" />
 
@@ -77,7 +78,7 @@
             android:layout_marginRight="3dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/tv_weather_wind_speed"
-            custom:weatherIconColor="@android:color/white"
+            custom:weatherIconColor="@color/darkFont"
             custom:weatherIconResource="@string/wi_humidity"
             custom:weatherIconSize="18" />
 
@@ -100,7 +101,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/tv_weather_humidity"
             android:gravity="center_vertical"
-            custom:weatherIconColor="@android:color/white"
+            custom:weatherIconColor="@color/darkFont"
             custom:weatherIconResource="@string/wi_barometer"
             custom:weatherIconSize="18" />
 

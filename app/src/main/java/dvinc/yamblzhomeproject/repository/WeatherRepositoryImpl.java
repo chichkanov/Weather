@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
 import dvinc.yamblzhomeproject.utils.Settings;
+import dvinc.yamblzhomeproject.utils.WeatherUtils;
 import io.reactivex.Observable;
 
 public class WeatherRepositoryImpl implements WeatherRepository {
@@ -27,7 +28,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public Observable<WeatherResponse> getData() {
-        Observable<WeatherResponse> internetObserbavle = weatherApi.getWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
+        Observable<WeatherResponse> internetObserbavle = weatherApi.getCurrentWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale());
         WeatherResponse cache = settings.getWeather();
 
         // If first start - cache will be null
@@ -42,6 +43,6 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public Observable<WeatherResponse> updateWeatherData() {
-        return weatherApi.getWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY);
+        return weatherApi.getCurrentWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale());
     }
 }

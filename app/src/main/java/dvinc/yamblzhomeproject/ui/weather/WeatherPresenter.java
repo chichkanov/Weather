@@ -41,7 +41,7 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(next -> {
-                            Log.e("LoadWeather", "Success");
+                            Log.i("LoadWeather", "Success");
                             getViewState().hideLoading();
                             getViewState().updateWeatherParameters(next);
                             settings.saveWeather(new Gson().toJson(next));
