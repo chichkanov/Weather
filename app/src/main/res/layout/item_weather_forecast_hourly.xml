@@ -4,7 +4,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp">
 
     <TextView
         android:id="@+id/tv_item_forecast_hourly_temp"
@@ -21,7 +23,6 @@
         android:layout_marginTop="10dp"
         custom:weatherIconColor="@color/darkFont"
         android:layout_gravity="center_horizontal"
-
         custom:weatherIconResource="@string/wi_day_sunny_overcast"
         custom:weatherIconSize="18" />
 

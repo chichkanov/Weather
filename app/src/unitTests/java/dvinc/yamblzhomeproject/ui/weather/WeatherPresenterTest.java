@@ -63,7 +63,7 @@ public class WeatherPresenterTest {
         presenter.getWeather();
 
         verify(repository).getData();
-        verify(weatherViewState).updateWeatherParameters(any());
+        verify(weatherViewState).updateWeatherDaily(any());
     }
 
     @Test

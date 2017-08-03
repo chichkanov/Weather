@@ -28,7 +28,8 @@ import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
 public class WeatherFragment extends MvpAppCompatFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
@@ -53,11 +54,11 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @BindView(R.id.rv_weather_today)
     RecyclerView rvForecastHourly;
+    @BindView(R.id.rv_weather_forecast)
+    RecyclerView rvForecastDaily;
 
-    private ForecastHourlyAdapter adapter;
-
-
-    private String cityName = "";
+    private ForecastHourlyAdapter adapterHourly;
+    private ForecastDailyAdapter adapterDaily;
 
     @InjectPresenter
     public WeatherPresenter weatherPresenter;
@@ -81,7 +82,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(this);
-        initRecyclerView();
+        initRecyclerViewHourly();
+        initRecyclerViewDaily();
         if (savedInstanceState == null) weatherPresenter.getWeather();
     }
 
@@ -91,35 +93,47 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         unbinder.unbind();
     }
 
-    private void initRecyclerView() {
-        adapter = new ForecastHourlyAdapter(new ArrayList<>());
+    private void initRecyclerViewHourly() {
+        adapterHourly = new ForecastHourlyAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
-
         rvForecastHourly.setLayoutManager(layoutManager);
         rvForecastHourly.addItemDecoration(decoration);
-        rvForecastHourly.setAdapter(adapter);
+        rvForecastHourly.setAdapter(adapterHourly);
+        rvForecastHourly.setNestedScrollingEnabled(false);
+    }
+
+    private void initRecyclerViewDaily() {
+        adapterDaily = new ForecastDailyAdapter(new ArrayList<>());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+        rvForecastDaily.setLayoutManager(layoutManager);
+        rvForecastDaily.addItemDecoration(decoration);
+        rvForecastDaily.setAdapter(adapterDaily);
+        rvForecastDaily.setNestedScrollingEnabled(false);
     }
 
     @Override
-    public void updateWeatherParameters(WeatherResponse weatherData) {
-        if (weatherData != null) {
+    public void updateWeatherCurrent(WeatherResponse weatherData) {
+        tvTemperature.setText(getString(R.string.weather_temp_cels, (int) weatherData.getMain().getTemp() - 273));
+        tvDesc.setText(weatherData.getWeather().get(0).getDescription());
+        tvHumidity.setText(getString(R.string.weather_humidity, weatherData.getMain().getHumidity()));
+        tvWindSpeed.setText(getString(R.string.weather_wind_speed_metr, (int) weatherData.getWind().getSpeed()));
+        tvPressure.setText(getString(R.string.weather_pressure_hpa, (int) weatherData.getMain().getPressure()));
+        tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMain().getTempMax() - 273, (int) weatherData.getMain().getTempMin() - 273));
 
-            tvTemperature.setText(getString(R.string.weather_temp_cels, (int) weatherData.getMain().getTemp() - 273));
-            tvDesc.setText(weatherData.getWeather().get(0).getDescription());
-            tvHumidity.setText(getString(R.string.weather_humidity, weatherData.getMain().getHumidity()));
-            tvWindSpeed.setText(getString(R.string.weather_wind_speed_metr, (int) weatherData.getWind().getSpeed()));
-            tvPressure.setText(getString(R.string.weather_pressure_hpa, (int) weatherData.getMain().getPressure()));
-            tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMain().getTempMax() - 273, (int) weatherData.getMain().getTempMin() - 273));
-
-            weatherIcon.setIconResource(getString(WeatherUtils.getIcon(weatherData.getWeather().get(0).getIcon())));
-            getActivity().setTitle(weatherData.getName());
-        }
+        weatherIcon.setIconResource(getString(WeatherUtils.getIcon(weatherData.getWeather().get(0).getIcon())));
+        getActivity().setTitle(weatherData.getName());
     }
 
     @Override
-    public void updateWeatherHourly(WeatherForecastDailyResponse weatherForecastDailyResponse) {
-        adapter.setDataset(weatherForecastDailyResponse.getList());
+    public void updateWeatherHourly(WeatherForecastHourlyResponse weatherForecastHourlyResponse) {
+        adapterHourly.setDataset(weatherForecastHourlyResponse.getList());
+    }
+
+    @Override
+    public void updateWeatherDaily(WeatherForecastDailyResponse weatherForecastDailyResponse) {
+        adapterDaily.setDataset(weatherForecastDailyResponse.getList());
     }
 
     @Override

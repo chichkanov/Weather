@@ -39,6 +39,11 @@
         <item name="android:textColor">@color/darkFont</item>
     </style>
 
+    <style name="WeatherDailyInfoTextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/darkFont</item>
+    </style>
+
     <style name="Settings_Text_Style">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFFFFF</item>

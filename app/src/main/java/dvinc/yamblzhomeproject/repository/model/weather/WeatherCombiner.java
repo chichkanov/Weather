@@ -1,15 +1,23 @@
 package dvinc.yamblzhomeproject.repository.model.weather;
 
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
 
 public class WeatherCombiner {
 
     private WeatherResponse weatherResponse;
+    private WeatherForecastHourlyResponse weatherForecastHourlyResponse;
+
+    public WeatherForecastDailyResponse getWeatherForecastDailyResponse() {
+        return weatherForecastDailyResponse;
+    }
+
     private WeatherForecastDailyResponse weatherForecastDailyResponse;
 
-    public WeatherCombiner(WeatherResponse weatherResponse, WeatherForecastDailyResponse weatherForecastDailyResponse) {
+    public WeatherCombiner(WeatherResponse weatherResponse, WeatherForecastHourlyResponse weatherForecastHourlyResponse, WeatherForecastDailyResponse weatherForecastDailyResponse) {
         this.weatherResponse = weatherResponse;
+        this.weatherForecastHourlyResponse = weatherForecastHourlyResponse;
         this.weatherForecastDailyResponse = weatherForecastDailyResponse;
     }
 
@@ -17,15 +25,7 @@ public class WeatherCombiner {
         return weatherResponse;
     }
 
-    public void setWeatherResponse(WeatherResponse weatherResponse) {
-        this.weatherResponse = weatherResponse;
-    }
-
-    public WeatherForecastDailyResponse getWeatherForecastDailyResponse() {
-        return weatherForecastDailyResponse;
-    }
-
-    public void setWeatherForecastDailyResponse(WeatherForecastDailyResponse weatherForecastDailyResponse) {
-        this.weatherForecastDailyResponse = weatherForecastDailyResponse;
+    public WeatherForecastHourlyResponse getWeatherForecastHourlyResponse() {
+        return weatherForecastHourlyResponse;
     }
 }

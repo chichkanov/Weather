@@ -19,13 +19,15 @@ import java.util.Locale;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.HourList;
 
-class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.Holder>{
+class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.Holder> {
 
     private List<HourList> dataset;
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private static DateFormat formatFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private static DateFormat formatTo = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
 
-    ForecastHourlyAdapter(List<HourList> dataset){
+
+    ForecastHourlyAdapter(List<HourList> dataset) {
         this.dataset = dataset;
     }
 
@@ -37,23 +39,20 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        String temp = String.valueOf((int) dataset.get(position).getMain().getTemp() - 273);
+        int temp = (int) dataset.get(position).getMain().getTemp() - 273;
 
         Date date = null;
         try {
-            date = dateFormat.parse(dataset.get(position).getDtTxt());
+            date = formatFrom.parse(dataset.get(position).getDtTxt());
         } catch (ParseException e) {
             e.printStackTrace();
             Log.e("Adapter", "Parse Exception");
         }
-
-        DateFormat formatter = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
-
-        holder.tvTemp.setText(temp + "°");
-        holder.tvHour.setText(formatter.format(date));
+        holder.tvTemp.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, temp));
+        holder.tvHour.setText(formatTo.format(date));
     }
 
-    void setDataset(List<HourList> dataset){
+    void setDataset(List<HourList> dataset) {
         this.dataset = dataset;
         notifyDataSetChanged();
     }
@@ -63,7 +62,7 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
         return dataset.size();
     }
 
-    static class Holder extends RecyclerView.ViewHolder{
+    static class Holder extends RecyclerView.ViewHolder {
 
         TextView tvTemp;
         TextView tvHour;

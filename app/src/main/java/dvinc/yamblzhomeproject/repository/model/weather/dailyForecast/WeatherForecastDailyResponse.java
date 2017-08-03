@@ -1,9 +1,9 @@
-package dvinc.yamblzhomeproject.repository.model.weather.hourForecast;
+package dvinc.yamblzhomeproject.repository.model.weather.dailyForecast;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.City;
 
 public class WeatherForecastDailyResponse {
 
@@ -18,7 +18,7 @@ public class WeatherForecastDailyResponse {
     private String cod;
     @SerializedName("list")
     @Expose
-    private List<HourList> list = null;
+    private java.util.List<DailyList> list = null;
     @SerializedName("message")
     @Expose
     private double message;
@@ -47,11 +47,11 @@ public class WeatherForecastDailyResponse {
         this.cod = cod;
     }
 
-    public List<HourList> getList() {
+    public java.util.List<DailyList> getList() {
         return list;
     }
 
-    public void setList(List<HourList> list) {
+    public void setList(java.util.List<DailyList> list) {
         this.list = list;
     }
 
@@ -62,5 +62,4 @@ public class WeatherForecastDailyResponse {
     public void setMessage(double message) {
         this.message = message;
     }
-
 }

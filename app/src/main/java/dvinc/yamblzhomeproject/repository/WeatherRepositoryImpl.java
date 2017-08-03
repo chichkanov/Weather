@@ -9,7 +9,8 @@ import javax.inject.Inject;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
 import dvinc.yamblzhomeproject.utils.Settings;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 import io.reactivex.Observable;
@@ -31,11 +32,21 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public Observable<WeatherCombiner> getData() {
-        Observable<WeatherResponse> observableCurrentWeather = weatherApi.getCurrentWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale());
-        Observable<WeatherForecastDailyResponse> observableHourForecastWeather = weatherApi.getHourForecast(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale(), AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST);
+        Observable<WeatherResponse> currentWeather = weatherApi.getCurrentWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale());
 
-        Observable<WeatherCombiner> observableCombined = Observable.zip(observableCurrentWeather, observableHourForecastWeather, WeatherCombiner::new);
+        Observable<WeatherForecastHourlyResponse> hourlyForecast = weatherApi.getHourForecast(settings.getCurrentCityLocationLat(),
+                settings.getCurrentCityLocationLong(),
+                API_KEY, WeatherUtils.getLocale(),
+                AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST);
 
+        Observable<WeatherForecastDailyResponse> dailyForecast = weatherApi.getDailyForecast(settings.getCurrentCityLocationLat(),
+                settings.getCurrentCityLocationLong(),
+                API_KEY, WeatherUtils.getLocale(),
+                AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST);
+
+        Observable<WeatherCombiner> observableCombined = Observable.zip(currentWeather, hourlyForecast, dailyForecast, WeatherCombiner::new);
+
+        // Cache will be later with DB functionality
         WeatherResponse cache = settings.getWeather();
 
         return observableCombined;

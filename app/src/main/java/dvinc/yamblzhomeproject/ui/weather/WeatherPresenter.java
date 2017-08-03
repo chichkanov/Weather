@@ -43,8 +43,9 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                 .subscribe(next -> {
                             Log.i("LoadWeather", "Success");
                             getViewState().hideLoading();
-                            getViewState().updateWeatherParameters(next.getWeatherResponse());
-                            getViewState().updateWeatherHourly(next.getWeatherForecastDailyResponse());
+                            getViewState().updateWeatherCurrent(next.getWeatherResponse());
+                            getViewState().updateWeatherHourly(next.getWeatherForecastHourlyResponse());
+                            getViewState().updateWeatherDaily(next.getWeatherForecastDailyResponse());
                             settings.saveWeather(new Gson().toJson(next));
                         },
                         error -> {

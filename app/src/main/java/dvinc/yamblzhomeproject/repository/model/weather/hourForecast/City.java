@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import dvinc.yamblzhomeproject.repository.model.weather.core.Coord;
 
-class City {
+public class City {
 
     @SerializedName("coord")
     @Expose

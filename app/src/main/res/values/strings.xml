@@ -24,6 +24,7 @@
     <string name="weather_temperature_minmax">%1$d° / %2$d°</string>
     <string name="weather_desc_hourly">Hourly</string>
     <string name="weather_desc_daily">Daily</string>
+    <string name="weather_temp_forecast_cels">%1$d°</string>
 
     <!--Settings Fragment-->
     <string name="settings_update_frequency">Frequency of weather update</string>

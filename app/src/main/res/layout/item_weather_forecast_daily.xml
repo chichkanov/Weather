@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp">
+
+    <TextView
+        android:id="@+id/tv_item_forecast_daily_date"
+        style="@style/WeatherDailyInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="@string/weather_default_value" />
+
+    <com.github.pwittchen.weathericonview.WeatherIconView
+        android:id="@+id/weather_icon_item_forecast_daily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        custom:weatherIconColor="@color/darkFont"
+        custom:weatherIconResource="@string/wi_day_sunny_overcast"
+        custom:weatherIconSize="24" />
+
+    <TextView
+        android:id="@+id/tv_item_forecast_daily_temp_max"
+        style="@style/WeatherDailyInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:layout_toLeftOf="@+id/tv_item_forecast_daily_temp_min"
+        android:text="@string/weather_default_value"
+        tools:ignore="RelativeOverlap" />
+
+    <TextView
+        android:id="@+id/tv_item_forecast_daily_temp_min"
+        style="@style/WeatherDailyInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:text="@string/weather_default_value" />
+</RelativeLayout>

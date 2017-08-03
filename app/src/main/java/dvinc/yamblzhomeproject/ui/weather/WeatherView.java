@@ -7,13 +7,16 @@ package dvinc.yamblzhomeproject.ui.weather;
 import com.arellomobile.mvp.MvpView;
 
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
 
 interface WeatherView extends MvpView {
 
-    void updateWeatherParameters(WeatherResponse weatherData);
+    void updateWeatherCurrent(WeatherResponse weatherData);
 
-    void updateWeatherHourly(WeatherForecastDailyResponse weatherForecastDailyResponse);
+    void updateWeatherHourly(WeatherForecastHourlyResponse weatherForecastHourlyResponse);
+
+    void updateWeatherDaily(WeatherForecastDailyResponse weatherForecastDailyResponse);
 
     void showError();
 
