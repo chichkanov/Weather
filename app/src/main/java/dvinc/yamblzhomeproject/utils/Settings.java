@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
 
 import static android.content.Context.MODE_PRIVATE;
 

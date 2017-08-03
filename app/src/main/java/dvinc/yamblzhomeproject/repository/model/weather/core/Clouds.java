@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.repository.model.weather;
+package dvinc.yamblzhomeproject.repository.model.weather.core;
 /*
  * Created by DV on Space 5
  * 14.07.2017
@@ -7,7 +7,7 @@ package dvinc.yamblzhomeproject.repository.model.weather;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-class Clouds {
+public class Clouds {
 
     @SerializedName("all")
     @Expose

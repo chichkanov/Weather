@@ -16,30 +16,16 @@
 
     <string name="activity_main_title">Weather</string>
 
+    <!--Weather Fragment-->
     <string name="weather_temp_cels">%1$d°C</string>
     <string name="weather_humidity">%1$d%%</string>
     <string name="weather_wind_speed_metr">%1$d m/s</string>
     <string name="weather_pressure_hpa">%1$d hPa</string>
     <string name="weather_temperature_minmax">%1$d° / %2$d°</string>
+    <string name="weather_desc_hourly">Hourly</string>
+    <string name="weather_desc_daily">Daily</string>
 
-    <string name="temperature_celsius">"%d ℃"</string>
-    <string name="pressure_unit">" mm Hg"</string>
-    <string name="humidity_unit">" %"</string>
-    <string name="wind_speed_unit">" m/s"</string>
-    <string name="visibility_unit">" km."</string>
-
-    <string name="pressure">Pressure</string>
-    <string name="humidity">Humidity</string>
-    <string name="wind">Wind</string>
-    <string name="visibility">Visibility</string>
-    <string name="max_temp">Max. temp.</string>
-    <string name="min_temp">Min. temp.</string>
-    <string name="last_update">Update</string>
-    <string name="city_name">Moscow, Russia</string>
-    <string name="update_button">Update</string>
-    <string name="data_update">Data was update</string>
-    <string name="load_weather_error">Something going wrong. Maybe internet problem.</string>
-    
+    <!--Settings Fragment-->
     <string name="settings_update_frequency">Frequency of weather update</string>
     <string name="settings_button_apply">Apply</string>
     <string name="settings_new_settings_save">New settings save</string>
@@ -50,6 +36,7 @@
     <string name="default_city">Moscow</string>
     <string name="network_error_message">Network error</string>
     <string name="weather_default_value">-</string>
+    <string name="load_weather_error">Error</string>
 
 
     <string-array name="settings_time_array">

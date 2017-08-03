@@ -16,16 +16,16 @@
 
     <string name="activity_main_title">Погода</string>
 
+    <!--Weather Fragment-->
     <string name="weather_humidity">%1$d%%</string>
     <string name="weather_temp_cels">%1$d°C</string>
     <string name="weather_wind_speed_metr">%1$d м/с</string>
     <string name="weather_pressure_hpa">%1$d гПа</string>
     <string name="weather_temperature_minmax">%1$d° / %2$d°</string>
+    <string name="weather_desc_hourly">Почасовой прогноз</string>
+    <string name="weather_desc_daily">Ежедневный прогноз</string>
 
-    <string name="last_update">Обновлено</string>
-    <string name="data_update">Данные обновлены</string>
-    <string name="load_weather_error">Что-то пошло не так. Возможно, проблемы с интернетом.</string>
-
+    <!--Settings Fragment-->
     <string name="settings_update_frequency">Частота обновления погоды</string>
     <string name="settings_button_apply">Применить</string>
     <string name="settings_new_settings_save">Новые настройки сохранены</string>
@@ -36,7 +36,7 @@
     <string name="default_city">Москва</string>
     <string name="network_error_message">Нет интернет соединения</string>
     <string name="weather_default_value">-</string>
-
+    <string name="load_weather_error">Ошибка</string>
 
     <string-array name="settings_time_array">
         <item>15</item>

@@ -1,6 +1,7 @@
 package dvinc.yamblzhomeproject.repository;
 
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
+import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
 import io.reactivex.Observable;
 
 /*
@@ -9,7 +10,7 @@ import io.reactivex.Observable;
  */
 public interface WeatherRepository {
 
-    Observable<WeatherResponse> getData();
+    Observable<WeatherCombiner> getData();
 
     Observable<WeatherResponse> updateWeatherData();
 }

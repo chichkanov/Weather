@@ -7,7 +7,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import dvinc.yamblzhomeproject.net.WeatherApi;
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
+import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
 import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
@@ -35,7 +36,7 @@ public class WeatherRepositoryTest {
     public void shouldUpdateWhenNetworkOk() {
         Observable<WeatherResponse> api = Observable.just(mock(WeatherResponse.class));
 
-        when(weatherApi.getWeather(anyString(), anyString(), anyString())).thenReturn(api);
+        when(weatherApi.getCurrentWeather(anyString(), anyString(), anyString(), anyString())).thenReturn(api);
         when(settings.getCurrentCityLocationLat()).thenReturn("12");
         when(settings.getCurrentCityLocationLong()).thenReturn("12");
 
@@ -50,13 +51,13 @@ public class WeatherRepositoryTest {
     @Test
     public void shouldReturnDataWhenCacheAndNetworkOn() {
         Observable<WeatherResponse> db = Observable.just(mock(WeatherResponse.class));
-        Observable<WeatherResponse> api = Observable.just(mock(WeatherResponse.class));
+        Observable<WeatherCombiner> api = Observable.just(mock(WeatherCombiner.class));
 
-        when(weatherApi.getWeather(anyString(), anyString(), anyString())).thenReturn(Observable.concat(db, api));
+        when(weatherApi.getCurrentWeather(anyString(), anyString(), anyString(), anyString())).thenReturn(db);
         when(settings.getCurrentCityLocationLat()).thenReturn("12");
         when(settings.getCurrentCityLocationLong()).thenReturn("12");
 
-        TestObserver<WeatherResponse> observer = TestObserver.create();
+        TestObserver<WeatherCombiner> observer = TestObserver.create();
         repository.getData().subscribe(observer);
 
         observer.assertSubscribed();
@@ -68,11 +69,11 @@ public class WeatherRepositoryTest {
     public void shouldReturnApiOnlyWhenNoCache() {
         Observable<WeatherResponse> api = Observable.just(mock(WeatherResponse.class));
 
-        when(weatherApi.getWeather(anyString(), anyString(), anyString())).thenReturn(api);
+        when(weatherApi.getCurrentWeather(anyString(), anyString(), anyString(), anyString())).thenReturn(api);
         when(settings.getCurrentCityLocationLat()).thenReturn("12");
         when(settings.getCurrentCityLocationLong()).thenReturn("12");
 
-        TestObserver<WeatherResponse> observer = TestObserver.create();
+        TestObserver<WeatherCombiner> observer = TestObserver.create();
         repository.getData().subscribe(observer);
 
         observer.assertSubscribed();

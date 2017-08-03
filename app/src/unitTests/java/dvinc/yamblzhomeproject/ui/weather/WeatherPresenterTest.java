@@ -12,7 +12,8 @@ import dvinc.yamblzhomeproject.di.AppComponent;
 import dvinc.yamblzhomeproject.di.TestComponent;
 import dvinc.yamblzhomeproject.di.TestComponentRule;
 import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
+import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
 import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -54,11 +55,11 @@ public class WeatherPresenterTest {
     @Test
     public void shouldLoadAndShowWeatherWhenNetworkOnAndCacheExist() {
         WeatherResponse response = mock(WeatherResponse.class);
-        WeatherResponse response2 = mock(WeatherResponse.class);
+        WeatherCombiner response2 = mock(WeatherCombiner.class);
         Observable<WeatherResponse> db = Observable.just(response);
-        Observable<WeatherResponse> api = Observable.just(response2);
+        Observable<WeatherCombiner> api = Observable.just(response2);
 
-        when(repository.getData()).thenReturn(Observable.concat(db, api));
+        when(repository.getData()).thenReturn(api);
         presenter.getWeather();
 
         verify(repository).getData();
@@ -67,7 +68,7 @@ public class WeatherPresenterTest {
 
     @Test
     public void shouldNotCrashOnFirstStartWithoutInternet() {
-        Observable<WeatherResponse> api = Observable.error(new Throwable());
+        Observable<WeatherCombiner> api = Observable.error(new Throwable());
 
         when(repository.getData()).thenReturn(api);
         presenter.getWeather();

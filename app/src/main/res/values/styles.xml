@@ -27,6 +27,18 @@
         <item name="android:textColor">@color/darkFont</item>
     </style>
 
+    <style name="WeatherDescTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/darkFont</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="WeatherHourlyInfoTextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/darkFont</item>
+    </style>
+
     <style name="Settings_Text_Style">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFFFFF</item>

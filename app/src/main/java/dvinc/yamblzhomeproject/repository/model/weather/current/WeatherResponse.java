@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.repository.model.weather;
+package dvinc.yamblzhomeproject.repository.model.weather.current;
 /*
  * Created by DV on Space 5 
  * 14.07.2017
@@ -8,6 +8,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import dvinc.yamblzhomeproject.repository.model.weather.core.Clouds;
+import dvinc.yamblzhomeproject.repository.model.weather.core.Coord;
+import dvinc.yamblzhomeproject.repository.model.weather.core.Main;
+import dvinc.yamblzhomeproject.repository.model.weather.core.Weather;
+import dvinc.yamblzhomeproject.repository.model.weather.core.Wind;
 
 public class WeatherResponse {
 
