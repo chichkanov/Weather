@@ -34,19 +34,19 @@ public class WeatherResponse {
     private Clouds clouds;
     @SerializedName("dt")
     @Expose
-    private Integer dt;
+    private int dt;
     @SerializedName("sys")
     @Expose
     private Sys sys;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("cod")
     @Expose
-    private Integer cod;
+    private int cod;
 
     public Coord getCoord() {
         return coord;
@@ -84,7 +84,7 @@ public class WeatherResponse {
         return visibility;
     }
 
-    public void setVisibility(Integer visibility) {
+    public void setVisibility(int visibility) {
         this.visibility = visibility;
     }
 
@@ -104,11 +104,11 @@ public class WeatherResponse {
         this.clouds = clouds;
     }
 
-    public Integer getDt() {
+    public int getDt() {
         return dt;
     }
 
-    public void setDt(Integer dt) {
+    public void setDt(int dt) {
         this.dt = dt;
     }
 
@@ -120,11 +120,11 @@ public class WeatherResponse {
         this.sys = sys;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -136,11 +136,11 @@ public class WeatherResponse {
         this.name = name;
     }
 
-    public Integer getCod() {
+    public int getCod() {
         return cod;
     }
 
-    public void setCod(Integer cod) {
+    public void setCod(int cod) {
         this.cod = cod;
     }
 

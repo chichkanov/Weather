@@ -15,8 +15,14 @@
     <string name="about_dialog_decs">Here will be description. \n\n<b>Weather</b></string>
 
     <string name="activity_main_title">Weather</string>
-    
-    <string name="temperature_celsius">" ℃"</string>
+
+    <string name="weather_temp_cels">%1$d°C</string>
+    <string name="weather_humidity">%1$d%%</string>
+    <string name="weather_wind_speed_metr">%1$d m/s</string>
+    <string name="weather_pressure_hpa">%1$d hPa</string>
+    <string name="weather_temperature_minmax">%1$d° / %2$d°</string>
+
+    <string name="temperature_celsius">"%d ℃"</string>
     <string name="pressure_unit">" mm Hg"</string>
     <string name="humidity_unit">" %"</string>
     <string name="wind_speed_unit">" m/s"</string>
@@ -43,6 +49,8 @@
     <string name="select_city_hint">Enther the city</string>
     <string name="default_city">Moscow</string>
     <string name="network_error_message">Network error</string>
+    <string name="weather_default_value">-</string>
+
 
     <string-array name="settings_time_array">
         <item>15</item>

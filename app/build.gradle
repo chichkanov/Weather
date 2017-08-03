@@ -16,6 +16,7 @@ buildscript {
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 apply plugin: 'com.android.application'
@@ -46,6 +47,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            testCoverageEnabled = true
         }
     }
     compileOptions {
@@ -103,6 +105,8 @@ dependencies {
     compile "com.arello-mobile:moxy:$rootProject.moxy_version"
     compile "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
     annotationProcessor "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
+
+    compile 'com.github.pwittchen:weathericonview:1.1.0'
 
 
 }

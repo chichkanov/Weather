@@ -14,4 +14,8 @@ interface WeatherView extends MvpView {
 
     void showError();
 
+    void showLoading();
+
+    void hideLoading();
+
 }

@@ -17,13 +17,13 @@ public class Wind {
     private double deg;
     @SerializedName("gust")
     @Expose
-    private Integer gust;
+    private int gust;
 
     public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(Integer speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
@@ -31,15 +31,15 @@ public class Wind {
         return deg;
     }
 
-    public void setDeg(Integer deg) {
+    public void setDeg(int deg) {
         this.deg = deg;
     }
 
-    public Integer getGust() {
+    public int getGust() {
         return gust;
     }
 
-    public void setGust(Integer gust) {
+    public void setGust(int gust) {
         this.gust = gust;
     }
 

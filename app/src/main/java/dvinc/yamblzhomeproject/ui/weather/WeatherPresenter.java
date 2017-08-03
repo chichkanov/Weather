@@ -35,15 +35,20 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     }
 
     void getWeather() {
+        Log.i("WeatherPresenter", "StartLoading");
+        getViewState().showLoading();
         dataSubscription = repository.getData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(next -> {
+                            Log.e("LoadWeather", "Success");
+                            getViewState().hideLoading();
                             getViewState().updateWeatherParameters(next);
                             settings.saveWeather(new Gson().toJson(next));
                         },
                         error -> {
-                            Log.i("Error", error.getMessage());
+                            getViewState().hideLoading();
+                            Log.e("Error", error.getMessage());
                             getViewState().showError();
                         });
     }
