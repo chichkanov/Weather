@@ -3,6 +3,8 @@ package dvinc.yamblzhomeproject.repository.model.weather.hourForecast;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import dvinc.yamblzhomeproject.repository.model.weather.core.Clouds;
 import dvinc.yamblzhomeproject.repository.model.weather.core.Main;
 import dvinc.yamblzhomeproject.repository.model.weather.core.Weather;
@@ -12,69 +14,71 @@ public class HourList {
 
     @SerializedName("clouds")
     @Expose
-    private Clouds clouds;
+    private Clouds cloudsHourly;
     @SerializedName("dt")
     @Expose
-    private int dt;
+    private int dtHourly;
     @SerializedName("dt_txt")
     @Expose
-    private String dtTxt;
+    private String dtTxtHourly;
     @SerializedName("main")
     @Expose
-    private Main main;
+    private Main mainHourly;
     @SerializedName("weather")
     @Expose
-    private java.util.List<Weather> weather = null;
+    private java.util.List<Weather> weatherHourly = null;
     @SerializedName("wind")
     @Expose
-    private Wind wind;
+    private Wind windHourly;
 
-    public Clouds getClouds() {
-        return clouds;
+    public Clouds getCloudsHourly() {
+        return cloudsHourly;
     }
 
-    public void setClouds(Clouds clouds) {
-        this.clouds = clouds;
+    public void setCloudsHourly(Clouds cloudsHourly) {
+        this.cloudsHourly = cloudsHourly;
     }
 
-    public int getDt() {
-        return dt;
+    public int getDtHourly() {
+        return dtHourly;
     }
 
-    public void setDt(int dt) {
-        this.dt = dt;
+    public void setDtHourly(int dtHourly) {
+        this.dtHourly = dtHourly;
     }
 
-    public String getDtTxt() {
-        return dtTxt;
+    public String getDtTxtHourly() {
+        return dtTxtHourly;
     }
 
-    public void setDtTxt(String dtTxt) {
-        this.dtTxt = dtTxt;
+    public void setDtTxtHourly(String dtTxtHourly) {
+        this.dtTxtHourly = dtTxtHourly;
     }
 
-    public Main getMain() {
-        return main;
+    public Main getMainHourly() {
+        return mainHourly;
     }
 
-    public void setMain(Main main) {
-        this.main = main;
+    public void setMainHourly(Main mainHourly) {
+        this.mainHourly = mainHourly;
     }
 
-    public java.util.List<Weather> getWeather() {
-        return weather;
+    public List<Weather> getWeatherHourly() {
+        return weatherHourly;
     }
 
-    public void setWeather(java.util.List<Weather> weather) {
-        this.weather = weather;
+    public void setWeatherHourly(List<Weather> weatherHourly) {
+        this.weatherHourly = weatherHourly;
     }
 
-    public Wind getWind() {
-        return wind;
+    public Wind getWindHourly() {
+        return windHourly;
     }
 
-    public void setWind(Wind wind) {
-        this.wind = wind;
+    public void setWindHourly(Wind windHourly) {
+        this.windHourly = windHourly;
     }
 
+    public HourList() {
+    }
 }

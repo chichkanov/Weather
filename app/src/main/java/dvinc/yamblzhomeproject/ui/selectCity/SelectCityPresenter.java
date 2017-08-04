@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import dvinc.yamblzhomeproject.App;
+import dvinc.yamblzhomeproject.db.AppDatabase;
+import dvinc.yamblzhomeproject.db.CityWeatherEntity;
 import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
 import dvinc.yamblzhomeproject.utils.Settings;
@@ -29,6 +31,9 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
 
     @Inject
     Settings settings;
+
+    @Inject
+    AppDatabase database;
 
     SelectCityPresenter() {
         App.getComponent().inject(this);
@@ -59,12 +64,14 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
         subscriptionPlaceCoords = repository
                 .getPredictionCoord(item.getPlaceId())
                 .subscribeOn(Schedulers.io())
+                .doOnNext(next -> database.cityWeatherDao().insertNewCity(new CityWeatherEntity(item.getStructuredFormatting().getMainText(), null)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
                             String city = item.getDescription();
+                            // Add city do Room db here
                             settings.setCurrentCity(city);
-                            settings.setCurrentCityLocationLong(next.getResult().getGeometry().getLocation().getLng());
-                            settings.setCurrentCityLocationLat(next.getResult().getGeometry().getLocation().getLat());
+                            settings.setCurrentCityLocationLong(next.getResult().getGeometry().getLocation().getLongitude());
+                            settings.setCurrentCityLocationLat(next.getResult().getGeometry().getLocation().getLatitude());
                             getViewState().goToWeather();
                         },
                         error -> getViewState().showError());

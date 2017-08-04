@@ -38,6 +38,7 @@
     <string name="network_error_message">Network error</string>
     <string name="weather_default_value">-</string>
     <string name="load_weather_error">Error</string>
+    <string name="default_city_name">Error</string>
 
 
     <string-array name="settings_time_array">

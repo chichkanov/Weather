@@ -23,7 +23,7 @@ public class Wind {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
@@ -31,7 +31,7 @@ public class Wind {
         return deg;
     }
 
-    public void setDeg(int deg) {
+    public void setDeg(double deg) {
         this.deg = deg;
     }
 
@@ -43,4 +43,6 @@ public class Wind {
         this.gust = gust;
     }
 
+    public Wind() {
+    }
 }

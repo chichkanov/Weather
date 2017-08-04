@@ -32,4 +32,6 @@ public class Coord {
         this.lat = lat;
     }
 
+    public Coord() {
+    }
 }

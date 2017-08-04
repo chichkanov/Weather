@@ -37,12 +37,12 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        int tempMax = (int) dataset.get(position).getTemp().getMax() - 273;
-        int tempMin = (int) dataset.get(position).getTemp().getMin() - 273;
+        int tempMax = (int) dataset.get(position).getTempDaily().getMax() - 273;
+        int tempMin = (int) dataset.get(position).getTempDaily().getMin() - 273;
 
         holder.tvTempMax.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, tempMax));
         holder.tvTempMin.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, tempMin));
-        holder.weatherIcon.setIconResource(holder.itemView.getResources().getString(WeatherUtils.getIcon(dataset.get(position).getWeather().get(0).getIcon())));
+        holder.weatherIcon.setIconResource(holder.itemView.getResources().getString(WeatherUtils.getIcon(dataset.get(position).getWeatherDaily().get(0).getIcon())));
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(new Date());

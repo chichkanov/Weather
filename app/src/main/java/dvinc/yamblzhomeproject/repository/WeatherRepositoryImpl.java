@@ -6,6 +6,7 @@ package dvinc.yamblzhomeproject.repository;
 
 import javax.inject.Inject;
 
+import dvinc.yamblzhomeproject.db.AppDatabase;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
@@ -25,6 +26,8 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     Settings settings;
     @Inject
     WeatherApi weatherApi;
+    @Inject
+    AppDatabase database;
 
     @Inject
     public WeatherRepositoryImpl() {
@@ -45,12 +48,11 @@ public class WeatherRepositoryImpl implements WeatherRepository {
                 API_KEY, WeatherUtils.getLocale(),
                 AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST);
 
-        Observable<WeatherCombiner> observableCombined = Observable.zip(currentWeather, hourlyForecast, dailyForecast, WeatherCombiner::new);
+        // Get data from db and api
+        /*Observable<WeatherCombiner> observableDb = Observable.just(database.cityWeatherDao().getAll().get(0).getWeatherCombiner());
+        return Observable.concat(observableDb, observableCombined);*/
 
-        // Cache will be later with DB functionality
-        WeatherResponse cache = settings.getWeather();
-
-        return observableCombined;
+        return Observable.zip(currentWeather, hourlyForecast, dailyForecast, WeatherCombiner::new);
 
     }
 

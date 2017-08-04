@@ -37,7 +37,7 @@ public class Main {
         return pressure;
     }
 
-    public void setPressure(int pressure) {
+    public void setPressure(double pressure) {
         this.pressure = pressure;
     }
 
@@ -65,4 +65,6 @@ public class Main {
         this.tempMax = tempMax;
     }
 
+    public Main() {
+    }
 }

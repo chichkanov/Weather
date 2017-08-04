@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import javax.inject.Inject;
 
 import dvinc.yamblzhomeproject.App;
+import dvinc.yamblzhomeproject.db.AppDatabase;
+import dvinc.yamblzhomeproject.db.CityWeatherEntity;
 import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
 import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,6 +30,9 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     @Inject
     Settings settings;
 
+    @Inject
+    AppDatabase database;
+
     private Disposable dataSubscription;
 
     WeatherPresenter() {
@@ -39,6 +44,7 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
         getViewState().showLoading();
         dataSubscription = repository.getData()
                 .subscribeOn(Schedulers.io())
+                .doOnNext(next -> database.cityWeatherDao().insertAll(new CityWeatherEntity(null, next)))
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(next -> {
                             Log.i("LoadWeather", "Success");

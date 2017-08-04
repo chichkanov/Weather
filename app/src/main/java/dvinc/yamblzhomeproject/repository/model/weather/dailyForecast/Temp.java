@@ -71,4 +71,7 @@ public class Temp {
     public void setNight(double night) {
         this.night = night;
     }
+
+    public Temp() {
+    }
 }

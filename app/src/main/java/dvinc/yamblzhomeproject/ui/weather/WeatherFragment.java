@@ -34,6 +34,8 @@ import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
 public class WeatherFragment extends MvpAppCompatFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
+    private static String CITY_NAME_KEY = "cityNameKey";
+
     @BindView(R.id.swipe_refresh_weather)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.tv_weather_temperature)
@@ -65,6 +67,14 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     private Unbinder unbinder;
 
+    public static WeatherFragment newInstanse(String cityName){
+        WeatherFragment fragment = new WeatherFragment();
+        Bundle args = new Bundle();
+        args.putString(CITY_NAME_KEY, cityName);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public WeatherFragment() {
         App.getComponent().inject(this);
     }
@@ -84,7 +94,9 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         swipeRefreshLayout.setOnRefreshListener(this);
         initRecyclerViewHourly();
         initRecyclerViewDaily();
-        if (savedInstanceState == null) weatherPresenter.getWeather();
+        if (savedInstanceState == null) {
+            weatherPresenter.getWeather();
+        }
     }
 
     @Override
@@ -115,15 +127,15 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void updateWeatherCurrent(WeatherResponse weatherData) {
-        tvTemperature.setText(getString(R.string.weather_temp_cels, (int) weatherData.getMain().getTemp() - 273));
-        tvDesc.setText(weatherData.getWeather().get(0).getDescription());
-        tvHumidity.setText(getString(R.string.weather_humidity, weatherData.getMain().getHumidity()));
-        tvWindSpeed.setText(getString(R.string.weather_wind_speed_metr, (int) weatherData.getWind().getSpeed()));
-        tvPressure.setText(getString(R.string.weather_pressure_hpa, (int) weatherData.getMain().getPressure()));
-        tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMain().getTempMax() - 273, (int) weatherData.getMain().getTempMin() - 273));
+        tvTemperature.setText(getString(R.string.weather_temp_cels, (int) weatherData.getMainCurrent().getTemp() - 273));
+        tvDesc.setText(weatherData.getWeatherCurrent().get(0).getDescription());
+        tvHumidity.setText(getString(R.string.weather_humidity, weatherData.getMainCurrent().getHumidity()));
+        tvWindSpeed.setText(getString(R.string.weather_wind_speed_metr, (int) weatherData.getWindCurrent().getSpeed()));
+        tvPressure.setText(getString(R.string.weather_pressure_hpa, (int) weatherData.getMainCurrent().getPressure()));
+        tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMainCurrent().getTempMax() - 273, (int) weatherData.getMainCurrent().getTempMin() - 273));
 
-        weatherIcon.setIconResource(getString(WeatherUtils.getIcon(weatherData.getWeather().get(0).getIcon())));
-        getActivity().setTitle(weatherData.getName());
+        weatherIcon.setIconResource(getString(WeatherUtils.getIcon(weatherData.getWeatherCurrent().get(0).getIcon())));
+        getActivity().setTitle("City tyt");
     }
 
     @Override
@@ -133,7 +145,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void updateWeatherDaily(WeatherForecastDailyResponse weatherForecastDailyResponse) {
-        adapterDaily.setDataset(weatherForecastDailyResponse.getList());
+        adapterDaily.setDataset(weatherForecastDailyResponse.getListDaily());
     }
 
     @Override

@@ -1,11 +1,13 @@
 package dvinc.yamblzhomeproject.di.modules;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dvinc.yamblzhomeproject.db.AppDatabase;
 import dvinc.yamblzhomeproject.utils.Settings;
 
 @Module
@@ -29,4 +31,9 @@ public class ApplicationModule {
         return new Settings(context);
     }
 
+    @Provides
+    @Singleton
+    AppDatabase provideDatabase(Context context){
+        return Room.databaseBuilder(context, AppDatabase.class, "cityWeather").build();
+    }
 }

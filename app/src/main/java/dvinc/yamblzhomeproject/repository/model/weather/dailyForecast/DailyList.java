@@ -3,107 +3,101 @@ package dvinc.yamblzhomeproject.repository.model.weather.dailyForecast;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import dvinc.yamblzhomeproject.repository.model.weather.core.Weather;
 
 public class DailyList {
 
     @SerializedName("clouds")
     @Expose
-    private int clouds;
+    private int cloudsDaily;
     @SerializedName("deg")
     @Expose
-    private int deg;
-    @SerializedName("dt")
-    @Expose
-    private int dt;
+    private int degDaily;
     @SerializedName("humidity")
     @Expose
-    private int humidity;
+    private int humidityDaily;
     @SerializedName("pressure")
     @Expose
-    private double pressure;
+    private double pressureDaily;
     @SerializedName("speed")
     @Expose
-    private double speed;
+    private double speedDaily;
     @SerializedName("temp")
     @Expose
-    private Temp temp;
+    private Temp tempDaily;
     @SerializedName("weather")
     @Expose
-    private java.util.List<Weather> weather = null;
+    private java.util.List<Weather> weatherDaily = null;
     @SerializedName("rain")
     @Expose
-    private double rain;
+    private double rainDaily;
 
-    public int getClouds() {
-        return clouds;
+    public int getCloudsDaily() {
+        return cloudsDaily;
     }
 
-    public void setClouds(int clouds) {
-        this.clouds = clouds;
+    public void setCloudsDaily(int cloudsDaily) {
+        this.cloudsDaily = cloudsDaily;
     }
 
-    public int getDeg() {
-        return deg;
+    public int getDegDaily() {
+        return degDaily;
     }
 
-    public void setDeg(int deg) {
-        this.deg = deg;
+    public void setDegDaily(int degDaily) {
+        this.degDaily = degDaily;
     }
 
-    public int getDt() {
-        return dt;
+    public int getHumidityDaily() {
+        return humidityDaily;
     }
 
-    public void setDt(int dt) {
-        this.dt = dt;
+    public void setHumidityDaily(int humidityDaily) {
+        this.humidityDaily = humidityDaily;
     }
 
-    public int getHumidity() {
-        return humidity;
+    public double getPressureDaily() {
+        return pressureDaily;
     }
 
-    public void setHumidity(int humidity) {
-        this.humidity = humidity;
+    public void setPressureDaily(double pressureDaily) {
+        this.pressureDaily = pressureDaily;
     }
 
-    public double getPressure() {
-        return pressure;
+    public double getSpeedDaily() {
+        return speedDaily;
     }
 
-    public void setPressure(double pressure) {
-        this.pressure = pressure;
+    public void setSpeedDaily(double speedDaily) {
+        this.speedDaily = speedDaily;
     }
 
-    public double getSpeed() {
-        return speed;
+    public Temp getTempDaily() {
+        return tempDaily;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setTempDaily(Temp tempDaily) {
+        this.tempDaily = tempDaily;
     }
 
-    public Temp getTemp() {
-        return temp;
+    public List<Weather> getWeatherDaily() {
+        return weatherDaily;
     }
 
-    public void setTemp(Temp temp) {
-        this.temp = temp;
+    public void setWeatherDaily(List<Weather> weatherDaily) {
+        this.weatherDaily = weatherDaily;
     }
 
-    public java.util.List<Weather> getWeather() {
-        return weather;
+    public double getRainDaily() {
+        return rainDaily;
     }
 
-    public void setWeather(java.util.List<Weather> weather) {
-        this.weather = weather;
+    public void setRainDaily(double rainDaily) {
+        this.rainDaily = rainDaily;
     }
 
-    public double getRain() {
-        return rain;
-    }
-
-    public void setRain(double rain) {
-        this.rain = rain;
+    public DailyList() {
     }
 }

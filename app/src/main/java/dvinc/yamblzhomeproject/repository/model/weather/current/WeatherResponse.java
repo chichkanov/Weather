@@ -4,6 +4,8 @@ package dvinc.yamblzhomeproject.repository.model.weather.current;
  * 14.07.2017
  */
 
+import android.arch.persistence.room.Embedded;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,137 +19,89 @@ import dvinc.yamblzhomeproject.repository.model.weather.core.Wind;
 
 public class WeatherResponse {
 
+    @Embedded
     @SerializedName("coord")
     @Expose
-    private Coord coord;
+    private Coord coordCurrent;
     @SerializedName("weather")
     @Expose
-    private List<Weather> weather = null;
-    @SerializedName("base")
-    @Expose
-    private String base;
+    private List<Weather> weatherCurrent = null;
+    @Embedded
     @SerializedName("main")
     @Expose
-    private Main main;
+    private Main mainCurrent;
     @SerializedName("visibility")
     @Expose
-    private double visibility;
+    private double visibilityCurrent;
+    @Embedded
     @SerializedName("wind")
     @Expose
-    private Wind wind;
+    private Wind windCurrent;
+    @Embedded
     @SerializedName("clouds")
     @Expose
-    private Clouds clouds;
-    @SerializedName("dt")
-    @Expose
-    private int dt;
+    private Clouds cloudsCurrent;
+    @Embedded
     @SerializedName("sys")
     @Expose
-    private Sys sys;
-    @SerializedName("id")
-    @Expose
-    private int id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("cod")
-    @Expose
-    private int cod;
+    private Sys sysCurrent;
 
-    public Coord getCoord() {
-        return coord;
+    public Coord getCoordCurrent() {
+        return coordCurrent;
     }
 
-    public void setCoord(Coord coord) {
-        this.coord = coord;
+    public void setCoordCurrent(Coord coordCurrent) {
+        this.coordCurrent = coordCurrent;
     }
 
-    public List<Weather> getWeather() {
-        return weather;
+    public List<Weather> getWeatherCurrent() {
+        return weatherCurrent;
     }
 
-    public void setWeather(List<Weather> weather) {
-        this.weather = weather;
+    public void setWeatherCurrent(List<Weather> weatherCurrent) {
+        this.weatherCurrent = weatherCurrent;
     }
 
-    public String getBase() {
-        return base;
+    public Main getMainCurrent() {
+        return mainCurrent;
     }
 
-    public void setBase(String base) {
-        this.base = base;
+    public void setMainCurrent(Main mainCurrent) {
+        this.mainCurrent = mainCurrent;
     }
 
-    public Main getMain() {
-        return main;
+    public double getVisibilityCurrent() {
+        return visibilityCurrent;
     }
 
-    public void setMain(Main main) {
-        this.main = main;
+    public void setVisibilityCurrent(double visibilityCurrent) {
+        this.visibilityCurrent = visibilityCurrent;
     }
 
-    public double getVisibility() {
-        return visibility;
+    public Wind getWindCurrent() {
+        return windCurrent;
     }
 
-    public void setVisibility(int visibility) {
-        this.visibility = visibility;
+    public void setWindCurrent(Wind windCurrent) {
+        this.windCurrent = windCurrent;
     }
 
-    public Wind getWind() {
-        return wind;
+    public Clouds getCloudsCurrent() {
+        return cloudsCurrent;
     }
 
-    public void setWind(Wind wind) {
-        this.wind = wind;
+    public void setCloudsCurrent(Clouds cloudsCurrent) {
+        this.cloudsCurrent = cloudsCurrent;
     }
 
-    public Clouds getClouds() {
-        return clouds;
+    public Sys getSysCurrent() {
+        return sysCurrent;
     }
 
-    public void setClouds(Clouds clouds) {
-        this.clouds = clouds;
+    public void setSysCurrent(Sys sysCurrent) {
+        this.sysCurrent = sysCurrent;
     }
 
-    public int getDt() {
-        return dt;
+    public WeatherResponse() {
     }
-
-    public void setDt(int dt) {
-        this.dt = dt;
-    }
-
-    public Sys getSys() {
-        return sys;
-    }
-
-    public void setSys(Sys sys) {
-        this.sys = sys;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getCod() {
-        return cod;
-    }
-
-    public void setCod(int cod) {
-        this.cod = cod;
-    }
-
 }
