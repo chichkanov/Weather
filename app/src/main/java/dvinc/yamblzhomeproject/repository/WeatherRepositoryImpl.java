@@ -19,6 +19,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
     private static final String AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST = "16";
+    private static final String AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST = "8";
 
     @Inject
     Settings settings;
@@ -42,7 +43,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         Observable<WeatherForecastDailyResponse> dailyForecast = weatherApi.getDailyForecast(settings.getCurrentCityLocationLat(),
                 settings.getCurrentCityLocationLong(),
                 API_KEY, WeatherUtils.getLocale(),
-                AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST);
+                AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST);
 
         Observable<WeatherCombiner> observableCombined = Observable.zip(currentWeather, hourlyForecast, dailyForecast, WeatherCombiner::new);
 

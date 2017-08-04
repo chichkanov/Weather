@@ -16,7 +16,7 @@ buildscript {
 
 repositories {
     mavenCentral()
-    maven { url "https://jitpack.io" }
+    maven { url 'https://maven.google.com' }
 }
 
 apply plugin: 'com.android.application'
@@ -27,7 +27,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "dvinc.yamblzhomeproject"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -106,7 +106,9 @@ dependencies {
     compile "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
     annotationProcessor "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
 
-    compile 'com.github.pwittchen:weathericonview:1.1.0'
+    compile "com.github.pwittchen:weathericonview:$rootProject.weatherviewicon_version"
 
+    compile "android.arch.persistence.room:runtime:$rootProject.room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
 
 }
