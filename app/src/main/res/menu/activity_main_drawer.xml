@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+
+    <group
+        android:id="@+id/menu_group_main"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_weather"
             android:icon="@drawable/ic_menu_share"
+            android:orderInCategory="0"
             android:title="@string/nav_head_weather" />
         <item
             android:id="@+id/nav_select_city"
-            android:icon="@drawable/ic_menu_select_city"
+            android:icon="@drawable/ic_menu_add_city"
+            android:orderInCategory="0"
             android:title="@string/select_city_head" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/nav_head_settings" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/nav_head_about" />
     </group>
+
+    <group
+        android:id="@+id/menu_group_cities"
+        android:checkableBehavior="single">
+    </group>
+
+    <item android:title="@string/menu_subtitle_instruments"
+        android:orderInCategory="1">
+        <menu>
+            <group
+                android:id="@+id/menu_group_instruments"
+                android:checkableBehavior="single"
+                >
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_menu_manage"
+                    android:title="@string/nav_head_settings" />
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="@string/nav_head_about" />
+            </group>
+        </menu>
+    </item>
 </menu>

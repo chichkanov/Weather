@@ -6,11 +6,18 @@ package dvinc.yamblzhomeproject.ui.base;
 
 import android.support.v4.app.Fragment;
 
+import com.arellomobile.mvp.MvpView;
+
+import java.util.List;
+
+import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 
-public interface ViewBase {
+public interface MainView extends MvpView {
 
     void showFragment(Fragment fragment);
 
     void showAboutFragment(AboutFragment fragment);
+
+    void initCitiesInMenu(List<CityEntity> cities);
 }

@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.ui.base.MvpMainActivity;
+import dvinc.yamblzhomeproject.ui.base.MainActivity;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityFragment;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -25,7 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class SelectCityFragmentTest {
 
     @Rule
-    public ActivityTestRule<MvpMainActivity> activityRule = new ActivityTestRule<>(MvpMainActivity.class);
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
 
     @Before

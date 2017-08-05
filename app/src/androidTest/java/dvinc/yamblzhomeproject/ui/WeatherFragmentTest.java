@@ -11,19 +11,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.ui.base.MvpMainActivity;
+import dvinc.yamblzhomeproject.ui.base.MainActivity;
 import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 public class WeatherFragmentTest {
 
     @Rule
-    public ActivityTestRule<MvpMainActivity> activityRule = new ActivityTestRule<>(MvpMainActivity.class);
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() {

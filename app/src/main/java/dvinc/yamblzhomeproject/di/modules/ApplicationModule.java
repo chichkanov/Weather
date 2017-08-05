@@ -33,7 +33,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    AppDatabase provideDatabase(Context context){
-        return Room.databaseBuilder(context, AppDatabase.class, "cityWeather").build();
+    AppDatabase provideDatabase(Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, "database").build();
     }
 }

@@ -109,6 +109,7 @@ dependencies {
     compile "com.github.pwittchen:weathericonview:$rootProject.weatherviewicon_version"
 
     compile "android.arch.persistence.room:runtime:$rootProject.room_version"
+    compile "android.arch.persistence.room:rxjava2:$rootProject.room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
 
 }

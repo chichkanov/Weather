@@ -32,13 +32,14 @@
     <string name="settings_new_settings_save">Новые настройки сохранены</string>
     <string name="settings_autoUpdate">Автообновление</string>
 
-    <string name="select_city_head">Выбор города</string>
+    <string name="select_city_head">Добавить город</string>
     <string name="select_city_hint">Введите название города</string>
     <string name="default_city">Москва</string>
     <string name="network_error_message">Нет интернет соединения</string>
     <string name="weather_default_value">-</string>
     <string name="load_weather_error">Ошибка</string>
     <string name="default_city_name">Ошибка</string>
+    <string name="menu_subtitle_instruments">Инструменты</string>
 
     <string-array name="settings_time_array">
         <item>15</item>

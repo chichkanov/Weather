@@ -2,8 +2,11 @@ package dvinc.yamblzhomeproject.repository;
 
 import javax.inject.Inject;
 
+import dvinc.yamblzhomeproject.db.AppDatabase;
+import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.net.PredictionsApi;
 import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
+import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.Location;
 import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.PlaceInfoResponse;
 import dvinc.yamblzhomeproject.utils.Constants;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
@@ -15,7 +18,10 @@ public class SelectCityRepositoryImpl implements SelectCityRepository {
     PredictionsApi predictionsApi;
 
     @Inject
-    public SelectCityRepositoryImpl(){
+    AppDatabase database;
+
+    @Inject
+    public SelectCityRepositoryImpl() {
     }
 
     @Override
@@ -26,5 +32,13 @@ public class SelectCityRepositoryImpl implements SelectCityRepository {
     @Override
     public Observable<PlaceInfoResponse> getPredictionCoord(String cityId) {
         return predictionsApi.getPredictionCoord(Constants.PLACES_API_KEY, WeatherUtils.getLocale(), cityId);
+    }
+
+    @Override
+    public void saveCity(PlaceInfoResponse place, String name, String id) {
+        Location location = new Location(place.getResult().getGeometry().getLocation().getLatitude(),
+                place.getResult().getGeometry().getLocation().getLongitude());
+        CityEntity entity = new CityEntity(location, id, name);
+        database.dao().insertNewCity(entity);
     }
 }

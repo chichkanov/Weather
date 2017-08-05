@@ -67,7 +67,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     private Unbinder unbinder;
 
-    public static WeatherFragment newInstanse(String cityName){
+    public static WeatherFragment newInstanse(String cityName) {
         WeatherFragment fragment = new WeatherFragment();
         Bundle args = new Bundle();
         args.putString(CITY_NAME_KEY, cityName);
@@ -94,6 +94,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         swipeRefreshLayout.setOnRefreshListener(this);
         initRecyclerViewHourly();
         initRecyclerViewDaily();
+        setTitle();
         if (savedInstanceState == null) {
             weatherPresenter.getWeather();
         }
@@ -103,6 +104,13 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private void setTitle() {
+        String cityTitle = getArguments().getString(CITY_NAME_KEY);
+        if (cityTitle != null) {
+            getActivity().setTitle(cityTitle);
+        }
     }
 
     private void initRecyclerViewHourly() {
@@ -135,7 +143,6 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMainCurrent().getTempMax() - 273, (int) weatherData.getMainCurrent().getTempMin() - 273));
 
         weatherIcon.setIconResource(getString(WeatherUtils.getIcon(weatherData.getWeatherCurrent().get(0).getIcon())));
-        getActivity().setTitle("City tyt");
     }
 
     @Override

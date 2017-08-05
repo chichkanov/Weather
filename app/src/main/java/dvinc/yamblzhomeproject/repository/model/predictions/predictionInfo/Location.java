@@ -1,5 +1,7 @@
 package dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo;
 
+import android.arch.persistence.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,6 +27,12 @@ public class Location {
     }
 
     public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    @Ignore
+    public Location(double latitude, double longitude) {
+        this.latitude = latitude;
         this.longitude = longitude;
     }
 

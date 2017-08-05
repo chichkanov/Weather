@@ -9,4 +9,6 @@ public interface SelectCityRepository {
     Observable<CityPrediction> getPrediction(String cityName);
 
     Observable<PlaceInfoResponse> getPredictionCoord(String cityId);
+
+    void saveCity(PlaceInfoResponse place, String name, String id);
 }
