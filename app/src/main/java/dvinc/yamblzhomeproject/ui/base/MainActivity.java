@@ -88,6 +88,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
         } else if (id == R.id.nav_about) {
             presenter.openAboutFragment();
         } else if (id == R.id.nav_select_city) {
+            item.setCheckable(false);
             presenter.openSelectCityFragment();
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -97,6 +98,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
     public void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
+                .commit();
+    }
+
+    public void showFragmentWithOverlay(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainer, fragment, fragment.getClass().getName())
                 .commit();
     }
 

@@ -1,13 +1,13 @@
 package dvinc.yamblzhomeproject.ui.weather;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.github.pwittchen.weathericonview.WeatherIconView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.HourList;
+import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
 class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.Holder> {
 
@@ -50,6 +51,8 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
         }
         holder.tvTemp.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, temp));
         holder.tvHour.setText(formatTo.format(date));
+        holder.weatherIcon.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(),
+                WeatherUtils.getForecastIcon(dataset.get(position).getWeatherHourly().get(0).getIcon())));
     }
 
     void setDataset(List<HourList> dataset) {
@@ -66,13 +69,13 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
 
         TextView tvTemp;
         TextView tvHour;
-        WeatherIconView weatherIcon;
+        ImageView weatherIcon;
 
         public Holder(View itemView) {
             super(itemView);
             tvHour = (TextView) itemView.findViewById(R.id.tv_item_forecast_hourly_hour);
             tvTemp = (TextView) itemView.findViewById(R.id.tv_item_forecast_hourly_temp);
-            weatherIcon = (WeatherIconView) itemView.findViewById(R.id.weather_icon_item_forecast_hourly);
+            weatherIcon = (ImageView) itemView.findViewById(R.id.weather_icon_item_forecast_hourly);
         }
     }
 }

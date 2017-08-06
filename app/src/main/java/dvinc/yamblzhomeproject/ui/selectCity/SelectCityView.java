@@ -15,4 +15,6 @@ interface SelectCityView extends MvpView {
     void showError();
 
     void goToWeather();
+
+    void clearText();
 }

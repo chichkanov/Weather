@@ -1,12 +1,12 @@
 package dvinc.yamblzhomeproject.ui.weather;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.github.pwittchen.weathericonview.WeatherIconView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +42,9 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
 
         holder.tvTempMax.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, tempMax));
         holder.tvTempMin.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, tempMin));
-        holder.weatherIcon.setIconResource(holder.itemView.getResources().getString(WeatherUtils.getIcon(dataset.get(position).getWeatherDaily().get(0).getIcon())));
+
+        holder.weatherIcon.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(),
+                WeatherUtils.getForecastIcon(dataset.get(position).getWeatherDaily().get(0).getIcon())));
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(new Date());
@@ -67,14 +69,14 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
         TextView tvTempMax;
         TextView tvTempMin;
         TextView tvDate;
-        WeatherIconView weatherIcon;
+        ImageView weatherIcon;
 
         public Holder(View itemView) {
             super(itemView);
             tvTempMax = (TextView) itemView.findViewById(R.id.tv_item_forecast_daily_temp_max);
             tvTempMin = (TextView) itemView.findViewById(R.id.tv_item_forecast_daily_temp_min);
             tvDate = (TextView) itemView.findViewById(R.id.tv_item_forecast_daily_date);
-            weatherIcon = (WeatherIconView) itemView.findViewById(R.id.weather_icon_item_forecast_daily);
+            weatherIcon = (ImageView) itemView.findViewById(R.id.weather_icon_item_forecast_daily);
         }
     }
 }

@@ -142,7 +142,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         tvPressure.setText(getString(R.string.weather_pressure_hpa, (int) weatherData.getMainCurrent().getPressure()));
         tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMainCurrent().getTempMax() - 273, (int) weatherData.getMainCurrent().getTempMin() - 273));
 
-        weatherIcon.setIconResource(getString(WeatherUtils.getIcon(weatherData.getWeatherCurrent().get(0).getIcon())));
+        weatherIcon.setIconResource(getString(WeatherUtils.getMainIcon(weatherData.getWeatherCurrent().get(0).getIcon())));
     }
 
     @Override

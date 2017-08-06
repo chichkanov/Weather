@@ -3,6 +3,8 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,10 +24,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
-import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
 
 public class SelectCityFragment extends MvpAppCompatFragment implements SelectCityView {
 
@@ -56,8 +58,16 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(R.string.select_city_head);
         initRecyclerView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (bar != null) {
+            bar.hide();
+        }
     }
 
     @Override
@@ -76,6 +86,11 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
         rvCityList.setAdapter(adapter);
     }
 
+    @OnClick(R.id.ib_select_city_clear)
+    void onClearClick() {
+        presenter.clearButtonCLicked(etSelectCity.getText().toString());
+    }
+
     @Override
     public void setCityNameObservable() {
         presenter.setObservable(RxTextView.textChanges(etSelectCity));
@@ -92,10 +107,26 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (bar != null) {
+            bar.show();
+        }
+    }
+
+    @Override
     public void goToWeather() {
         hideKeyboard();
-        String backStateName = WeatherFragment.class.getName();
-        getActivity().getSupportFragmentManager().popBackStackImmediate(backStateName, 0);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .remove(this)
+                .commit();
+    }
+
+    @Override
+    public void clearText() {
+        etSelectCity.getText().clear();
     }
 
     private void hideKeyboard() {

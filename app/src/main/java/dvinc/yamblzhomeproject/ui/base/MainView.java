@@ -13,11 +13,13 @@ import java.util.List;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 
-public interface MainView extends MvpView {
+interface MainView extends MvpView {
 
     void showFragment(Fragment fragment);
 
     void showAboutFragment(AboutFragment fragment);
 
     void initCitiesInMenu(List<CityEntity> cities);
+
+    void showFragmentWithOverlay(Fragment fragment);
 }

@@ -39,7 +39,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     void openSelectCityFragment() {
-        getViewState().showFragment(SelectCityFragment.newInstance());
+        getViewState().showFragmentWithOverlay(SelectCityFragment.newInstance());
     }
 
     void observeMenuChanges() {

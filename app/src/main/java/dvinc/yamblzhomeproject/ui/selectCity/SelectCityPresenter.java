@@ -59,9 +59,7 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
         subscriptionPlaceCoords = repository
                 .getPredictionCoord(item.getPlaceId())
                 .subscribeOn(Schedulers.io())
-                .doOnNext(next -> {
-                    repository.saveCity(next, item.getStructuredFormatting().getMainText(), item.getPlaceId());
-                })
+                .doOnNext(next -> repository.saveCity(next, item.getStructuredFormatting().getMainText(), item.getPlaceId()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
                             String city = item.getDescription();
@@ -72,5 +70,13 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
                             getViewState().goToWeather();
                         },
                         error -> getViewState().showError());
+    }
+
+    void clearButtonCLicked(String text) {
+        if (text.length() == 0) {
+            getViewState().goToWeather();
+        } else {
+            getViewState().clearText();
+        }
     }
 }
