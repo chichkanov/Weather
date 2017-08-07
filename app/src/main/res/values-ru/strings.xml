@@ -25,6 +25,7 @@
     <string name="weather_desc_hourly">Почасовой прогноз</string>
     <string name="weather_desc_daily">Ежедневный прогноз</string>
     <string name="weather_temp_forecast_cels">%1$d°</string>
+    <string name="weather_update_time">Обновлено: %1$s</string>
 
     <!--Settings Fragment-->
     <string name="settings_update_frequency">Частота обновления погоды</string>

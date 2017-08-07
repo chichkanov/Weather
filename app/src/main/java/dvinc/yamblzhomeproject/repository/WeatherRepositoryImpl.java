@@ -4,60 +4,73 @@ package dvinc.yamblzhomeproject.repository;
  * 19.07.2017
  */
 
-import javax.inject.Inject;
+import android.util.Log;
 
 import dvinc.yamblzhomeproject.db.AppDatabase;
+import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
 import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
 import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
-import dvinc.yamblzhomeproject.utils.Settings;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class WeatherRepositoryImpl implements WeatherRepository {
 
-    private static final String API_KEY = "21cd7fe880c848c7d533498d2413f293";
+    private static final String API_KEY = "b3e459e1e28f0b5cea62bc2e066ab5ff3";
     private static final String AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST = "16";
     private static final String AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST = "8";
 
-    @Inject
-    Settings settings;
-    @Inject
-    WeatherApi weatherApi;
-    @Inject
-    AppDatabase database;
+    private WeatherApi weatherApi;
+    private AppDatabase database;
+    private CityEntity cityEntity;
 
-    @Inject
-    public WeatherRepositoryImpl() {
-
+    public WeatherRepositoryImpl(WeatherApi weatherApi, AppDatabase appDatabase) {
+        this.weatherApi = weatherApi;
+        this.database = appDatabase;
+        Log.i("WeatherRepo", "CONSTRUCT");
+        this.database.cityDao().getActiveCityFlowable()
+                .subscribe(next -> {
+                    Log.i("WeatherRepo", "NEW CITY");
+                    this.cityEntity = next;
+                    Log.i("WeatherRepo", cityEntity.getCityTitle());
+                }, error -> Log.e("WeatherRepo", "NEW CITY"));
     }
 
     @Override
-    public Observable<WeatherCombiner> getData() {
-        Observable<WeatherResponse> currentWeather = weatherApi.getCurrentWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale());
-
-        Observable<WeatherForecastHourlyResponse> hourlyForecast = weatherApi.getHourForecast(settings.getCurrentCityLocationLat(),
-                settings.getCurrentCityLocationLong(),
-                API_KEY, WeatherUtils.getLocale(),
-                AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST);
-
-        Observable<WeatherForecastDailyResponse> dailyForecast = weatherApi.getDailyForecast(settings.getCurrentCityLocationLat(),
-                settings.getCurrentCityLocationLong(),
-                API_KEY, WeatherUtils.getLocale(),
-                AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST);
-
-        // Get data from db and api
-        /*Observable<WeatherCombiner> observableDb = Observable.just(database.cityWeatherDao().getAll().get(0).getWeatherCombiner());
-        return Observable.concat(observableDb, observableCombined);*/
-
-        return Observable.zip(currentWeather, hourlyForecast, dailyForecast, WeatherCombiner::new);
-
+    public Single<WeatherCombiner> getWeatherData() {
+        return getWeatherFromApi();
     }
 
     @Override
-    public Observable<WeatherResponse> updateWeatherData() {
-        return weatherApi.getCurrentWeather(settings.getCurrentCityLocationLat(), settings.getCurrentCityLocationLong(), API_KEY, WeatherUtils.getLocale());
+    public Single<WeatherForecastDailyResponse> getDailyForecast() {
+        return weatherApi.getDailyForecast(String.valueOf(cityEntity.getLocation().getLatitude()),
+                String.valueOf(cityEntity.getLocation().getLongitude()), API_KEY, WeatherUtils.getLocale(), AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST);
     }
+
+    @Override
+    public Single<WeatherForecastHourlyResponse> getHourlyForecast() {
+        return weatherApi.getHourForecast(String.valueOf(cityEntity.getLocation().getLatitude()),
+                String.valueOf(cityEntity.getLocation().getLongitude()), API_KEY, WeatherUtils.getLocale(), AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST);
+    }
+
+    @Override
+    public Single<WeatherResponse> getCurrentWeather() {
+        return weatherApi.getCurrentWeather(String.valueOf(cityEntity.getLocation().getLatitude()),
+                String.valueOf(cityEntity.getLocation().getLongitude()), API_KEY, WeatherUtils.getLocale());
+    }
+
+    @Override
+    public Single<WeatherCombiner> getWeatherFromApi() {
+        return Single.zip(getCurrentWeather(), getHourlyForecast(), getDailyForecast(), WeatherCombiner::new);
+    }
+
+    @Override
+    public Single<WeatherCombiner> getWeatherFromDb() {
+        return Single.defer(() -> Single.just(database.weatherDao()
+                .getWeatherForCityId(cityEntity.getCityId())
+                .getWeatherCombiner()));
+    }
+
 }

@@ -2,13 +2,15 @@ package dvinc.yamblzhomeproject.repository;
 
 import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
 import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.PlaceInfoResponse;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface SelectCityRepository {
 
     Observable<CityPrediction> getPrediction(String cityName);
 
-    Observable<PlaceInfoResponse> getPredictionCoord(String cityId);
+    Single<PlaceInfoResponse> getPredictionCoord(String cityId);
 
-    void saveCity(PlaceInfoResponse place, String name, String id);
+    Completable saveCity(PlaceInfoResponse place, String name, String id);
 }

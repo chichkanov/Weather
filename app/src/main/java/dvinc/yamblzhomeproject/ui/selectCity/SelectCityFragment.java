@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
 
@@ -44,6 +46,11 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
 
     public static SelectCityFragment newInstance() {
         return new SelectCityFragment();
+    }
+
+    @ProvidePresenter
+    SelectCityPresenter providePresenter(){
+        return App.getComponent().getSelectCityPresenter();
     }
 
     @Nullable

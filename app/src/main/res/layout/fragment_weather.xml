@@ -129,11 +129,21 @@
                     android:layout_toRightOf="@id/weather_pressure_icon"
                     android:text="@string/weather_default_value" />
 
+                <TextView
+                    android:id="@+id/tv_weather_last_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_weather_pressure"
+                    android:layout_marginLeft="@dimen/weather_main_elements_margin_left"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="14sp" />
+
                 <View
                     android:id="@+id/view_weather_main_divider"
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
-                    android:layout_below="@id/tv_weather_wind_speed"
+                    android:layout_below="@id/tv_weather_last_update"
                     android:layout_marginTop="15dp"
                     android:background="@color/shadow_background" />
 

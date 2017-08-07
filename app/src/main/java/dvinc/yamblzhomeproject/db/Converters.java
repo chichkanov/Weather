@@ -13,7 +13,7 @@ import dvinc.yamblzhomeproject.repository.model.weather.core.Weather;
 import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.DailyList;
 import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.HourList;
 
-class Converters {
+public class Converters {
 
     @TypeConverter
     public static List<DailyList> fromStringDaily(String value) {
@@ -41,7 +41,7 @@ class Converters {
 
     @TypeConverter
     public static List<Weather> fromStringCurrent(String value) {
-        Type listType = new TypeToken<ArrayList<HourList>>() {
+        Type listType = new TypeToken<ArrayList<Weather>>() {
         }.getType();
         return new Gson().fromJson(value, listType);
     }

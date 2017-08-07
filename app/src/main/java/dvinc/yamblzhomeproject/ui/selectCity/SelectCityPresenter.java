@@ -1,16 +1,14 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
-import dvinc.yamblzhomeproject.App;
-import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
+import dvinc.yamblzhomeproject.repository.SelectCityRepository;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
-import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -23,15 +21,10 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
 
     private Disposable subscriptionPlace;
     private Disposable subscriptionPlaceCoords;
+    private SelectCityRepository repository;
 
-    @Inject
-    SelectCityRepositoryImpl repository;
-
-    @Inject
-    Settings settings;
-
-    SelectCityPresenter() {
-        App.getComponent().inject(this);
+    public SelectCityPresenter(SelectCityRepository selectCityRepository) {
+        this.repository = selectCityRepository;
     }
 
     @Override
@@ -56,19 +49,15 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     }
 
     void citySelected(Prediction item) {
+        Log.i("SelectCity", "City Selected");
         subscriptionPlaceCoords = repository
                 .getPredictionCoord(item.getPlaceId())
                 .subscribeOn(Schedulers.io())
-                .doOnNext(next -> repository.saveCity(next, item.getStructuredFormatting().getMainText(), item.getPlaceId()))
+                .doAfterSuccess(next -> repository.saveCity(next, item.getStructuredFormatting().getMainText(), item.getPlaceId())
+                        .subscribe(() -> Log.i("SelectCity", "City added"),
+                                error -> Log.e("SelectCity", "City ERROR")))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next -> {
-                            String city = item.getDescription();
-                            // Add city do Room db here
-                            settings.setCurrentCity(city);
-                            settings.setCurrentCityLocationLong(next.getResult().getGeometry().getLocation().getLongitude());
-                            settings.setCurrentCityLocationLat(next.getResult().getGeometry().getLocation().getLatitude());
-                            getViewState().goToWeather();
-                        },
+                .subscribe(next -> getViewState().goToWeather(),
                         error -> getViewState().showError());
     }
 

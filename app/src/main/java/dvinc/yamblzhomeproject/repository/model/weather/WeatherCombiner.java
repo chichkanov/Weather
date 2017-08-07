@@ -15,6 +15,8 @@ public class WeatherCombiner {
     @Embedded
     private WeatherForecastDailyResponse weatherForecastDailyResponse;
 
+    private long updatedTime;
+
     public WeatherCombiner(WeatherResponse weatherResponse, WeatherForecastHourlyResponse weatherForecastHourlyResponse, WeatherForecastDailyResponse weatherForecastDailyResponse) {
         this.weatherResponse = weatherResponse;
         this.weatherForecastHourlyResponse = weatherForecastHourlyResponse;
@@ -45,4 +47,11 @@ public class WeatherCombiner {
         this.weatherForecastDailyResponse = weatherForecastDailyResponse;
     }
 
+    public long getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(long updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 }

@@ -5,19 +5,18 @@ package dvinc.yamblzhomeproject.ui.base;
  */
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 
-public class MainActivity extends MvpAppCompatActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -37,10 +36,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    private static final int ADDED_CITY_ID = 0;
+    private static final int MENU_ADDED_CITY_ID = 0;
+    private static final int MENU_SETTINGS_ID = 1;
+    private static final int MENU_ADD_CITY_ID = 2;
+
+    private Drawer materialDrawer;
 
     @InjectPresenter
     public MainPresenter presenter;
+
+    private int previousCitiesCount;
 
     @ProvidePresenter
     MainPresenter providePresenter() {
@@ -55,18 +60,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        initDrawer(savedInstanceState);
 
         if (savedInstanceState == null) {
             navigationView.getMenu().getItem(0).setChecked(true);
-            onNavigationItemSelected(navigationView.getMenu().getItem(0));
         }
-
-        presenter.observeMenuChanges();
     }
 
     @Override
@@ -79,20 +77,48 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_weather) {
-            presenter.openWeatherFragment(item.getTitle().toString());
-        } else if (id == R.id.nav_settings) {
-            presenter.openSettingsFragment();
-        } else if (id == R.id.nav_about) {
-            presenter.openAboutFragment();
-        } else if (id == R.id.nav_select_city) {
-            item.setCheckable(false);
-            presenter.openSelectCityFragment();
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    protected void onSaveInstanceState(Bundle outState) {
+        outState = materialDrawer.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void initDrawer(Bundle savedInstState) {
+        PrimaryDrawerItem addCityItem = new PrimaryDrawerItem()
+                .withName(R.string.select_city_head)
+                .withIcon(R.drawable.ic_menu_add_city)
+                .withIdentifier(MENU_ADD_CITY_ID);
+
+        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_head_settings)
+                .withIcon(R.drawable.ic_menu_settings)
+                .withIdentifier(MENU_SETTINGS_ID);
+
+
+        materialDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(addCityItem, settingsItem)
+                .withDrawerWidthDp(250)
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    switch ((int) drawerItem.getIdentifier()) {
+                        case MENU_ADD_CITY_ID: {
+                            presenter.openSelectCityFragment();
+                            break;
+                        }
+                        case MENU_SETTINGS_ID: {
+                            presenter.openSettingsFragment();
+                            break;
+                        }
+                        case MENU_ADDED_CITY_ID: {
+                            Log.i("Added city selected", String.valueOf(drawerItem.getTag()));
+                            presenter.openWeatherFragment((CityEntity) drawerItem.getTag());
+                            break;
+                        }
+                    }
+                    return false;
+                })
+                .withSavedInstance(savedInstState)
+                .build();
     }
 
     public void showFragment(Fragment fragment) {
@@ -113,13 +139,20 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
 
     @Override
     public void initCitiesInMenu(List<CityEntity> cities) {
-        final Menu menu = navigationView.getMenu();
-        menu.removeGroup(R.id.menu_group_cities);
-        for (int i = 0; i < cities.size(); i++) {
-            MenuItem item = menu.add(R.id.menu_group_cities, ADDED_CITY_ID, 0, cities.get(i).getCityTitle());
-            item.setIcon(R.drawable.ic_menu_location);
-            item.setCheckable(true);
+        for(int i = 0; i < cities.size(); i++){
+            materialDrawer.removeItem(MENU_ADDED_CITY_ID);
         }
+
+        for (int i = 0; i < cities.size(); i++) {
+            PrimaryDrawerItem newCity = new PrimaryDrawerItem()
+                    .withIcon(R.drawable.ic_menu_location)
+                    .withName(cities.get(i).getCityTitle())
+                    .withTag(cities.get(i))
+                    .withIdentifier(MENU_ADDED_CITY_ID);
+
+            materialDrawer.addItemAtPosition(newCity, 0);
+        }
+
     }
 
 }

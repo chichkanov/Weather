@@ -18,11 +18,14 @@ public class CityEntity {
 
     private String cityTitle;
 
+    private boolean isActive;
+
     @Ignore
-    public CityEntity(Location location, String cityId, String cityTitle) {
+    public CityEntity(Location location, String cityId, String cityTitle, boolean isActive) {
         this.location = location;
         this.cityId = cityId;
         this.cityTitle = cityTitle;
+        this.isActive = isActive;
     }
 
     public CityEntity() {
@@ -54,4 +57,11 @@ public class CityEntity {
     }
 
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

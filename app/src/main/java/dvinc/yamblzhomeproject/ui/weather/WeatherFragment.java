@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.github.pwittchen.weathericonview.WeatherIconView;
 
 import java.util.ArrayList;
@@ -34,8 +35,6 @@ import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
 public class WeatherFragment extends MvpAppCompatFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
-    private static String CITY_NAME_KEY = "cityNameKey";
-
     @BindView(R.id.swipe_refresh_weather)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.tv_weather_temperature)
@@ -50,6 +49,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     TextView tvDesc;
     @BindView(R.id.tv_weather_max_min)
     TextView tvMaxMinTemp;
+    @BindView(R.id.tv_weather_last_update)
+    TextView tvLastUpdate;
 
     @BindView(R.id.weather_icon)
     WeatherIconView weatherIcon;
@@ -67,16 +68,13 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     private Unbinder unbinder;
 
-    public static WeatherFragment newInstanse(String cityName) {
-        WeatherFragment fragment = new WeatherFragment();
-        Bundle args = new Bundle();
-        args.putString(CITY_NAME_KEY, cityName);
-        fragment.setArguments(args);
-        return fragment;
+    public static WeatherFragment newInstanse() {
+        return new WeatherFragment();
     }
 
-    public WeatherFragment() {
-        App.getComponent().inject(this);
+    @ProvidePresenter
+    WeatherPresenter providePresenter() {
+        return App.getComponent().getWeatherPresenter();
     }
 
     @Nullable
@@ -94,23 +92,12 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         swipeRefreshLayout.setOnRefreshListener(this);
         initRecyclerViewHourly();
         initRecyclerViewDaily();
-        setTitle();
-        if (savedInstanceState == null) {
-            weatherPresenter.getWeather();
-        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    private void setTitle() {
-        String cityTitle = getArguments().getString(CITY_NAME_KEY);
-        if (cityTitle != null) {
-            getActivity().setTitle(cityTitle);
-        }
     }
 
     private void initRecyclerViewHourly() {
@@ -141,8 +128,17 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         tvWindSpeed.setText(getString(R.string.weather_wind_speed_metr, (int) weatherData.getWindCurrent().getSpeed()));
         tvPressure.setText(getString(R.string.weather_pressure_hpa, (int) weatherData.getMainCurrent().getPressure()));
         tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) weatherData.getMainCurrent().getTempMax() - 273, (int) weatherData.getMainCurrent().getTempMin() - 273));
-
         weatherIcon.setIconResource(getString(WeatherUtils.getMainIcon(weatherData.getWeatherCurrent().get(0).getIcon())));
+    }
+
+    @Override
+    public void updateLastUpdateTime(String date) {
+        tvLastUpdate.setText(getString(R.string.weather_update_time, date));
+    }
+
+    @Override
+    public void showCityName(String title) {
+
     }
 
     @Override

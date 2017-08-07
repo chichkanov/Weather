@@ -1,21 +1,16 @@
 package dvinc.yamblzhomeproject.ui.selectCity;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import dvinc.yamblzhomeproject.di.AppComponent;
-import dvinc.yamblzhomeproject.di.TestComponent;
-import dvinc.yamblzhomeproject.di.TestComponentRule;
 import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
 import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
 import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
 import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.PlaceInfoResponse;
-import dvinc.yamblzhomeproject.utils.Settings;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -31,13 +26,8 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class SelectCityPresenterTest {
 
-    @Rule
-    public TestComponentRule testComponentRule = new TestComponentRule(testAppComponent());
-
     @Mock
     private SelectCityRepositoryImpl repository;
-    @Mock
-    private Settings settings;
     @Mock
     private SelectCityView$$State selectCityViewState;
 
@@ -46,7 +36,9 @@ public class SelectCityPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+/*
         presenter = new SelectCityPresenter();
+*/
         presenter.setViewState(selectCityViewState);
 
         RxAndroidPlugins.setMainThreadSchedulerHandler(v -> Schedulers.trampoline());
@@ -76,7 +68,7 @@ public class SelectCityPresenterTest {
     public void shouldAskForPlaceInfo() {
         Observable<PlaceInfoResponse> info = Observable.just(mock(PlaceInfoResponse.class));
 
-        when(repository.getPredictionCoord(any())).thenReturn(info);
+        //when(repository.getPredictionCoord(any())).thenReturn(info);
         presenter.citySelected(new Prediction());
 
         verify(repository).getPredictionCoord(any());
@@ -93,14 +85,5 @@ public class SelectCityPresenterTest {
         verify(selectCityViewState).showError();
     }
 
-    private AppComponent testAppComponent() {
-        return new TestComponent() {
-            @Override
-            public void inject(SelectCityPresenter selectCityPresenter) {
-                selectCityPresenter.settings = settings;
-                selectCityPresenter.repository = repository;
-            }
-        };
-    }
 
 }

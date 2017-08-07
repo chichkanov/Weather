@@ -5,6 +5,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dvinc.yamblzhomeproject.db.AppDatabase;
+import dvinc.yamblzhomeproject.net.PredictionsApi;
+import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.MenuRepository;
 import dvinc.yamblzhomeproject.repository.MenuRepositoryImpl;
 import dvinc.yamblzhomeproject.repository.SelectCityRepository;
@@ -17,14 +19,14 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    SelectCityRepository providesSelectCityRepository() {
-        return new SelectCityRepositoryImpl();
+    SelectCityRepository providesSelectCityRepository(PredictionsApi predictionsApi, AppDatabase appDatabase) {
+        return new SelectCityRepositoryImpl(predictionsApi, appDatabase);
     }
 
     @Provides
     @Singleton
-    WeatherRepository provideWeatherRepository() {
-        return new WeatherRepositoryImpl();
+    WeatherRepository provideWeatherRepository(WeatherApi weatherApi, AppDatabase appDatabase) {
+        return new WeatherRepositoryImpl(weatherApi, appDatabase);
     }
 
     @Provides

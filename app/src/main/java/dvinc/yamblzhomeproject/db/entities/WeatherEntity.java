@@ -7,33 +7,24 @@ import android.arch.persistence.room.PrimaryKey;
 
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
 
-@Entity(tableName = "cityWeather")
-public class CityWeatherEntity {
+@Entity(tableName = "weather")
+public class WeatherEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    private int mainid;
-
+    @PrimaryKey
     private String placeId;
 
     @Embedded
     private WeatherCombiner weatherCombiner;
 
     @Ignore
-    public CityWeatherEntity(String placeId, WeatherCombiner weatherCombiner) {
+    public WeatherEntity(String placeId, WeatherCombiner weatherCombiner) {
         this.placeId = placeId;
         this.weatherCombiner = weatherCombiner;
     }
 
-    public CityWeatherEntity() {
+    public WeatherEntity() {
     }
 
-    public int getMainid() {
-        return mainid;
-    }
-
-    public void setMainid(int mainid) {
-        this.mainid = mainid;
-    }
 
     public String getPlaceId() {
         return placeId;
@@ -50,4 +41,5 @@ public class CityWeatherEntity {
     public void setWeatherCombiner(WeatherCombiner weatherCombiner) {
         this.weatherCombiner = weatherCombiner;
     }
+
 }

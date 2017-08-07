@@ -23,8 +23,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "dvinc.yamblzhomeproject"
         minSdkVersion 15
@@ -112,5 +112,9 @@ dependencies {
     compile "android.arch.persistence.room:runtime:$rootProject.room_version"
     compile "android.arch.persistence.room:rxjava2:$rootProject.room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
+
+    compile("com.mikepenz:materialdrawer:$rootProject.material_drawer_version") {
+        transitive = true
+    }
 
 }

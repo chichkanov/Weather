@@ -2,7 +2,9 @@ package dvinc.yamblzhomeproject.repository;
 
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import io.reactivex.Observable;
+import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
+import io.reactivex.Single;
 
 /*
  * Created by DV on Space 5 
@@ -10,7 +12,16 @@ import io.reactivex.Observable;
  */
 public interface WeatherRepository {
 
-    Observable<WeatherCombiner> getData();
+    Single<WeatherCombiner> getWeatherData();
 
-    Observable<WeatherResponse> updateWeatherData();
+    Single<WeatherForecastDailyResponse> getDailyForecast();
+
+    Single<WeatherForecastHourlyResponse> getHourlyForecast();
+
+    Single<WeatherResponse> getCurrentWeather();
+
+    Single<WeatherCombiner> getWeatherFromApi();
+
+    Single<WeatherCombiner> getWeatherFromDb();
+
 }

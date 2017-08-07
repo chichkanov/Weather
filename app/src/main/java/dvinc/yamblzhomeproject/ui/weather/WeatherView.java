@@ -18,6 +18,10 @@ interface WeatherView extends MvpView {
 
     void updateWeatherDaily(WeatherForecastDailyResponse weatherForecastDailyResponse);
 
+    void updateLastUpdateTime(String date);
+
+    void showCityName(String title);
+
     void showError();
 
     void showLoading();
