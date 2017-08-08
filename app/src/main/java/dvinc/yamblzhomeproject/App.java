@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.evernote.android.job.JobManager;
+import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
 import dvinc.yamblzhomeproject.di.AppComponent;
 import dvinc.yamblzhomeproject.di.DaggerAppComponent;
@@ -29,7 +31,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Stetho.initializeWithDefaults(this);
         appComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
@@ -45,6 +47,13 @@ public class App extends Application {
 
             BGSyncJob.schedulePeriodic(15);
         }
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     public static AppComponent getComponent() {

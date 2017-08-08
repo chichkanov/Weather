@@ -33,7 +33,7 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     @Override
     public void attachView(WeatherView view) {
         super.attachView(view);
-        getWeather();
+        getViewState().showCityName();
     }
 
     void getWeather() {
@@ -58,8 +58,9 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void detachView(WeatherView view) {
+        super.detachView(view);
+        Log.i("WeatherPresenter", "DetachView");
         if (dataSubscription != null) {
             dataSubscription.dispose();
         }

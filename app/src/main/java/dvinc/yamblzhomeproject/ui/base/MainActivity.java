@@ -5,11 +5,8 @@ package dvinc.yamblzhomeproject.ui.base;
  */
 
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -17,7 +14,9 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,21 +30,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
 
-    private static final int MENU_ADDED_CITY_ID = 0;
-    private static final int MENU_SETTINGS_ID = 1;
-    private static final int MENU_ADD_CITY_ID = 2;
+    private static final int MENU_ADDED_CITY_ID = 2;
+    private static final int MENU_SETTINGS_ID = 0;
+    private static final int MENU_ADD_CITY_ID = 1;
 
     private Drawer materialDrawer;
+    private List<Integer> addedCitiesIds;
 
     @InjectPresenter
     public MainPresenter presenter;
-
-    private int previousCitiesCount;
 
     @ProvidePresenter
     MainPresenter providePresenter() {
@@ -56,15 +50,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
         initDrawer(savedInstanceState);
+    }
 
-        if (savedInstanceState == null) {
-            navigationView.getMenu().getItem(0).setChecked(true);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getCities();
     }
 
     @Override
@@ -97,6 +92,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         materialDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
+                .withActionBarDrawerToggle(true)
+                .withActionBarDrawerToggleAnimated(true)
                 .addDrawerItems(addCityItem, settingsItem)
                 .withDrawerWidthDp(250)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
@@ -109,11 +106,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                             presenter.openSettingsFragment();
                             break;
                         }
-                        case MENU_ADDED_CITY_ID: {
-                            Log.i("Added city selected", String.valueOf(drawerItem.getTag()));
-                            presenter.openWeatherFragment((CityEntity) drawerItem.getTag());
-                            break;
-                        }
+
                     }
                     return false;
                 })
@@ -121,15 +114,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .build();
     }
 
+    @Override
     public void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
-                .commit();
-    }
-
-    public void showFragmentWithOverlay(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, fragment, fragment.getClass().getName())
                 .commit();
     }
 
@@ -139,18 +127,39 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void initCitiesInMenu(List<CityEntity> cities) {
-        for(int i = 0; i < cities.size(); i++){
-            materialDrawer.removeItem(MENU_ADDED_CITY_ID);
+        CityEntity activeItemTag = null;
+
+        if(addedCitiesIds != null){
+            for(int i = 0; i < addedCitiesIds.size(); i++){
+                materialDrawer.removeItem(addedCitiesIds.get(i));
+            }
+            addedCitiesIds.clear();
         }
+
+        addedCitiesIds = new ArrayList<>();
 
         for (int i = 0; i < cities.size(); i++) {
             PrimaryDrawerItem newCity = new PrimaryDrawerItem()
                     .withIcon(R.drawable.ic_menu_location)
                     .withName(cities.get(i).getCityTitle())
                     .withTag(cities.get(i))
-                    .withIdentifier(MENU_ADDED_CITY_ID);
+                    .withIdentifier(MENU_ADDED_CITY_ID + i)
+                    .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                        presenter.openWeatherFragment((CityEntity) drawerItem.getTag());
+                        return false;
+                    });
 
+            addedCitiesIds.add(MENU_ADDED_CITY_ID + i);
             materialDrawer.addItemAtPosition(newCity, 0);
+
+            if (cities.get(i).isActive()) {
+                activeItemTag = cities.get(i);
+            }
+        }
+
+        if (activeItemTag != null) {
+            IDrawerItem activeItem = materialDrawer.getDrawerItem(activeItemTag);
+            materialDrawer.setSelection(activeItem);
         }
 
     }

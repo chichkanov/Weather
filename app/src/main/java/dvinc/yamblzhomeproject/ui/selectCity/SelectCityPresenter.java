@@ -39,7 +39,7 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     }
 
     void setObservable(Observable<CharSequence> observable) {
-        this.subscriptionPlace = observable
+        subscriptionPlace = observable
                 .subscribeOn(Schedulers.io())
                 .debounce(API_CALL_DELAY, TimeUnit.MILLISECONDS)
                 .switchMap(charSequence -> repository.getPrediction(charSequence.toString()).subscribeOn(Schedulers.io()))

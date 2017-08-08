@@ -4,12 +4,8 @@ package dvinc.yamblzhomeproject.ui.base;
  * 19.07.2017
  */
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-
-import javax.inject.Inject;
 
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.repository.MenuRepository;
@@ -27,19 +23,23 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private MenuRepository menuRepository;
 
     private Disposable menuChangeSubscription;
+    private Disposable menuActiveCity;
 
-    @Inject
     public MainPresenter(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
-        observeMenuChanges();
+    }
+
+    @Override
+    public void attachView(MainView view) {
+        super.attachView(view);
     }
 
     void openWeatherFragment(CityEntity cityEntity) {
-        menuChangeSubscription = menuRepository.setActiveCity(cityEntity)
+        menuActiveCity = menuRepository.setActiveCity(cityEntity)
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
-        getViewState().showFragment(WeatherFragment.newInstanse());
+        getViewState().showFragment(WeatherFragment.newInstanse(cityEntity.getCityTitle()));
     }
 
     void openSettingsFragment() {
@@ -51,10 +51,19 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     void openSelectCityFragment() {
-        getViewState().showFragmentWithOverlay(SelectCityFragment.newInstance());
+        getViewState().showFragment(SelectCityFragment.newInstance());
     }
 
-    private void observeMenuChanges() {
+    void getCities(){
+        menuChangeSubscription = menuRepository.getMenuItems()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next -> {
+                    getViewState().initCitiesInMenu(next);
+                });
+    }
+
+    /*private void observeMenuChanges() {
         menuChangeSubscription = menuRepository.updateMenu()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -62,13 +71,16 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     Log.i("MENU", "changed");
                     getViewState().initCitiesInMenu(next);
                 });
-    }
+    }*/
 
     @Override
     public void detachView(MainView view) {
         super.detachView(view);
         if(menuChangeSubscription != null){
             menuChangeSubscription.dispose();
+        }
+        if(menuActiveCity != null){
+            menuActiveCity.dispose();
         }
     }
 }

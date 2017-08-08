@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherFore
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
 public class WeatherFragment extends MvpAppCompatFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
+
+    private static final String TITLE_KEY = "titleKey";
 
     @BindView(R.id.swipe_refresh_weather)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -68,8 +71,12 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     private Unbinder unbinder;
 
-    public static WeatherFragment newInstanse() {
-        return new WeatherFragment();
+    public static WeatherFragment newInstanse(String cityName) {
+        WeatherFragment weatherFragment = new WeatherFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(TITLE_KEY, cityName);
+        weatherFragment.setArguments(bundle);
+        return weatherFragment;
     }
 
     @ProvidePresenter
@@ -92,6 +99,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         swipeRefreshLayout.setOnRefreshListener(this);
         initRecyclerViewHourly();
         initRecyclerViewDaily();
+
+        weatherPresenter.getWeather();
     }
 
     @Override
@@ -122,6 +131,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void updateWeatherCurrent(WeatherResponse weatherData) {
+        Log.e("WEATHER", "UPDATE");
         tvTemperature.setText(getString(R.string.weather_temp_cels, (int) weatherData.getMainCurrent().getTemp() - 273));
         tvDesc.setText(weatherData.getWeatherCurrent().get(0).getDescription());
         tvHumidity.setText(getString(R.string.weather_humidity, weatherData.getMainCurrent().getHumidity()));
@@ -137,8 +147,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     }
 
     @Override
-    public void showCityName(String title) {
-
+    public void showCityName() {
+        getActivity().setTitle(getArguments().getString(TITLE_KEY, getString(R.string.nav_head_weather)));
     }
 
     @Override
@@ -153,7 +163,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void showError() {
-        Toast.makeText(getContext(), getResources().getString(R.string.network_error_message), Toast.LENGTH_LONG).show();
+        Log.e("WeatherFragment", "Error Shown");
+        Toast.makeText(getActivity(), getResources().getString(R.string.network_error_message), Toast.LENGTH_SHORT).show();
     }
 
     @Override

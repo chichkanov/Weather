@@ -16,6 +16,9 @@ public interface CityDao {
     @Query("SELECT * FROM cities")
     Flowable<List<CityEntity>> getAllCities();
 
+    @Query("SELECT * FROM cities")
+    List<CityEntity> getAllCitiesSync();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNewCity(CityEntity cityEntity);
 

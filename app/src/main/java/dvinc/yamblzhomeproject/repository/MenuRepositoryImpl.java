@@ -8,6 +8,7 @@ import dvinc.yamblzhomeproject.db.AppDatabase;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class MenuRepositoryImpl implements MenuRepository {
 
@@ -21,6 +22,11 @@ public class MenuRepositoryImpl implements MenuRepository {
     public Flowable<List<CityEntity>> updateMenu() {
         Log.i("MenuRepo", "Update Menu");
         return appDatabase.cityDao().getAllCities();
+    }
+
+    @Override
+    public Single<List<CityEntity>> getMenuItems() {
+        return Single.defer(() -> Single.just(appDatabase.cityDao().getAllCitiesSync()));
     }
 
     @Override

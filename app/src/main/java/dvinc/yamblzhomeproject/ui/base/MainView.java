@@ -20,6 +20,4 @@ interface MainView extends MvpView {
     void showAboutFragment(AboutFragment fragment);
 
     void initCitiesInMenu(List<CityEntity> cities);
-
-    void showFragmentWithOverlay(Fragment fragment);
 }

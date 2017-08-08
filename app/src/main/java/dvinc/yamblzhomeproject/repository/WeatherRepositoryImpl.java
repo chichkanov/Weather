@@ -8,6 +8,7 @@ import android.util.Log;
 
 import dvinc.yamblzhomeproject.db.AppDatabase;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
+import dvinc.yamblzhomeproject.db.entities.WeatherEntity;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
 import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
@@ -18,7 +19,7 @@ import io.reactivex.Single;
 
 public class WeatherRepositoryImpl implements WeatherRepository {
 
-    private static final String API_KEY = "b3e459e1e28f0b5cea62bc2e066ab5ff3";
+    private static final String API_KEY = "b3e459e1e28f0b5cea62bc2e066ab5ff";
     private static final String AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST = "16";
     private static final String AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST = "8";
 
@@ -63,7 +64,12 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public Single<WeatherCombiner> getWeatherFromApi() {
-        return Single.zip(getCurrentWeather(), getHourlyForecast(), getDailyForecast(), WeatherCombiner::new);
+        return Single.zip(getCurrentWeather(), getHourlyForecast(), getDailyForecast(), WeatherCombiner::new)
+                .map(mapper -> {
+                    mapper.setUpdatedTime(System.currentTimeMillis());
+                    database.weatherDao().insertWeather(new WeatherEntity(cityEntity.getCityId(), mapper));
+                    return mapper;
+                });
     }
 
     @Override

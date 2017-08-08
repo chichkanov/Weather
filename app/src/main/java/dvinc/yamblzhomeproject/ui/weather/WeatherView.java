@@ -20,7 +20,7 @@ interface WeatherView extends MvpView {
 
     void updateLastUpdateTime(String date);
 
-    void showCityName(String title);
+    void showCityName();
 
     void showError();
 
