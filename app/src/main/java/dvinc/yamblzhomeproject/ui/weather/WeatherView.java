@@ -1,24 +1,23 @@
 package dvinc.yamblzhomeproject.ui.weather;
-/*
- * Created by DV on Space 5 
- * 20.07.2017
- */
+
 
 import com.arellomobile.mvp.MvpView;
 
-import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
+import java.util.List;
+
+import dvinc.yamblzhomeproject.data.uiModel.CurrentWeatherUi;
+import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
+import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
 
 interface WeatherView extends MvpView {
 
-    void updateWeatherCurrent(WeatherResponse weatherData);
+    void updateWeatherCurrent(CurrentWeatherUi currentWeather);
 
-    void updateWeatherHourly(WeatherForecastHourlyResponse weatherForecastHourlyResponse);
+    void updateWeatherHourly(List<HourlyWeatherUi> hourWeather);
 
-    void updateWeatherDaily(WeatherForecastDailyResponse weatherForecastDailyResponse);
+    void updateWeatherDaily(List<DailyWeatherUi> dayWeather);
 
-    void updateLastUpdateTime(String date);
+    void updateLastUpdateTime(long date);
 
     void showCityName();
 

@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.Location;
+import dvinc.yamblzhomeproject.data.model.predictions.predictionInfo.Location;
 
 @Entity(tableName = "cities")
 public class CityEntity {

@@ -2,9 +2,9 @@ package dvinc.yamblzhomeproject.di.modules;
 
 import dagger.Module;
 import dagger.Provides;
-import dvinc.yamblzhomeproject.repository.MenuRepository;
-import dvinc.yamblzhomeproject.repository.SelectCityRepository;
-import dvinc.yamblzhomeproject.repository.WeatherRepository;
+import dvinc.yamblzhomeproject.data.repository.MenuRepository;
+import dvinc.yamblzhomeproject.data.repository.SelectCityRepository;
+import dvinc.yamblzhomeproject.data.repository.WeatherRepository;
 import dvinc.yamblzhomeproject.ui.base.MainPresenter;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityPresenter;
 import dvinc.yamblzhomeproject.ui.weather.WeatherPresenter;

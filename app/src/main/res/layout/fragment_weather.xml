@@ -129,7 +129,7 @@
                     android:layout_toRightOf="@id/weather_pressure_icon"
                     android:text="@string/weather_default_value" />
 
-                <TextView
+                <com.github.curioustechizen.ago.RelativeTimeTextView
                     android:id="@+id/tv_weather_last_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,7 +137,8 @@
                     android:layout_marginLeft="@dimen/weather_main_elements_margin_left"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/md_grey_600"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    custom:relative_time_prefix="@string/weather_update_time" />
 
                 <View
                     android:id="@+id/view_weather_main_divider"

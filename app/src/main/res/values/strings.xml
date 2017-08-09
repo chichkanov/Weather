@@ -25,7 +25,7 @@
     <string name="weather_desc_hourly">Hourly</string>
     <string name="weather_desc_daily">Daily</string>
     <string name="weather_temp_forecast_cels">%1$d°</string>
-    <string name="weather_update_time">Updated: %1$s</string>
+    <string name="weather_update_time">Updated: </string>
 
     <!--Settings Fragment-->
     <string name="settings_update_frequency">Frequency of weather update</string>

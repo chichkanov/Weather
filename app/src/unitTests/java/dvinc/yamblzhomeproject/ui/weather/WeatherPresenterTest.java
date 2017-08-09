@@ -7,9 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import dvinc.yamblzhomeproject.repository.WeatherRepositoryImpl;
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
-import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
+import dvinc.yamblzhomeproject.data.model.weather.WeatherCombiner;
+import dvinc.yamblzhomeproject.data.model.weather.current.WeatherResponse;
+import dvinc.yamblzhomeproject.data.repository.WeatherRepositoryImpl;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;

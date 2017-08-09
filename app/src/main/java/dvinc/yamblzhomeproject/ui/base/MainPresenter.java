@@ -7,8 +7,8 @@ package dvinc.yamblzhomeproject.ui.base;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
+import dvinc.yamblzhomeproject.data.repository.MenuRepository;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
-import dvinc.yamblzhomeproject.repository.MenuRepository;
 import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityFragment;
 import dvinc.yamblzhomeproject.ui.settings.SettingsFragment;
@@ -30,8 +30,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     @Override
-    public void attachView(MainView view) {
-        super.attachView(view);
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        getCities();
     }
 
     void openWeatherFragment(CityEntity cityEntity) {
@@ -39,7 +40,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
-        getViewState().showFragment(WeatherFragment.newInstanse(cityEntity.getCityTitle()));
+        getViewState().showFragment(WeatherFragment.newInstance(cityEntity.getCityTitle()));
     }
 
     void openSettingsFragment() {
@@ -54,13 +55,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
         getViewState().showFragment(SelectCityFragment.newInstance());
     }
 
-    void getCities(){
+    private void getCities() {
         menuChangeSubscription = menuRepository.getMenuItems()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next -> {
-                    getViewState().initCitiesInMenu(next);
-                });
+                .subscribe(next -> getViewState().initCitiesInMenu(next));
     }
 
     /*private void observeMenuChanges() {
@@ -76,10 +75,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     public void detachView(MainView view) {
         super.detachView(view);
-        if(menuChangeSubscription != null){
+        if (menuChangeSubscription != null) {
             menuChangeSubscription.dispose();
         }
-        if(menuActiveCity != null){
+        if (menuActiveCity != null) {
             menuActiveCity.dispose();
         }
     }

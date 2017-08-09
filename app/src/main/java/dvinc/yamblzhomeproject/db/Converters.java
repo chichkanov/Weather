@@ -9,46 +9,34 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import dvinc.yamblzhomeproject.repository.model.weather.core.Weather;
-import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.DailyList;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.HourList;
+import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
+import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
 
 public class Converters {
 
     @TypeConverter
-    public static List<DailyList> fromStringDaily(String value) {
-        Type listType = new TypeToken<ArrayList<DailyList>>() {
+    public static List<DailyWeatherUi> fromStringDaily(String value) {
+        Type listType = new TypeToken<ArrayList<DailyWeatherUi>>() {
         }.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String objectToStringDaily(List<DailyList> response) {
+    public static String objectToStringDaily(List<DailyWeatherUi> response) {
         return new Gson().toJson(response);
     }
 
     @TypeConverter
-    public static List<HourList> fromStringHourly(String value) {
-        Type listType = new TypeToken<ArrayList<HourList>>() {
+    public static List<HourlyWeatherUi> fromStringHourly(String value) {
+        Type listType = new TypeToken<ArrayList<HourlyWeatherUi>>() {
         }.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String objectToStringHourly(List<HourList> response) {
+    public static String objectToStringHourly(List<HourlyWeatherUi> response) {
         return new Gson().toJson(response);
     }
 
-    @TypeConverter
-    public static List<Weather> fromStringCurrent(String value) {
-        Type listType = new TypeToken<ArrayList<Weather>>() {
-        }.getType();
-        return new Gson().fromJson(value, listType);
-    }
-
-    @TypeConverter
-    public static String objectToStringCurrent(List<Weather> response) {
-        return new Gson().toJson(response);
-    }
 
 }

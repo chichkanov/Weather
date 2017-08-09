@@ -7,8 +7,8 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import java.util.concurrent.TimeUnit;
 
-import dvinc.yamblzhomeproject.repository.SelectCityRepository;
-import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.data.repository.SelectCityRepository;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

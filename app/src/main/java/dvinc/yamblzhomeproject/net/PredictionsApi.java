@@ -1,7 +1,7 @@
 package dvinc.yamblzhomeproject.net;
 
-import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
-import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.PlaceInfoResponse;
+import dvinc.yamblzhomeproject.data.model.predictions.CityPrediction;
+import dvinc.yamblzhomeproject.data.model.predictions.predictionInfo.PlaceInfoResponse;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.GET;

@@ -1,12 +1,9 @@
 package dvinc.yamblzhomeproject.ui.base;
-/*
- * Created by DV on Space 5 
- * 19.07.2017
- */
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -52,14 +49,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
+        Log.e("MainActivity", "onCreate");
         initDrawer(savedInstanceState);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.getCities();
     }
 
     @Override
@@ -129,8 +120,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     public void initCitiesInMenu(List<CityEntity> cities) {
         CityEntity activeItemTag = null;
 
-        if(addedCitiesIds != null){
-            for(int i = 0; i < addedCitiesIds.size(); i++){
+        if (addedCitiesIds != null) {
+            for (int i = 0; i < addedCitiesIds.size(); i++) {
                 materialDrawer.removeItem(addedCitiesIds.get(i));
             }
             addedCitiesIds.clear();

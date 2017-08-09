@@ -4,7 +4,7 @@ import com.arellomobile.mvp.MvpView;
 
 import java.util.List;
 
-import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 
 interface SelectCityView extends MvpView {
 

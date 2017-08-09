@@ -5,6 +5,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import dvinc.yamblzhomeproject.db.entities.WeatherEntity;
+import io.reactivex.Maybe;
 
 @android.arch.persistence.room.Dao
 public interface WeatherDao {
@@ -13,6 +14,6 @@ public interface WeatherDao {
     void insertWeather(WeatherEntity weatherEntity);
 
     @Query("SELECT * FROM weather WHERE placeid LIKE :cityId LIMIT 1")
-    WeatherEntity getWeatherForCityId(String cityId);
+    Maybe<WeatherEntity> getWeatherForCityId(String cityId);
 
 }

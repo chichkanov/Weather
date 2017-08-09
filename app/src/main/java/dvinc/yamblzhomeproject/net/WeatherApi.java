@@ -4,9 +4,9 @@ package dvinc.yamblzhomeproject.net;
  * 14.07.2017
  */
 
-import dvinc.yamblzhomeproject.repository.model.weather.current.WeatherResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.WeatherForecastDailyResponse;
-import dvinc.yamblzhomeproject.repository.model.weather.hourForecast.WeatherForecastHourlyResponse;
+import dvinc.yamblzhomeproject.data.model.weather.current.WeatherResponse;
+import dvinc.yamblzhomeproject.data.model.weather.dailyForecast.WeatherForecastDailyResponse;
+import dvinc.yamblzhomeproject.data.model.weather.hourForecast.WeatherForecastHourlyResponse;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

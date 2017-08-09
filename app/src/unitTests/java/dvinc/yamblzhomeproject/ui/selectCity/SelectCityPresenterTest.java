@@ -7,10 +7,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import dvinc.yamblzhomeproject.repository.SelectCityRepositoryImpl;
-import dvinc.yamblzhomeproject.repository.model.predictions.CityPrediction;
-import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
-import dvinc.yamblzhomeproject.repository.model.predictions.predictionInfo.PlaceInfoResponse;
+import dvinc.yamblzhomeproject.data.model.predictions.CityPrediction;
+import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.data.model.predictions.predictionInfo.PlaceInfoResponse;
+import dvinc.yamblzhomeproject.data.repository.SelectCityRepositoryImpl;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;

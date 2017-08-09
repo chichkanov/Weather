@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import dvinc.yamblzhomeproject.repository.model.weather.WeatherCombiner;
+import dvinc.yamblzhomeproject.data.model.weather.WeatherCombiner;
 
 @Entity(tableName = "weather")
 public class WeatherEntity {

@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Locale;
 
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.repository.model.weather.dailyForecast.DailyList;
+import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
 class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Holder> {
 
-    private List<DailyList> dataset;
+    private List<DailyWeatherUi> dataset;
 
     private static DateFormat dateFormat = new SimpleDateFormat("E, d MMMM", Locale.getDefault());
 
-    ForecastDailyAdapter(List<DailyList> dataset) {
+    ForecastDailyAdapter(List<DailyWeatherUi> dataset) {
         this.dataset = dataset;
     }
 
@@ -37,14 +37,14 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        int tempMax = (int) dataset.get(position).getTempDaily().getMax() - 273;
-        int tempMin = (int) dataset.get(position).getTempDaily().getMin() - 273;
+        int tempMax = dataset.get(position).getTempMax();
+        int tempMin = dataset.get(position).getTempMin();
 
         holder.tvTempMax.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, tempMax));
         holder.tvTempMin.setText(holder.itemView.getResources().getString(R.string.weather_temp_forecast_cels, tempMin));
 
         holder.weatherIcon.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(),
-                WeatherUtils.getForecastIcon(dataset.get(position).getWeatherDaily().get(0).getIcon())));
+                WeatherUtils.getForecastIcon(dataset.get(position).getIcon())));
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(new Date());
@@ -54,7 +54,7 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
 
     }
 
-    void setDataset(List<DailyList> dataset) {
+    void setDataset(List<DailyWeatherUi> dataset) {
         this.dataset = dataset;
         notifyDataSetChanged();
     }
@@ -73,10 +73,10 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
 
         public Holder(View itemView) {
             super(itemView);
-            tvTempMax = (TextView) itemView.findViewById(R.id.tv_item_forecast_daily_temp_max);
-            tvTempMin = (TextView) itemView.findViewById(R.id.tv_item_forecast_daily_temp_min);
-            tvDate = (TextView) itemView.findViewById(R.id.tv_item_forecast_daily_date);
-            weatherIcon = (ImageView) itemView.findViewById(R.id.weather_icon_item_forecast_daily);
+            tvTempMax = itemView.findViewById(R.id.tv_item_forecast_daily_temp_max);
+            tvTempMin = itemView.findViewById(R.id.tv_item_forecast_daily_temp_min);
+            tvDate = itemView.findViewById(R.id.tv_item_forecast_daily_date);
+            weatherIcon = itemView.findViewById(R.id.weather_icon_item_forecast_daily);
         }
     }
 }

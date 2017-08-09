@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 
 class SelectCityAdapter extends RecyclerView.Adapter<SelectCityAdapter.Holder>{
 
@@ -54,8 +54,8 @@ class SelectCityAdapter extends RecyclerView.Adapter<SelectCityAdapter.Holder>{
 
         Holder(View itemView, OnCityItemSelected clickListener) {
             super(itemView);
-            tvMain = (TextView) itemView.findViewById(R.id.tv_item_select_city_main);
-            tvDesc = (TextView) itemView.findViewById(R.id.tv_item_select_city_desc);
+            tvMain = itemView.findViewById(R.id.tv_item_select_city_main);
+            tvDesc = itemView.findViewById(R.id.tv_item_select_city_desc);
             setListener(clickListener);
         }
 

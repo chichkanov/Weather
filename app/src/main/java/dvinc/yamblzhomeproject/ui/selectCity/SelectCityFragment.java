@@ -29,7 +29,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.repository.model.predictions.Prediction;
+import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 
 public class SelectCityFragment extends MvpAppCompatFragment implements SelectCityView {
 
