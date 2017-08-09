@@ -14,6 +14,7 @@ import dvinc.yamblzhomeproject.data.uiModel.mapper.WeatherMapper;
 import dvinc.yamblzhomeproject.db.AppDatabase;
 import dvinc.yamblzhomeproject.net.PredictionsApi;
 import dvinc.yamblzhomeproject.net.WeatherApi;
+import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
 
 @Module
 public class RepositoryModule {
@@ -26,8 +27,8 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    WeatherRepository provideWeatherRepository(WeatherApi weatherApi, AppDatabase appDatabase, WeatherMapper weatherMapper) {
-        return new WeatherRepositoryImpl(weatherApi, appDatabase, weatherMapper);
+    WeatherRepository provideWeatherRepository(WeatherApi weatherApi, AppDatabase appDatabase, WeatherMapper weatherMapper, WeatherConverter weatherConverter) {
+        return new WeatherRepositoryImpl(weatherApi, appDatabase, weatherMapper, weatherConverter);
     }
 
     @Provides

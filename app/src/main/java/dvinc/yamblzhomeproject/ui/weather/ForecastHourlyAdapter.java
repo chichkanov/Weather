@@ -36,7 +36,7 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        int temp = dataset.get(position).getTemp();
+        int temp = (int) dataset.get(position).getTemp();
 
         Date date = new Date(dataset.get(position).getDate() * 1000L);
 

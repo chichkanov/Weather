@@ -18,6 +18,7 @@ import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.db.entities.WeatherEntity;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
+import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -32,11 +33,13 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     private AppDatabase database;
     private CityEntity cityEntity;
     private WeatherMapper weatherMapper;
+    private WeatherConverter weatherConverter;
 
-    public WeatherRepositoryImpl(WeatherApi weatherApi, AppDatabase appDatabase, WeatherMapper weatherMapper) {
+    public WeatherRepositoryImpl(WeatherApi weatherApi, AppDatabase appDatabase, WeatherMapper weatherMapper, WeatherConverter weatherConverter) {
         this.weatherApi = weatherApi;
         this.database = appDatabase;
         this.weatherMapper = weatherMapper;
+        this.weatherConverter = weatherConverter;
 
         this.database.cityDao().getActiveCityFlowable()
                 .subscribe(next -> {
@@ -77,14 +80,14 @@ public class WeatherRepositoryImpl implements WeatherRepository {
                 .map(mapper -> {
                     mapper.setUpdatedTime(System.currentTimeMillis());
                     database.weatherDao().insertWeather(new WeatherEntity(cityEntity.getCityId(), mapper));
-                    return mapper;
+                    return weatherConverter.convert(mapper);
                 });
     }
 
     @Override
     public Maybe<WeatherCombiner> getWeatherFromDb() {
         return database.weatherDao().getWeatherForCityId(cityEntity.getCityId())
-                .map(WeatherEntity::getWeatherCombiner);
+                .map(weather -> weatherConverter.convert(weather.getWeatherCombiner()));
     }
 
 }

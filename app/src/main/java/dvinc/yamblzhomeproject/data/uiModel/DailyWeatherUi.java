@@ -3,8 +3,8 @@ package dvinc.yamblzhomeproject.data.uiModel;
 public class DailyWeatherUi {
 
     private String icon;
-    private int tempMin;
-    private int tempMax;
+    private double tempMin;
+    private double tempMax;
 
     public DailyWeatherUi() {
     }
@@ -17,19 +17,19 @@ public class DailyWeatherUi {
         this.icon = icon;
     }
 
-    public int getTempMin() {
+    public double getTempMin() {
         return tempMin;
     }
 
-    public void setTempMin(int tempMin) {
+    public void setTempMin(double tempMin) {
         this.tempMin = tempMin;
     }
 
-    public int getTempMax() {
+    public double getTempMax() {
         return tempMax;
     }
 
-    public void setTempMax(int tempMax) {
+    public void setTempMax(double tempMax) {
         this.tempMax = tempMax;
     }
 }

@@ -7,6 +7,8 @@ package dvinc.yamblzhomeproject.ui.base;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
+import javax.inject.Inject;
+
 import dvinc.yamblzhomeproject.data.repository.MenuRepository;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.ui.about.AboutFragment;
@@ -25,7 +27,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private Disposable menuChangeSubscription;
     private Disposable menuActiveCity;
 
-    public MainPresenter(MenuRepository menuRepository) {
+    @Inject
+    MainPresenter(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
     }
 
@@ -44,7 +47,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     void openSettingsFragment() {
-        getViewState().showFragment(new SettingsFragment());
+        getViewState().showFragment(SettingsFragment.newInstance());
     }
 
     void openAboutFragment() {

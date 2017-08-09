@@ -3,8 +3,6 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -69,15 +67,6 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (bar != null) {
-            bar.hide();
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -111,15 +100,6 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     @Override
     public void showError() {
         Toast.makeText(getContext(), R.string.load_weather_error, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (bar != null) {
-            bar.show();
-        }
     }
 
     @Override

@@ -81,6 +81,8 @@ dependencies {
 
     compile "com.android.support:appcompat-v7:$rootProject.support_version"
     compile "com.android.support:design:$rootProject.support_version"
+    compile "com.android.support:preference-v7:$rootProject.support_version"
+    compile "com.android.support:preference-v14:$rootProject.support_version"
 
     compile "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout_version"
 

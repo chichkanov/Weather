@@ -129,12 +129,12 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void updateWeatherCurrent(CurrentWeatherUi currentWeather) {
-        tvTemperature.setText(getString(R.string.weather_temp_cels, currentWeather.getTemp()));
+        tvTemperature.setText(getString(R.string.weather_temp, (int) currentWeather.getTemp()));
         tvDesc.setText(currentWeather.getDescription());
         tvHumidity.setText(getString(R.string.weather_humidity, currentWeather.getHumidity()));
-        tvWindSpeed.setText(getString(R.string.weather_wind_speed_metr, currentWeather.getWindSpeed()));
-        tvPressure.setText(getString(R.string.weather_pressure_hpa, currentWeather.getPressure()));
-        tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, currentWeather.getTempMax(), currentWeather.getTempMin()));
+        tvWindSpeed.setText(getString(weatherPresenter.getWindSpeedUnitText(), (int) currentWeather.getWindSpeed()));
+        tvPressure.setText(getString(weatherPresenter.getPressureUnitText(), (int) currentWeather.getPressure()));
+        tvMaxMinTemp.setText(getString(R.string.weather_temperature_minmax, (int) currentWeather.getTempMax(), (int) currentWeather.getTempMin()));
         weatherIcon.setIconResource(getString(WeatherUtils.getMainIcon(currentWeather.getIcon())));
     }
 

@@ -11,6 +11,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
@@ -72,20 +73,25 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         PrimaryDrawerItem addCityItem = new PrimaryDrawerItem()
                 .withName(R.string.select_city_head)
                 .withIcon(R.drawable.ic_menu_add_city)
+                .withIconTintingEnabled(true)
                 .withIdentifier(MENU_ADD_CITY_ID);
 
         PrimaryDrawerItem settingsItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_head_settings)
                 .withIcon(R.drawable.ic_menu_settings)
+                .withIconTintingEnabled(true)
                 .withIdentifier(MENU_SETTINGS_ID);
 
+        SectionDrawerItem instrumentsSection = new SectionDrawerItem()
+                .withName(R.string.nav_head_intsruments)
+                .withDivider(false);
 
         materialDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
-                .addDrawerItems(addCityItem, settingsItem)
+                .addDrawerItems(instrumentsSection, addCityItem, settingsItem)
                 .withDrawerWidthDp(250)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     switch ((int) drawerItem.getIdentifier()) {
@@ -134,6 +140,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     .withIcon(R.drawable.ic_menu_location)
                     .withName(cities.get(i).getCityTitle())
                     .withTag(cities.get(i))
+                    .withIconTintingEnabled(true)
                     .withIdentifier(MENU_ADDED_CITY_ID + i)
                     .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                         presenter.openWeatherFragment((CityEntity) drawerItem.getTag());

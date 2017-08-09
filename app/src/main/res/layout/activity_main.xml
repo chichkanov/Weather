@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:theme="@style/ToolBarStyle" />
 
@@ -28,7 +27,7 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_marginTop="?attr/actionBarSize"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

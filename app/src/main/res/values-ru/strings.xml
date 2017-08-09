@@ -10,7 +10,7 @@
     <string name="nav_head_weather">Погода</string>
     <string name="nav_head_settings">Настройки</string>
     <string name="nav_head_about">О приложении</string>
-    <string name="author">Денис В.</string>
+    <string name="nav_head_intsruments">Инструменты</string>
     <string name="about_dialog_head">О приложении</string>
     <string name="about_dialog_decs">Здесь будет описание приложения. \n\n<b>Погода</b></string>
 
@@ -18,9 +18,15 @@
 
     <!--Weather Fragment-->
     <string name="weather_humidity">%1$d%%</string>
-    <string name="weather_temp_cels">%1$d°C</string>
+    <string name="weather_temp">%1$d°</string>
+
     <string name="weather_wind_speed_metr">%1$d м/с</string>
+    <string name="weather_wind_speed_km">%1$d км/ч</string>
+    <string name="weather_wind_speed_miles">%1$d миль/ч</string>
+
     <string name="weather_pressure_hpa">%1$d гПа</string>
+    <string name="weather_pressure_mm">%1$d мм рт.ст.</string>
+
     <string name="weather_temperature_minmax">%1$d° / %2$d°</string>
     <string name="weather_desc_hourly">Почасовой прогноз</string>
     <string name="weather_desc_daily">Ежедневный прогноз</string>
@@ -28,11 +34,13 @@
     <string name="weather_update_time">Обновлено: </string>
 
     <!--Settings Fragment-->
-    <string name="settings_update_frequency">Частота обновления погоды</string>
-    <string name="settings_button_apply">Применить</string>
-    <string name="settings_new_settings_save">Новые настройки сохранены</string>
-    <string name="settings_autoUpdate">Автообновление</string>
+    <string name="settings_temp_units">Температура</string>
+    <string name="settings_wind_units">Скорость ветра</string>
+    <string name="settings_pressure_units">Давление</string>
+    <string name="settings_auto_update">Интервал авто обновления</string>
+    <string name="settings_title_units">Единицы измерения</string>
 
+    <!--Additional-->
     <string name="select_city_head">Добавить город</string>
     <string name="select_city_hint">Введите название города</string>
     <string name="default_city">Москва</string>
@@ -40,14 +48,53 @@
     <string name="weather_default_value">-</string>
     <string name="load_weather_error">Ошибка</string>
     <string name="default_city_name">Ошибка</string>
-    <string name="menu_subtitle_instruments">Инструменты</string>
 
-    <string-array name="settings_time_array">
-        <item>15</item>
+    <!--Settings values-->
+    <string-array name="refresh_entries">
+        <item>Никогда</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>2 часа</item>
+        <item>6 часов</item>
+        <item>12 часов</item>
+        <item>1 день</item>
+    </string-array>
+    <string-array name="refresh_values">
+        <item>0</item>
         <item>30</item>
-        <item>45</item>
         <item>60</item>
-        <item>90</item>
         <item>120</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+
+    <string-array name="wind_entries">
+        <item>М/с</item>
+        <item>Км/ч</item>
+        <item>Миль/ч</item>
+    </string-array>
+    <string-array name="wind_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="temp_entries">
+        <item>Цельсий</item>
+        <item>Фаренгейт</item>
+    </string-array>
+    <string-array name="temp_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="pressure_entries">
+        <item>мм рт.ст.</item>
+        <item>гПа</item>
+    </string-array>
+    <string-array name="pressure_values">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 </resources>

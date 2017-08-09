@@ -2,31 +2,31 @@ package dvinc.yamblzhomeproject.data.uiModel;
 
 public class CurrentWeatherUi {
 
-    private int temp;
-    private int pressure;
+    private double temp;
+    private double pressure;
     private int humidity;
-    private int tempMin;
-    private int tempMax;
+    private double tempMin;
+    private double tempMax;
     private String description;
     private String icon;
-    private int windSpeed;
+    private double windSpeed;
 
     public CurrentWeatherUi() {
     }
 
-    public int getTemp() {
+    public double getTemp() {
         return temp;
     }
 
-    public void setTemp(int temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
-    public int getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
-    public void setPressure(int pressure) {
+    public void setPressure(double pressure) {
         this.pressure = pressure;
     }
 
@@ -38,19 +38,19 @@ public class CurrentWeatherUi {
         this.humidity = humidity;
     }
 
-    public int getTempMin() {
+    public double getTempMin() {
         return tempMin;
     }
 
-    public void setTempMin(int tempMin) {
+    public void setTempMin(double tempMin) {
         this.tempMin = tempMin;
     }
 
-    public int getTempMax() {
+    public double getTempMax() {
         return tempMax;
     }
 
-    public void setTempMax(int tempMax) {
+    public void setTempMax(double tempMax) {
         this.tempMax = tempMax;
     }
 
@@ -70,11 +70,11 @@ public class CurrentWeatherUi {
         this.icon = icon;
     }
 
-    public int getWindSpeed() {
+    public double getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(int windSpeed) {
+    public void setWindSpeed(double windSpeed) {
         this.windSpeed = windSpeed;
     }
 }

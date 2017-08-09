@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.ui.base.MainActivity;
-import dvinc.yamblzhomeproject.ui.settings.SettingsFragment;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -53,10 +52,10 @@ public class SettingsFragmentTest {
                 .perform(click());
     }
 
-    private SettingsFragment startMyFragment() {
+    private SettingsFragments startMyFragment() {
         FragmentActivity activity = activityRule.getActivity();
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        SettingsFragment myFragment = new SettingsFragment();
+        SettingsFragments myFragment = new SettingsFragments();
         transaction.replace(R.id.fragmentContainer, myFragment, "frag");
         transaction.commit();
         return myFragment;

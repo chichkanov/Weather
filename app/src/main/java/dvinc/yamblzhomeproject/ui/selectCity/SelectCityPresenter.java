@@ -7,6 +7,8 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 import dvinc.yamblzhomeproject.data.repository.SelectCityRepository;
 import io.reactivex.Observable;
@@ -23,6 +25,7 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     private Disposable subscriptionPlaceCoords;
     private SelectCityRepository repository;
 
+    @Inject
     public SelectCityPresenter(SelectCityRepository selectCityRepository) {
         this.repository = selectCityRepository;
     }

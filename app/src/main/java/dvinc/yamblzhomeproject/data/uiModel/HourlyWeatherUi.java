@@ -3,7 +3,7 @@ package dvinc.yamblzhomeproject.data.uiModel;
 public class HourlyWeatherUi {
 
     private String icon;
-    private int temp;
+    private double temp;
     private long date;
 
     public HourlyWeatherUi() {
@@ -17,11 +17,11 @@ public class HourlyWeatherUi {
         this.icon = icon;
     }
 
-    public int getTemp() {
+    public double getTemp() {
         return temp;
     }
 
-    public void setTemp(int temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
