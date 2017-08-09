@@ -7,7 +7,9 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public interface MenuRepository {
+public interface CitiesRepository {
+
+    Completable removeCity(CityEntity cityEntity);
 
     Flowable<List<CityEntity>> updateMenu();
 

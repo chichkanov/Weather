@@ -4,14 +4,18 @@ package dvinc.yamblzhomeproject.ui.base;
  * 19.07.2017
  */
 
+import android.support.v4.app.FragmentManager;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import javax.inject.Inject;
 
-import dvinc.yamblzhomeproject.data.repository.MenuRepository;
+import dvinc.yamblzhomeproject.R;
+import dvinc.yamblzhomeproject.data.repository.CitiesRepository;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
-import dvinc.yamblzhomeproject.ui.about.AboutFragment;
+import dvinc.yamblzhomeproject.ui.editCities.EditCitiesFragment;
+import dvinc.yamblzhomeproject.ui.navigation.NavigationManager;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityFragment;
 import dvinc.yamblzhomeproject.ui.settings.SettingsFragment;
 import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
@@ -22,14 +26,15 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-    private MenuRepository menuRepository;
+    private CitiesRepository citiesRepository;
 
     private Disposable menuChangeSubscription;
     private Disposable menuActiveCity;
+    private NavigationManager navigationManager;
 
     @Inject
-    MainPresenter(MenuRepository menuRepository) {
-        this.menuRepository = menuRepository;
+    MainPresenter(CitiesRepository citiesRepository) {
+        this.citiesRepository = citiesRepository;
     }
 
     @Override
@@ -38,35 +43,39 @@ public class MainPresenter extends MvpPresenter<MainView> {
         getCities();
     }
 
+    void setNavigationManager(FragmentManager fragmentManager){
+        navigationManager = new NavigationManager(fragmentManager, R.id.fragmentContainer);
+    }
+
     void openWeatherFragment(CityEntity cityEntity) {
-        menuActiveCity = menuRepository.setActiveCity(cityEntity)
+        menuActiveCity = citiesRepository.setActiveCity(cityEntity)
                 .subscribeOn(Schedulers.io())
                 .subscribe();
 
-        getViewState().showFragment(WeatherFragment.newInstance(cityEntity.getCityTitle()));
+        navigationManager.navigateTo(WeatherFragment.newInstance(cityEntity.getCityTitle()));
     }
 
     void openSettingsFragment() {
-        getViewState().showFragment(SettingsFragment.newInstance());
-    }
-
-    void openAboutFragment() {
-        getViewState().showAboutFragment(new AboutFragment());
+        navigationManager.navigateTo(SettingsFragment.newInstance());
     }
 
     void openSelectCityFragment() {
-        getViewState().showFragment(SelectCityFragment.newInstance());
+        navigationManager.navigateTo(SelectCityFragment.newInstance());
+    }
+
+    void openEditCitiesFragment() {
+        navigationManager.navigateTo(EditCitiesFragment.newInstance());
     }
 
     private void getCities() {
-        menuChangeSubscription = menuRepository.getMenuItems()
+        menuChangeSubscription = citiesRepository.getMenuItems()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> getViewState().initCitiesInMenu(next));
     }
 
     /*private void observeMenuChanges() {
-        menuChangeSubscription = menuRepository.updateMenu()
+        menuChangeSubscription = citiesRepository.updateMenu()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
@@ -85,4 +94,5 @@ public class MainPresenter extends MvpPresenter<MainView> {
             menuActiveCity.dispose();
         }
     }
+
 }

@@ -13,6 +13,7 @@
     <string name="nav_head_intsruments">Инструменты</string>
     <string name="about_dialog_head">О приложении</string>
     <string name="about_dialog_decs">Здесь будет описание приложения. \n\n<b>Погода</b></string>
+    <string name="edit_cities_head">Изменить города</string>
 
     <string name="activity_main_title">Погода</string>
 

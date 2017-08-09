@@ -1,9 +1,7 @@
 package dvinc.yamblzhomeproject.ui.base;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -22,16 +20,16 @@ import butterknife.ButterKnife;
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
-import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private static final int MENU_ADDED_CITY_ID = 2;
+    private static final int MENU_ADDED_CITY_ID = 3;
     private static final int MENU_SETTINGS_ID = 0;
     private static final int MENU_ADD_CITY_ID = 1;
+    private static final int MENU_EDIT_CITIES_ID = 2;
 
     private Drawer materialDrawer;
     private List<Integer> addedCitiesIds;
@@ -50,7 +48,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        Log.e("MainActivity", "onCreate");
+        presenter.setNavigationManager(this.getSupportFragmentManager());
         initDrawer(savedInstanceState);
     }
 
@@ -76,6 +74,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withIconTintingEnabled(true)
                 .withIdentifier(MENU_ADD_CITY_ID);
 
+        PrimaryDrawerItem editCitiesItem = new PrimaryDrawerItem()
+                .withName(R.string.edit_cities_head)
+                .withIcon(R.drawable.ic_menu_edit_cities)
+                .withIconTintingEnabled(true)
+                .withIdentifier(MENU_EDIT_CITIES_ID);
+
         PrimaryDrawerItem settingsItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_head_settings)
                 .withIcon(R.drawable.ic_menu_settings)
@@ -91,12 +95,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
-                .addDrawerItems(instrumentsSection, addCityItem, settingsItem)
+                .addDrawerItems(instrumentsSection, addCityItem, editCitiesItem, settingsItem)
                 .withDrawerWidthDp(250)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     switch ((int) drawerItem.getIdentifier()) {
                         case MENU_ADD_CITY_ID: {
                             presenter.openSelectCityFragment();
+                            break;
+                        }
+                        case MENU_EDIT_CITIES_ID:{
+                            presenter.openEditCitiesFragment();
                             break;
                         }
                         case MENU_SETTINGS_ID: {
@@ -109,17 +117,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 })
                 .withSavedInstance(savedInstState)
                 .build();
-    }
-
-    @Override
-    public void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit();
-    }
-
-    public void showAboutFragment(AboutFragment fragment) {
-        fragment.show(getSupportFragmentManager(), "Tag");
     }
 
     @Override

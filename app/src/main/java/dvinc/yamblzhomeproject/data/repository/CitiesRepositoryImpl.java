@@ -10,12 +10,20 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class MenuRepositoryImpl implements MenuRepository {
+public class CitiesRepositoryImpl implements CitiesRepository {
 
     private AppDatabase appDatabase;
 
-    public MenuRepositoryImpl(AppDatabase appDatabase) {
+    public CitiesRepositoryImpl(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
+    }
+
+    @Override
+    public Completable removeCity(CityEntity cityEntity) {
+        return Completable.fromAction(() -> {
+            //TODO DELETE WEATHER
+            appDatabase.cityDao().deleteCity(cityEntity);
+        });
     }
 
     @Override

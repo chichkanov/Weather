@@ -4,8 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import dvinc.yamblzhomeproject.data.repository.MenuRepository;
-import dvinc.yamblzhomeproject.data.repository.MenuRepositoryImpl;
+import dvinc.yamblzhomeproject.data.repository.CitiesRepository;
+import dvinc.yamblzhomeproject.data.repository.CitiesRepositoryImpl;
 import dvinc.yamblzhomeproject.data.repository.SelectCityRepository;
 import dvinc.yamblzhomeproject.data.repository.SelectCityRepositoryImpl;
 import dvinc.yamblzhomeproject.data.repository.WeatherRepository;
@@ -33,7 +33,7 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    MenuRepository provideMenuRepository(AppDatabase appDatabase) {
-        return new MenuRepositoryImpl(appDatabase);
+    CitiesRepository provideMenuRepository(AppDatabase appDatabase) {
+        return new CitiesRepositoryImpl(appDatabase);
     }
 }

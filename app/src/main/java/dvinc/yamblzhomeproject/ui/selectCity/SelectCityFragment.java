@@ -63,6 +63,7 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.select_city_head);
         initRecyclerView();
     }
 
