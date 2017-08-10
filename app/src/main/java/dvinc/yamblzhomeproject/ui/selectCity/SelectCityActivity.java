@@ -2,18 +2,14 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
@@ -24,12 +20,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 
-public class SelectCityFragment extends MvpAppCompatFragment implements SelectCityView {
+public class SelectCityActivity extends MvpAppCompatActivity implements SelectCityView {
 
     @BindView(R.id.et_select_city)
     EditText etSelectCity;
@@ -37,46 +32,31 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     RecyclerView rvCityList;
 
     private SelectCityAdapter adapter;
-    private Unbinder unbinder;
 
     @InjectPresenter
     SelectCityPresenter presenter;
 
-    public static SelectCityFragment newInstance() {
-        return new SelectCityFragment();
-    }
 
     @ProvidePresenter
     SelectCityPresenter providePresenter(){
         return App.getComponent().getSelectCityPresenter();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_city_select, container, false);
-        unbinder = ButterKnife.bind(this, v);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_city_select);
+        ButterKnife.bind(this);
+
         setCityNameObservable();
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(R.string.select_city_head);
         initRecyclerView();
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     private void initRecyclerView() {
         adapter = new SelectCityAdapter(new ArrayList<>(), position -> presenter.citySelected(adapter.getItem(position)));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration decoration = new DividerItemDecoration(this, layoutManager.getOrientation());
 
         rvCityList.setLayoutManager(layoutManager);
         rvCityList.addItemDecoration(decoration);
@@ -100,16 +80,14 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
 
     @Override
     public void showError() {
-        Toast.makeText(getContext(), R.string.load_weather_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.load_weather_error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void goToWeather() {
         hideKeyboard();
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .remove(this)
-                .commit();
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override
@@ -118,7 +96,7 @@ public class SelectCityFragment extends MvpAppCompatFragment implements SelectCi
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etSelectCity.getWindowToken(), 0);
     }
 }

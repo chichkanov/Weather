@@ -24,6 +24,7 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
     private List<DailyWeatherUi> dataset;
 
     private static DateFormat dateFormat = new SimpleDateFormat("E, d MMMM", Locale.getDefault());
+    private static Calendar calendar = Calendar.getInstance(Locale.getDefault());
 
     ForecastDailyAdapter(List<DailyWeatherUi> dataset) {
         this.dataset = dataset;
@@ -46,12 +47,27 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
         holder.weatherIcon.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(),
                 WeatherUtils.getForecastIcon(dataset.get(position).getIcon())));
 
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        setDate(holder, position);
+    }
+
+    private void setDate(Holder holder, int position) {
         calendar.setTime(new Date());
         calendar.add(Calendar.DAY_OF_MONTH, position);
 
-        holder.tvDate.setText(dateFormat.format(calendar.getTime()));
-
+        switch (position) {
+            case 0: {
+                holder.tvDate.setText(holder.itemView.getResources().getString(R.string.weather_forecast_date_today));
+                break;
+            }
+            case 1: {
+                holder.tvDate.setText(holder.itemView.getResources().getString(R.string.weather_forecast_date_tommorow));
+                break;
+            }
+            default: {
+                holder.tvDate.setText(dateFormat.format(calendar.getTime()));
+                break;
+            }
+        }
     }
 
     void setDataset(List<DailyWeatherUi> dataset) {

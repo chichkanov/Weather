@@ -34,6 +34,9 @@
     <string name="weather_temp_forecast_cels">%1$d°</string>
     <string name="weather_update_time">Updated: </string>
 
+    <string name="weather_forecast_date_today">Today</string>
+    <string name="weather_forecast_date_tommorow">Tomorrow</string>
+
     <!--Settings Fragment-->
     <string name="settings_temp_units">Temperature</string>
     <string name="settings_wind_units">Wind speed</string>

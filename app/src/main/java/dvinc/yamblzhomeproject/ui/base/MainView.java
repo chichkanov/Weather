@@ -12,5 +12,5 @@ import dvinc.yamblzhomeproject.db.entities.CityEntity;
 
 interface MainView extends MvpView {
 
-    void initCitiesInMenu(List<CityEntity> cities);
+    void initCitiesInMenu(List<CityEntity> cities, boolean fireOnClick);
 }

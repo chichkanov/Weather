@@ -19,4 +19,5 @@ public class NavigationManager {
                 .replace(containerId, fragment)
                 .commit();
     }
+
 }

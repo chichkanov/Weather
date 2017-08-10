@@ -1,7 +1,11 @@
 package dvinc.yamblzhomeproject.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -20,11 +24,14 @@ import butterknife.ButterKnife;
 import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
+import dvinc.yamblzhomeproject.ui.selectCity.SelectCityActivity;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    private static final int REQUEST_CODE_SELECT_CITY = 0;
 
     private static final int MENU_ADDED_CITY_ID = 3;
     private static final int MENU_SETTINGS_ID = 0;
@@ -36,6 +43,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @InjectPresenter
     public MainPresenter presenter;
+
+    @Nullable
+    @BindView(R.id.nav_tablet)
+    FrameLayout frameLayoutTablets;
 
     @ProvidePresenter
     MainPresenter providePresenter() {
@@ -49,16 +60,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         presenter.setNavigationManager(this.getSupportFragmentManager());
-        initDrawer(savedInstanceState);
-    }
 
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
-        } else {
-            super.onBackPressed();
-        }
+        initDrawer(savedInstanceState);
     }
 
     @Override
@@ -90,7 +93,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withName(R.string.nav_head_intsruments)
                 .withDivider(false);
 
-        materialDrawer = new DrawerBuilder()
+        DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggle(true)
@@ -100,10 +103,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     switch ((int) drawerItem.getIdentifier()) {
                         case MENU_ADD_CITY_ID: {
-                            presenter.openSelectCityFragment();
+                            Intent intent = new Intent(this, SelectCityActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE_SELECT_CITY);
                             break;
                         }
-                        case MENU_EDIT_CITIES_ID:{
+                        case MENU_EDIT_CITIES_ID: {
                             presenter.openEditCitiesFragment();
                             break;
                         }
@@ -115,12 +119,31 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     }
                     return false;
                 })
-                .withSavedInstance(savedInstState)
-                .build();
+                .withSavedInstance(savedInstState);
+
+        if (frameLayoutTablets != null) {
+            materialDrawer = drawerBuilder.buildView();
+            frameLayoutTablets.addView(materialDrawer.getSlider());
+        } else {
+            materialDrawer = drawerBuilder.build();
+        }
     }
 
     @Override
-    public void initCitiesInMenu(List<CityEntity> cities) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_SELECT_CITY: {
+                    presenter.getCities();
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void initCitiesInMenu(List<CityEntity> cities, boolean fireOnClick) {
         CityEntity activeItemTag = null;
 
         if (addedCitiesIds != null) {
@@ -149,14 +172,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
             if (cities.get(i).isActive()) {
                 activeItemTag = cities.get(i);
+                if (fireOnClick) Log.e("ActiveItemInit", cities.get(i).getCityTitle());
+                else Log.e("ActiveItemOBSERVER", cities.get(i).getCityTitle());
             }
         }
 
         if (activeItemTag != null) {
             IDrawerItem activeItem = materialDrawer.getDrawerItem(activeItemTag);
-            materialDrawer.setSelection(activeItem);
+            materialDrawer.setSelection(activeItem, fireOnClick);
         }
-
     }
 
 }
