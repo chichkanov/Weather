@@ -17,6 +17,7 @@ import dvinc.yamblzhomeproject.db.entities.WeatherEntity;
 import dvinc.yamblzhomeproject.net.WeatherApi;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -87,6 +88,17 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     public Maybe<WeatherCombiner> getWeatherFromDb() {
         return database.weatherDao().getWeatherForCityId(cityEntity.getCityId())
                 .map(weather -> weatherConverter.convert(weather.getWeatherCombiner()));
+    }
+
+    @Override
+    public Completable updateAllWeather() {
+        return Completable.fromAction(() -> {
+            List<CityEntity> cityEntities = database.cityDao().getAllCitiesSync();
+            for (int i = 0; i < cityEntities.size(); i++) {
+                database.weatherDao().getWeatherForCityId(cityEntities.get(i).getCityId())
+                        .subscribe(weatherEntity -> database.weatherDao().updateWeather(weatherEntity));
+            }
+        });
     }
 
 }

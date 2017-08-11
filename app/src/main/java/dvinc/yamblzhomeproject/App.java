@@ -5,54 +5,59 @@ package dvinc.yamblzhomeproject;
  */
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.evernote.android.job.JobManager;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
+
+import javax.inject.Inject;
 
 import dvinc.yamblzhomeproject.di.AppComponent;
 import dvinc.yamblzhomeproject.di.DaggerAppComponent;
 import dvinc.yamblzhomeproject.di.modules.ApplicationModule;
-import dvinc.yamblzhomeproject.net.background.BGJobCreator;
-import dvinc.yamblzhomeproject.net.background.BGSyncJob;
+import dvinc.yamblzhomeproject.utils.UpdateSettings;
 import timber.log.Timber;
 
 public class App extends Application {
 
     private static AppComponent appComponent;
 
-    public static App get(@NonNull Context context) {
-        return (App) context.getApplicationContext();
-    }
+    @Inject
+    UpdateSettings weatherSettings;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Stetho.initializeWithDefaults(this);
+        initDagger();
+        initTimber();
+        initStetho();
+        initLeakCanary();
+        initAutoUpdate();
+    }
+
+    private void initTimber() {
+        Timber.plant(new Timber.DebugTree());
+    }
+
+    private void initAutoUpdate() {
+        weatherSettings.scheduleAutoUpdate();
+    }
+
+    private void initDagger() {
         appComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
+        appComponent.inject(this);
+    }
 
-        Timber.plant(new Timber.DebugTree());
-        JobManager.create(this).addJobCreator(new BGJobCreator());
-        SharedPreferences str = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE);
+    private void initStetho() {
+        Stetho.initializeWithDefaults(this);
+    }
 
-        if (str.getInt("UPDATE TIME", 0) == 0) {
-            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
-            editor.putInt("UPDATE TIME", 15);
-            editor.putBoolean("AUTOUPDATE", true);
-            editor.apply();
-            BGSyncJob.schedulePeriodic(15);
-        }
-
+    private void initLeakCanary() {
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
-
         LeakCanary.install(this);
     }
 

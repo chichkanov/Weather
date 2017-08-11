@@ -1,6 +1,6 @@
 package dvinc.yamblzhomeproject.di;
 
-import dvinc.yamblzhomeproject.net.background.BGSyncJob;
+import dvinc.yamblzhomeproject.net.background.AutoUpdateJob;
 import dvinc.yamblzhomeproject.ui.main.MainPresenter;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityPresenter;
 import dvinc.yamblzhomeproject.ui.weather.WeatherPresenter;
@@ -8,7 +8,7 @@ import dvinc.yamblzhomeproject.ui.weather.WeatherPresenter;
 public class TestComponent implements AppComponent {
 
     @Override
-    public void inject(BGSyncJob bgSyncJob) {
+    public void inject(AutoUpdateJob autoUpdateJob) {
 
     }
 

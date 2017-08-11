@@ -6,6 +6,7 @@ import dvinc.yamblzhomeproject.data.model.weather.WeatherCombiner;
 import dvinc.yamblzhomeproject.data.uiModel.CurrentWeatherUi;
 import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
 import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -28,4 +29,5 @@ public interface WeatherRepository {
 
     Maybe<WeatherCombiner> getWeatherFromDb();
 
+    Completable updateAllWeather();
 }

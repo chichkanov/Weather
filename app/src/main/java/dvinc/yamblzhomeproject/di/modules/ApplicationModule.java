@@ -29,4 +29,5 @@ public class ApplicationModule {
     AppDatabase provideDatabase(Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, "database").build();
     }
+
 }
