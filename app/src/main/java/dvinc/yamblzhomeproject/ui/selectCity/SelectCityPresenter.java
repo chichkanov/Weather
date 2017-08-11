@@ -56,13 +56,11 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
         subscriptionPlaceCoords = repository
                 .getPredictionCoord(item.getPlaceId())
                 .subscribeOn(Schedulers.io())
-                .doAfterSuccess(next -> repository.saveCity(next, item.getStructuredFormatting().getMainText(), item.getPlaceId())
-                        .subscribe(() -> Log.i("SelectCity", "City added"),
-                                error -> Log.e("SelectCity", "City ERROR")))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> getViewState().goToWeather())
-                .subscribe(success -> {
-                }, error -> getViewState().showError());
+                .subscribe(next -> repository.saveCity(next, item.getStructuredFormatting().getMainText(), item.getPlaceId())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> getViewState().goToWeather(), error -> getViewState().showError()));
     }
 
     void clearButtonCLicked(String text) {
