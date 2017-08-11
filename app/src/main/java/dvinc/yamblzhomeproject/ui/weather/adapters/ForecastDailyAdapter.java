@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.ui.weather;
+package dvinc.yamblzhomeproject.ui.weather.adapters;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -19,14 +19,14 @@ import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
-class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Holder> {
+public class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Holder> {
 
     private List<DailyWeatherUi> dataset;
 
     private static DateFormat dateFormat = new SimpleDateFormat("E, d MMMM", Locale.getDefault());
     private static Calendar calendar = Calendar.getInstance(Locale.getDefault());
 
-    ForecastDailyAdapter(List<DailyWeatherUi> dataset) {
+    public ForecastDailyAdapter(List<DailyWeatherUi> dataset) {
         this.dataset = dataset;
     }
 
@@ -70,7 +70,7 @@ class ForecastDailyAdapter extends RecyclerView.Adapter<ForecastDailyAdapter.Hol
         }
     }
 
-    void setDataset(List<DailyWeatherUi> dataset) {
+    public void setDataset(List<DailyWeatherUi> dataset) {
         this.dataset = dataset;
         notifyDataSetChanged();
     }

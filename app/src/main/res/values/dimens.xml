@@ -2,5 +2,5 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="weather_main_elements_margin_left">16dp</dimen>
     <dimen name="weather_details_elements_top">12dp</dimen>
-
+    <dimen name="weather_details_elements_padding_left_right">16dp</dimen>
 </resources>

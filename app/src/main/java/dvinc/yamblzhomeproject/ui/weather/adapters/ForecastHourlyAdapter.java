@@ -1,4 +1,4 @@
-package dvinc.yamblzhomeproject.ui.weather;
+package dvinc.yamblzhomeproject.ui.weather.adapters;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -16,11 +16,11 @@ import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 
-class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.Holder> {
+public class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.Holder> {
 
     private List<HourlyWeatherUi> dataset;
 
-    ForecastHourlyAdapter(List<HourlyWeatherUi> dataset) {
+    public ForecastHourlyAdapter(List<HourlyWeatherUi> dataset) {
         this.dataset = dataset;
     }
 
@@ -44,7 +44,7 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
                 WeatherUtils.getForecastIcon(dataset.get(position).getIcon())));
     }
 
-    void setDataset(List<HourlyWeatherUi> dataset) {
+    public void setDataset(List<HourlyWeatherUi> dataset) {
         this.dataset = dataset;
         notifyDataSetChanged();
     }

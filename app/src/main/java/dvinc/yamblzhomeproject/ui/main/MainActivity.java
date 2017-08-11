@@ -87,7 +87,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withActionBarDrawerToggleAnimated(true)
                 .withScrollToTopAfterClick(true)
                 .addDrawerItems(instrumentsSection, addCityItem, editCitiesItem, settingsItem)
-                .withDrawerWidthDp(250)
+                .withDrawerWidthDp(280)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     switch ((int) drawerItem.getIdentifier()) {
                         case MENU_ADD_CITY_ID: {

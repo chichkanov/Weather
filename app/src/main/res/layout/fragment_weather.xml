@@ -134,19 +134,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_weather_pressure"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="@dimen/weather_main_elements_margin_left"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/md_grey_600"
                     android:textSize="14sp"
                     custom:relative_time_prefix="@string/weather_update_time" />
-
-                <View
-                    android:id="@+id/view_weather_main_divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_below="@id/tv_weather_last_update"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/shadow_background" />
 
             </RelativeLayout>
 
@@ -161,6 +154,7 @@
                     style="@style/WeatherDescTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/weather_details_elements_padding_left_right"
                     android:text="@string/weather_desc_hourly" />
 
                 <android.support.v7.widget.RecyclerView
@@ -168,12 +162,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_weather_desc_daily"
-                    android:background="@android:color/white" />
+                    android:background="@android:color/white"
+                    android:paddingLeft="@dimen/weather_details_elements_padding_left_right"
+                    android:paddingRight="@dimen/weather_details_elements_padding_left_right" />
 
                 <View
                     android:id="@+id/view_weather_detail_divider1"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="8dp"
                     android:layout_below="@id/rv_weather_today"
                     android:layout_marginTop="15dp"
                     android:background="@color/shadow_background" />
@@ -184,6 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/view_weather_detail_divider1"
+                    android:padding="@dimen/weather_details_elements_padding_left_right"
                     android:text="@string/weather_desc_daily" />
 
                 <android.support.v7.widget.RecyclerView
@@ -191,7 +188,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_weather_desc_hourly"
-                    android:background="@android:color/white" />
+                    android:background="@android:color/white"
+                    android:paddingLeft="@dimen/weather_details_elements_padding_left_right"
+                    android:paddingRight="@dimen/weather_details_elements_padding_left_right" />
             </RelativeLayout>
         </LinearLayout>
 

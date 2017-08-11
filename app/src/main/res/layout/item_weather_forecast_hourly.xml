@@ -2,10 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="@dimen/weather_details_elements_top">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_item_forecast_hourly_temp"

@@ -2,15 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/weather_details_elements_top">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_item_forecast_daily_date"
         style="@style/WeatherDailyInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
         android:text="@string/weather_default_value" />
 
     <ImageView

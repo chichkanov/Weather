@@ -2,8 +2,8 @@ package dvinc.yamblzhomeproject.ui.weather;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,6 +30,10 @@ import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.data.uiModel.CurrentWeatherUi;
 import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
 import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
+import dvinc.yamblzhomeproject.ui.weather.adapters.ForecastDailyAdapter;
+import dvinc.yamblzhomeproject.ui.weather.adapters.ForecastHourlyAdapter;
+import dvinc.yamblzhomeproject.ui.weather.itemDecorators.CustomDailyItemDecorator;
+import dvinc.yamblzhomeproject.ui.weather.itemDecorators.CustomHourlyItemDecorator;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
 import timber.log.Timber;
 
@@ -109,7 +113,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     private void initRecyclerViewHourly() {
         adapterHourly = new ForecastHourlyAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+        CustomHourlyItemDecorator decoration = new CustomHourlyItemDecorator(getContext());
+
         rvForecastHourly.setLayoutManager(layoutManager);
         rvForecastHourly.addItemDecoration(decoration);
         rvForecastHourly.setAdapter(adapterHourly);
@@ -119,7 +124,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     private void initRecyclerViewDaily() {
         adapterDaily = new ForecastDailyAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+        CustomDailyItemDecorator decoration = new CustomDailyItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.rv_divider_vertical), getContext());
+
         rvForecastDaily.setLayoutManager(layoutManager);
         rvForecastDaily.addItemDecoration(decoration);
         rvForecastDaily.setAdapter(adapterDaily);
