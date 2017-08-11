@@ -134,12 +134,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_weather_pressure"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="@dimen/weather_main_elements_margin_left"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/md_grey_600"
                     android:textSize="14sp"
                     custom:relative_time_prefix="@string/weather_update_time" />
+
+                <View
+                    android:id="@+id/view_weather_main_divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_below="@id/tv_weather_last_update"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/shadow_background" />
 
             </RelativeLayout>
 
@@ -162,9 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_weather_desc_daily"
-                    android:background="@android:color/white"
-                    android:paddingLeft="@dimen/weather_details_elements_padding_left_right"
-                    android:paddingRight="@dimen/weather_details_elements_padding_left_right" />
+                    android:background="@android:color/white" />
 
                 <View
                     android:id="@+id/view_weather_detail_divider1"

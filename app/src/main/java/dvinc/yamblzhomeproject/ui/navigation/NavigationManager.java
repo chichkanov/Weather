@@ -1,7 +1,10 @@
 package dvinc.yamblzhomeproject.ui.navigation;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
+import com.arellomobile.mvp.MvpAppCompatActivity;
 
 public class NavigationManager {
 
@@ -18,6 +21,10 @@ public class NavigationManager {
                 .beginTransaction()
                 .replace(containerId, fragment)
                 .commit();
+    }
+
+    public void navigateTo(MvpAppCompatActivity from, Intent intent, int requestCode){
+        from.startActivityForResult(intent, requestCode);
     }
 
 }

@@ -4,9 +4,11 @@ package dvinc.yamblzhomeproject.ui.main;
  * 19.07.2017
  */
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.MvpPresenter;
 
 import javax.inject.Inject;
@@ -14,6 +16,7 @@ import javax.inject.Inject;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.data.repository.CitiesRepository;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
+import dvinc.yamblzhomeproject.ui.about.AboutFragment;
 import dvinc.yamblzhomeproject.ui.editCities.EditCitiesFragment;
 import dvinc.yamblzhomeproject.ui.navigation.NavigationManager;
 import dvinc.yamblzhomeproject.ui.settings.SettingsFragment;
@@ -65,12 +68,20 @@ public class MainPresenter extends MvpPresenter<MainView> {
         compositeDisposable.addAll(disposable);
     }
 
+    void openAddCityActivity(MvpAppCompatActivity activity, Intent intent, int requestCode) {
+        navigationManager.navigateTo(activity, intent, requestCode);
+    }
+
     void openSettingsFragment() {
         navigationManager.navigateTo(SettingsFragment.newInstance());
     }
 
     void openEditCitiesFragment() {
         navigationManager.navigateTo(EditCitiesFragment.newInstance());
+    }
+
+    void openAboutFragment() {
+        navigationManager.navigateTo(AboutFragment.newInstance());
     }
 
     private void observeMenuChanges() {
@@ -100,5 +111,4 @@ public class MainPresenter extends MvpPresenter<MainView> {
         super.detachView(view);
         compositeDisposable.clear();
     }
-
 }

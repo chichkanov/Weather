@@ -44,6 +44,13 @@
     <string name="settings_auto_update">Интервал авто обновления</string>
     <string name="settings_title_units">Единицы измерения</string>
 
+    <!--About Fragment-->
+    <string name="dev_name">Александр Чичканов</string>
+    <string name="tv_icons_provider_autor_desc">Автор иконок погоды</string>
+    <string name="tv_icons_provider_autor">https://www.flaticon.com/authors/linector</string>
+    <string name="tv_icons_provider_site_desc">Сайт с иконками</string>
+    <string name="tv_icons_provider_site">https://www.flaticon.com</string>
+
     <!--Additional-->
     <string name="select_city_head">Добавить город</string>
     <string name="select_city_hint">Введите название города</string>
@@ -52,6 +59,7 @@
     <string name="weather_default_value">-</string>
     <string name="load_weather_error">Ошибка</string>
     <string name="default_city_name">Ошибка</string>
+
 
     <!--Settings values-->
     <string-array name="refresh_entries">

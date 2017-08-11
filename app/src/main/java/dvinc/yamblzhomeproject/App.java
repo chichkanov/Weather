@@ -6,6 +6,7 @@ package dvinc.yamblzhomeproject;
 
 import android.app.Application;
 import android.support.annotation.VisibleForTesting;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
@@ -33,6 +34,7 @@ public class App extends Application {
         initStetho();
         initLeakCanary();
         initAutoUpdate();
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     private void initTimber() {

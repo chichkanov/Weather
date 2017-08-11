@@ -19,9 +19,7 @@ public class CustomHourlyItemDecorator extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        int left = parent.getChildViewHolder(view).getLayoutPosition() != 0 ? dpToPx(ADDITIONAL_SPACING) : 0;
-        int right = parent.getChildViewHolder(view).getLayoutPosition() != state.getItemCount() - 1 ? dpToPx(ADDITIONAL_SPACING) : 0;
-        outRect.set(left, 0, right, 0);
+        outRect.set(dpToPx(ADDITIONAL_SPACING), 0, dpToPx(ADDITIONAL_SPACING), 0);
     }
 
     private int dpToPx(int dp) {

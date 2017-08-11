@@ -33,10 +33,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private static final int REQUEST_CODE_SELECT_CITY = 0;
 
-    private static final int MENU_ADDED_CITY_ID = 3;
+    private static final int MENU_ADDED_CITY_ID = 4;
     private static final int MENU_SETTINGS_ID = 0;
     private static final int MENU_ADD_CITY_ID = 1;
     private static final int MENU_EDIT_CITIES_ID = 2;
+    private static final int MENU_ABOUT_ID = 3;
 
     private Drawer materialDrawer;
 
@@ -56,12 +57,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         presenter.setNavigationManager(this.getSupportFragmentManager());
-
         initDrawer(savedInstanceState);
     }
 
@@ -75,6 +76,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         PrimaryDrawerItem addCityItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_add_city, getString(R.string.select_city_head), MENU_ADD_CITY_ID);
         PrimaryDrawerItem editCitiesItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_edit_cities, getString(R.string.edit_cities_head), MENU_EDIT_CITIES_ID);
         PrimaryDrawerItem settingsItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_settings, getString(R.string.nav_head_settings), MENU_SETTINGS_ID);
+        PrimaryDrawerItem aboutItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_about, getString(R.string.nav_head_about), MENU_ABOUT_ID);
 
         SectionDrawerItem instrumentsSection = new SectionDrawerItem()
                 .withName(R.string.nav_head_intsruments)
@@ -86,13 +88,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
                 .withScrollToTopAfterClick(true)
-                .addDrawerItems(instrumentsSection, addCityItem, editCitiesItem, settingsItem)
-                .withDrawerWidthDp(280)
+                .addDrawerItems(instrumentsSection, addCityItem, editCitiesItem, settingsItem, aboutItem)
+                .withDrawerWidthDp(260)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     switch ((int) drawerItem.getIdentifier()) {
                         case MENU_ADD_CITY_ID: {
-                            Intent intent = new Intent(this, SelectCityActivity.class);
-                            startActivityForResult(intent, REQUEST_CODE_SELECT_CITY);
+                            presenter.openAddCityActivity(this, new Intent(this, SelectCityActivity.class), REQUEST_CODE_SELECT_CITY);
                             break;
                         }
                         case MENU_EDIT_CITIES_ID: {
@@ -102,6 +103,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                         case MENU_SETTINGS_ID: {
                             presenter.openSettingsFragment();
                             break;
+                        }
+                        case MENU_ABOUT_ID: {
+                            presenter.openAboutFragment();
                         }
 
                     }
@@ -162,6 +166,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         if (activeItemTag != null) {
             IDrawerItem activeItem = materialDrawer.getDrawerItem(activeItemTag);
             materialDrawer.setSelection(activeItem, fireOnClick);
+        }
+
+        if (fireOnClick && cities.isEmpty()) {
+            presenter.openAddCityActivity(this, new Intent(this, SelectCityActivity.class), REQUEST_CODE_SELECT_CITY);
         }
     }
 
