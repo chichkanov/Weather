@@ -31,6 +31,7 @@ import dvinc.yamblzhomeproject.data.uiModel.CurrentWeatherUi;
 import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
 import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
 import dvinc.yamblzhomeproject.utils.WeatherUtils;
+import timber.log.Timber;
 
 public class WeatherFragment extends MvpAppCompatFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -97,8 +98,6 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         swipeRefreshLayout.setOnRefreshListener(this);
         initRecyclerViewHourly();
         initRecyclerViewDaily();
-
-        weatherPresenter.getWeather();
     }
 
     @Override
@@ -129,6 +128,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void updateWeatherCurrent(CurrentWeatherUi currentWeather) {
+        Timber.d("Showing weather");
         tvTemperature.setText(getString(R.string.weather_temp, (int) currentWeather.getTemp()));
         tvDesc.setText(currentWeather.getDescription());
         tvHumidity.setText(getString(R.string.weather_humidity, currentWeather.getHumidity()));

@@ -60,8 +60,9 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
                         .subscribe(() -> Log.i("SelectCity", "City added"),
                                 error -> Log.e("SelectCity", "City ERROR")))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next -> getViewState().goToWeather(),
-                        error -> getViewState().showError());
+                .doFinally(() -> getViewState().goToWeather())
+                .subscribe(success -> {
+                }, error -> getViewState().showError());
     }
 
     void clearButtonCLicked(String text) {

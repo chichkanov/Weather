@@ -4,8 +4,6 @@ package dvinc.yamblzhomeproject.data.repository;
  * 19.07.2017
  */
 
-import android.util.Log;
-
 import java.util.List;
 
 import dvinc.yamblzhomeproject.data.model.weather.WeatherCombiner;
@@ -22,6 +20,7 @@ import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import timber.log.Timber;
 
 public class WeatherRepositoryImpl implements WeatherRepository {
 
@@ -44,7 +43,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         this.database.cityDao().getActiveCityFlowable()
                 .subscribe(next -> {
                     this.cityEntity = next;
-                    Log.i("WeatherRepositoryCity", cityEntity.getCityTitle());
+                    Timber.d("Current city in weather is %s", cityEntity.getCityTitle());
                 });
     }
 

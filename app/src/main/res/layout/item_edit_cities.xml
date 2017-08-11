@@ -11,6 +11,7 @@
         android:id="@+id/tv_item_edit_cities_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/ib_edit_cities_delete"
         android:textSize="18sp"
         tools:text="Test title" />
@@ -22,6 +23,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@null"
+        android:padding="5dp"
         app:srcCompat="@drawable/ic_clear" />
 
 </RelativeLayout>

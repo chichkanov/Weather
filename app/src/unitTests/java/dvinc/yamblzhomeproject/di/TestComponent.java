@@ -1,7 +1,7 @@
 package dvinc.yamblzhomeproject.di;
 
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
-import dvinc.yamblzhomeproject.ui.base.MainPresenter;
+import dvinc.yamblzhomeproject.ui.main.MainPresenter;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityPresenter;
 import dvinc.yamblzhomeproject.ui.weather.WeatherPresenter;
 

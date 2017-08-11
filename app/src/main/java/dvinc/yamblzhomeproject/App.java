@@ -19,6 +19,7 @@ import dvinc.yamblzhomeproject.di.DaggerAppComponent;
 import dvinc.yamblzhomeproject.di.modules.ApplicationModule;
 import dvinc.yamblzhomeproject.net.background.BGJobCreator;
 import dvinc.yamblzhomeproject.net.background.BGSyncJob;
+import timber.log.Timber;
 
 public class App extends Application {
 
@@ -36,6 +37,7 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
 
+        Timber.plant(new Timber.DebugTree());
         JobManager.create(this).addJobCreator(new BGJobCreator());
         SharedPreferences str = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE);
 
@@ -44,15 +46,13 @@ public class App extends Application {
             editor.putInt("UPDATE TIME", 15);
             editor.putBoolean("AUTOUPDATE", true);
             editor.apply();
-
             BGSyncJob.schedulePeriodic(15);
         }
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
             return;
         }
+
         LeakCanary.install(this);
     }
 

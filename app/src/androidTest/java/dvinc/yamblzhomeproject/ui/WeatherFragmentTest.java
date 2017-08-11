@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import dvinc.yamblzhomeproject.R;
-import dvinc.yamblzhomeproject.ui.base.MainActivity;
+import dvinc.yamblzhomeproject.ui.main.MainActivity;
 import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
 
 @RunWith(AndroidJUnit4.class)

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
@@ -20,9 +19,6 @@ import dvinc.yamblzhomeproject.utils.WeatherUtils;
 class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.Holder> {
 
     private List<HourlyWeatherUi> dataset;
-
-    private static DateFormat formatTo = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
-
 
     ForecastHourlyAdapter(List<HourlyWeatherUi> dataset) {
         this.dataset = dataset;
@@ -37,6 +33,8 @@ class ForecastHourlyAdapter extends RecyclerView.Adapter<ForecastHourlyAdapter.H
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         int temp = (int) dataset.get(position).getTemp();
+
+        DateFormat formatTo = android.text.format.DateFormat.getTimeFormat(holder.itemView.getContext());
 
         Date date = new Date(dataset.get(position).getDate() * 1000L);
 

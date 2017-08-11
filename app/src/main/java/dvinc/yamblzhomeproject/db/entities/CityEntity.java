@@ -64,4 +64,5 @@ public class CityEntity {
     public void setActive(boolean active) {
         isActive = active;
     }
+
 }

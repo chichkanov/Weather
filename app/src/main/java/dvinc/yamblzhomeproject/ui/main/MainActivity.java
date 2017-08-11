@@ -1,10 +1,9 @@
-package dvinc.yamblzhomeproject.ui.base;
+package dvinc.yamblzhomeproject.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -25,6 +24,7 @@ import dvinc.yamblzhomeproject.App;
 import dvinc.yamblzhomeproject.R;
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.ui.selectCity.SelectCityActivity;
+import timber.log.Timber;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
@@ -39,7 +39,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     private static final int MENU_EDIT_CITIES_ID = 2;
 
     private Drawer materialDrawer;
-    private List<Integer> addedCitiesIds;
 
     @InjectPresenter
     public MainPresenter presenter;
@@ -47,6 +46,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Nullable
     @BindView(R.id.nav_tablet)
     FrameLayout frameLayoutTablets;
+
+    private List<Integer> addedCitiesIds;
 
     @ProvidePresenter
     MainPresenter providePresenter() {
@@ -71,23 +72,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     private void initDrawer(Bundle savedInstState) {
-        PrimaryDrawerItem addCityItem = new PrimaryDrawerItem()
-                .withName(R.string.select_city_head)
-                .withIcon(R.drawable.ic_menu_add_city)
-                .withIconTintingEnabled(true)
-                .withIdentifier(MENU_ADD_CITY_ID);
-
-        PrimaryDrawerItem editCitiesItem = new PrimaryDrawerItem()
-                .withName(R.string.edit_cities_head)
-                .withIcon(R.drawable.ic_menu_edit_cities)
-                .withIconTintingEnabled(true)
-                .withIdentifier(MENU_EDIT_CITIES_ID);
-
-        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_head_settings)
-                .withIcon(R.drawable.ic_menu_settings)
-                .withIconTintingEnabled(true)
-                .withIdentifier(MENU_SETTINGS_ID);
+        PrimaryDrawerItem addCityItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_add_city, getString(R.string.select_city_head), MENU_ADD_CITY_ID);
+        PrimaryDrawerItem editCitiesItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_edit_cities, getString(R.string.edit_cities_head), MENU_EDIT_CITIES_ID);
+        PrimaryDrawerItem settingsItem = getStandartPrimaryDrawerItem(R.drawable.ic_menu_settings, getString(R.string.nav_head_settings), MENU_SETTINGS_ID);
 
         SectionDrawerItem instrumentsSection = new SectionDrawerItem()
                 .withName(R.string.nav_head_intsruments)
@@ -98,6 +85,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggle(true)
                 .withActionBarDrawerToggleAnimated(true)
+                .withScrollToTopAfterClick(true)
                 .addDrawerItems(instrumentsSection, addCityItem, editCitiesItem, settingsItem)
                 .withDrawerWidthDp(250)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
@@ -120,7 +108,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return false;
                 })
                 .withSavedInstance(savedInstState);
-
         if (frameLayoutTablets != null) {
             materialDrawer = drawerBuilder.buildView();
             frameLayoutTablets.addView(materialDrawer.getSlider());
@@ -135,7 +122,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_SELECT_CITY: {
-                    presenter.getCities();
+                    presenter.getCities(true);
                     break;
                 }
             }
@@ -144,8 +131,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void initCitiesInMenu(List<CityEntity> cities, boolean fireOnClick) {
+        Timber.d("Initializing menu");
         CityEntity activeItemTag = null;
-
         if (addedCitiesIds != null) {
             for (int i = 0; i < addedCitiesIds.size(); i++) {
                 materialDrawer.removeItem(addedCitiesIds.get(i));
@@ -156,12 +143,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         addedCitiesIds = new ArrayList<>();
 
         for (int i = 0; i < cities.size(); i++) {
-            PrimaryDrawerItem newCity = new PrimaryDrawerItem()
-                    .withIcon(R.drawable.ic_menu_location)
-                    .withName(cities.get(i).getCityTitle())
+            Timber.d(cities.get(i).getCityTitle() + " " + cities.get(i).isActive());
+            PrimaryDrawerItem newCity = getStandartPrimaryDrawerItem(R.drawable.ic_menu_location, cities.get(i).getCityTitle(), MENU_ADDED_CITY_ID + i)
                     .withTag(cities.get(i))
-                    .withIconTintingEnabled(true)
-                    .withIdentifier(MENU_ADDED_CITY_ID + i)
                     .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                         presenter.openWeatherFragment((CityEntity) drawerItem.getTag());
                         return false;
@@ -172,8 +156,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
             if (cities.get(i).isActive()) {
                 activeItemTag = cities.get(i);
-                if (fireOnClick) Log.e("ActiveItemInit", cities.get(i).getCityTitle());
-                else Log.e("ActiveItemOBSERVER", cities.get(i).getCityTitle());
             }
         }
 
@@ -183,4 +165,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         }
     }
 
+    private PrimaryDrawerItem getStandartPrimaryDrawerItem(int iconId, String name, int id) {
+        return new PrimaryDrawerItem()
+                .withIcon(iconId)
+                .withName(name)
+                .withIdentifier(id)
+                .withIconTintingEnabled(true);
+    }
 }

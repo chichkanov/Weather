@@ -1,11 +1,10 @@
-package dvinc.yamblzhomeproject.ui.base;
+package dvinc.yamblzhomeproject.ui.main;
 /*
  * Created by DV on Space 5 
  * 19.07.2017
  */
 
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -20,28 +19,34 @@ import dvinc.yamblzhomeproject.ui.navigation.NavigationManager;
 import dvinc.yamblzhomeproject.ui.settings.SettingsFragment;
 import dvinc.yamblzhomeproject.ui.weather.WeatherFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
     private CitiesRepository citiesRepository;
 
-    private Disposable menuChangeSubscription;
-    private Disposable menuActiveCity;
     private NavigationManager navigationManager;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     MainPresenter(CitiesRepository citiesRepository) {
         this.citiesRepository = citiesRepository;
-        getCities();
-        observeMenuChanges();
+    }
+
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        getCities(true);
     }
 
     @Override
     public void attachView(MainView view) {
         super.attachView(view);
+        observeMenuChanges();
     }
 
     void setNavigationManager(FragmentManager fragmentManager) {
@@ -49,10 +54,15 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     void openWeatherFragment(CityEntity cityEntity) {
-        menuActiveCity = citiesRepository.setActiveCity(cityEntity)
+        Timber.d("Open weather fragment called");
+        Disposable disposable = citiesRepository.setActiveCity(cityEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> navigationManager.navigateTo(WeatherFragment.newInstance(cityEntity.getCityTitle())));
+                .subscribe(() -> {
+                    Timber.d("Navigating to weather fragment");
+                    navigationManager.navigateTo(WeatherFragment.newInstance(cityEntity.getCityTitle()));
+                });
+        compositeDisposable.addAll(disposable);
     }
 
     void openSettingsFragment() {
@@ -63,32 +73,32 @@ public class MainPresenter extends MvpPresenter<MainView> {
         navigationManager.navigateTo(EditCitiesFragment.newInstance());
     }
 
-    void getCities() {
-        menuChangeSubscription = citiesRepository.getMenuItems()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next -> getViewState().initCitiesInMenu(next, true));
-    }
-
     private void observeMenuChanges() {
-        menuChangeSubscription = citiesRepository.updateMenu()
+        Disposable disposable = citiesRepository.updateMenu()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> {
-                    Log.i("MENU", "changed");
+                    Timber.d("Cities loaded");
                     getViewState().initCitiesInMenu(next, false);
                 });
+        compositeDisposable.add(disposable);
+    }
+
+    void getCities(boolean fireOnClick) {
+        Disposable disposable = citiesRepository.getMenuItems()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next -> {
+                    Timber.d("Cities loaded");
+                    getViewState().initCitiesInMenu(next, fireOnClick);
+                });
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void detachView(MainView view) {
         super.detachView(view);
-        if (menuChangeSubscription != null) {
-            menuChangeSubscription.dispose();
-        }
-        if (menuActiveCity != null) {
-            menuActiveCity.dispose();
-        }
+        compositeDisposable.clear();
     }
 
 }

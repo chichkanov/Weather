@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.base.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <!-- Horizontal Linear Layout to display the Drawer on the left,
      and the app's contents on the right.-->

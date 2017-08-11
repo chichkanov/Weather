@@ -1,8 +1,6 @@
 package dvinc.yamblzhomeproject.ui.weather;
 
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -15,6 +13,7 @@ import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
@@ -30,19 +29,25 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     }
 
     @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        getWeather();
+    }
+
+    @Override
     public void attachView(WeatherView view) {
         super.attachView(view);
         getViewState().showCityName();
     }
 
     void getWeather() {
-        Log.i("WeatherPresenter", "StartLoading");
+        Timber.d("Start loading weather");
         getViewState().showLoading();
         dataSubscription = repository.getWeatherData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(next -> {
-                            Log.i("LoadWeather", "Success");
+                            Timber.d("Weather Loaded");
                             getViewState().updateWeatherCurrent(next.getCurrentWeather());
                             getViewState().updateWeatherHourly(next.getHourWeather());
                             getViewState().updateWeatherDaily(next.getDayWeather());
@@ -50,7 +55,7 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                         },
                         error -> {
                             getViewState().hideLoading();
-                            Log.e("Error", error.getMessage());
+                            Timber.e("Weather error");
                             getViewState().showError();
                         }, () -> getViewState().hideLoading());
     }
@@ -58,7 +63,6 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     @Override
     public void detachView(WeatherView view) {
         super.detachView(view);
-        Log.i("WeatherPresenter", "DetachView");
         if (dataSubscription != null) {
             dataSubscription.dispose();
         }

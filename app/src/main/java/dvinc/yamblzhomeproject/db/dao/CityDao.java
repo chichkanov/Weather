@@ -29,12 +29,9 @@ public interface CityDao {
     @Update
     void updateCity(CityEntity cityEntity);
 
-    @Query("SELECT * FROM cities WHERE cityId LIKE :cityId LIMIT 1")
-    CityEntity getCityWithId(String cityId);
-
-    @Query("SELECT * FROM cities WHERE isActive IS 1 LIMIT 1")
+    @Query("SELECT * FROM cities WHERE isActive IS 1")
     CityEntity getActiveCity();
 
-    @Query("SELECT * FROM cities WHERE isActive IS 1 LIMIT 1")
+    @Query("SELECT * FROM cities WHERE isActive IS 1")
     Flowable<CityEntity> getActiveCityFlowable();
 }

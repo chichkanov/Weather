@@ -46,6 +46,7 @@ class EditCitiesAdapter extends RecyclerView.Adapter<EditCitiesAdapter.Holder> {
         int position = dataset.indexOf(cityEntity);
         dataset.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, dataset.size());
     }
 
     void setDataset(List<CityEntity> items) {
@@ -69,6 +70,7 @@ class EditCitiesAdapter extends RecyclerView.Adapter<EditCitiesAdapter.Holder> {
             ibClear.setOnClickListener(l -> {
                 if (listener != null) {
                     listener.onItemRemoveClick(getAdapterPosition());
+                    ibClear.setClickable(false);
                 }
             });
         }
