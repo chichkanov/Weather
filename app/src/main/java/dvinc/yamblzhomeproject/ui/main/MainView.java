@@ -5,14 +5,14 @@ package dvinc.yamblzhomeproject.ui.main;
  */
 
 import com.arellomobile.mvp.MvpView;
-import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 import java.util.List;
 
 import dvinc.yamblzhomeproject.db.entities.CityEntity;
 
-@StateStrategyType(AddToEndSingleStrategy.class)
+@StateStrategyType(SkipStrategy.class)
 interface MainView extends MvpView {
 
     void initCitiesInMenu(List<CityEntity> cities, boolean fireOnClick);

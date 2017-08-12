@@ -106,9 +106,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
         compositeDisposable.add(disposable);
     }
 
+
     @Override
-    public void detachView(MainView view) {
-        super.detachView(view);
+    public void onDestroy() {
+        super.onDestroy();
         compositeDisposable.clear();
     }
 }

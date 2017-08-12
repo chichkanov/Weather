@@ -136,40 +136,51 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void initCitiesInMenu(List<CityEntity> cities, boolean fireOnClick) {
         Timber.d("Initializing menu");
-        CityEntity activeItemTag = null;
+        removeOldItems();
+        CityEntity activeItemTag = addNewItemsAndReturnActive(cities);
+        selectActiveItem(activeItemTag, fireOnClick);
+        if (fireOnClick && cities.isEmpty()) {
+            presenter.openAddCityActivity(this, new Intent(this, SelectCityActivity.class), REQUEST_CODE_SELECT_CITY);
+        }
+    }
+
+    private void removeOldItems() {
         if (addedCitiesIds != null) {
             for (int i = 0; i < addedCitiesIds.size(); i++) {
                 materialDrawer.removeItem(addedCitiesIds.get(i));
             }
             addedCitiesIds.clear();
         }
+    }
 
+    private CityEntity addNewItemsAndReturnActive(List<CityEntity> cities) {
+        CityEntity activeItemTag = null;
         addedCitiesIds = new ArrayList<>();
-
         for (int i = 0; i < cities.size(); i++) {
             Timber.d(cities.get(i).getCityTitle() + " " + cities.get(i).isActive());
-            PrimaryDrawerItem newCity = getStandartPrimaryDrawerItem(R.drawable.ic_menu_location, cities.get(i).getCityTitle(), MENU_ADDED_CITY_ID + i)
-                    .withTag(cities.get(i))
-                    .withOnDrawerItemClickListener((view, position, drawerItem) -> {
-                        presenter.openWeatherFragment((CityEntity) drawerItem.getTag());
-                        return false;
-                    });
-
+            PrimaryDrawerItem newCity = getCityPrimaryDrawerItem(cities.get(i), cities.get(i).getCityTitle(), MENU_ADDED_CITY_ID + i);
             addedCitiesIds.add(MENU_ADDED_CITY_ID + i);
             materialDrawer.addItemAtPosition(newCity, 0);
-
             if (cities.get(i).isActive()) {
                 activeItemTag = cities.get(i);
             }
         }
+        return activeItemTag;
+    }
 
+    private PrimaryDrawerItem getCityPrimaryDrawerItem(CityEntity tag, String cityTitle, int id) {
+        return getStandartPrimaryDrawerItem(R.drawable.ic_menu_location, cityTitle, id)
+                .withTag(tag)
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    presenter.openWeatherFragment((CityEntity) drawerItem.getTag());
+                    return false;
+                });
+    }
+
+    private void selectActiveItem(CityEntity activeItemTag, boolean fireOnClick) {
         if (activeItemTag != null) {
             IDrawerItem activeItem = materialDrawer.getDrawerItem(activeItemTag);
             materialDrawer.setSelection(activeItem, fireOnClick);
-        }
-
-        if (fireOnClick && cities.isEmpty()) {
-            presenter.openAddCityActivity(this, new Intent(this, SelectCityActivity.class), REQUEST_CODE_SELECT_CITY);
         }
     }
 

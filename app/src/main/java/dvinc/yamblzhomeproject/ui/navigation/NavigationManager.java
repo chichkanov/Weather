@@ -19,12 +19,12 @@ public class NavigationManager {
     public void navigateTo(Fragment fragment) {
         fragmentManager
                 .beginTransaction()
-                .replace(containerId, fragment)
+                .replace(containerId, fragment, fragment.getClass().getName())
                 .commit();
+
     }
 
     public void navigateTo(MvpAppCompatActivity from, Intent intent, int requestCode){
         from.startActivityForResult(intent, requestCode);
     }
-
 }
