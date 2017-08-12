@@ -30,17 +30,6 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
         this.repository = selectCityRepository;
     }
 
-    @Override
-    public void detachView(SelectCityView view) {
-        super.detachView(view);
-        if (subscriptionPlace != null) {
-            subscriptionPlace.dispose();
-        }
-        if (subscriptionPlaceCoords != null) {
-            subscriptionPlaceCoords.dispose();
-        }
-    }
-
     void setObservable(Observable<CharSequence> observable) {
         subscriptionPlace = observable
                 .subscribeOn(Schedulers.io())
@@ -61,6 +50,17 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> getViewState().goToWeather(), error -> getViewState().showError()));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (subscriptionPlace != null) {
+            subscriptionPlace.dispose();
+        }
+        if (subscriptionPlaceCoords != null) {
+            subscriptionPlaceCoords.dispose();
+        }
     }
 
     void clearButtonCLicked(String text) {

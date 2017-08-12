@@ -42,8 +42,8 @@ public class EditCitiesPresenter extends MvpPresenter<EditCitiesView> {
     }
 
     @Override
-    public void detachView(EditCitiesView view) {
-        super.detachView(view);
+    public void destroyView(EditCitiesView view) {
+        super.destroyView(view);
         if (citiesListSubscription != null) {
             citiesListSubscription.dispose();
         }

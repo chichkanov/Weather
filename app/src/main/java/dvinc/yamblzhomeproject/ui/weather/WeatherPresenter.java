@@ -61,8 +61,8 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     }
 
     @Override
-    public void detachView(WeatherView view) {
-        super.detachView(view);
+    public void onDestroy() {
+        super.onDestroy();
         if (dataSubscription != null) {
             dataSubscription.dispose();
         }
