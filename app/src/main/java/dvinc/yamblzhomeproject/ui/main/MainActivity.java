@@ -136,6 +136,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void initCitiesInMenu(List<CityEntity> cities, boolean fireOnClick) {
         Timber.d("Initializing menu");
+        if (cities.size() == 0) {
+            presenter.openAddCityActivity(this, new Intent(this, SelectCityActivity.class), REQUEST_CODE_SELECT_CITY);
+            return;
+        }
         removeOldItems();
         CityEntity activeItemTag = addNewItemsAndReturnActive(cities);
         selectActiveItem(activeItemTag, fireOnClick);
