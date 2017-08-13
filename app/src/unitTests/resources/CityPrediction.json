@@ -1,0 +1,206 @@
+{
+  "predictions": [
+    {
+      "description": "Moscow, Russia",
+      "id": "1a0f08fcbc047354782f00ab52e66fb56d1aadf7",
+      "matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJybDUc_xKtUYRTM9XV8zWRD0",
+      "reference": "CjQmAAAAFhRKkusvjr0t9gwlLutvVZA8XO1DR5ePYMS1Wh2uOHfZjs-JqwVN20MmJpIemIj1EhD_1fS4M4AcqBvDqWOYyAwUGhTO0-SvwK3s9sQHjGZMuw7tP_AvyQ",
+      "structured_formatting": {
+        "main_text": "Moscow",
+        "main_text_matched_substrings": [
+          {
+            "length": 6,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "Russia"
+      },
+      "terms": [
+        {
+          "value": "Moscow",
+          "offset": 0
+        },
+        {
+          "value": "Russia",
+          "offset": 8
+        }
+      ],
+      "types": [
+        "locality",
+        "political",
+        "geocode"
+      ]
+    },
+    {
+      "description": "Moscow, ID, United States",
+      "id": "a16063c08a41483bd41106ff095008f0b86b6a12",
+      "matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJ0WHAIi0hoFQRbK3q5g0V_T4",
+      "reference": "CkQxAAAADMHcg84pPaqeTs-DaYLa1YWapb5sAzX4ZI6neO5_xe8seqpgm9GW4E8x3qlPtVLvzShfHHnyaTBgj5W50poe8BIQMSrYhHS-jsqyJadgy3RbihoUahsFn-tWwa4vDXbOn8k6bMA3w2g",
+      "structured_formatting": {
+        "main_text": "Moscow",
+        "main_text_matched_substrings": [
+          {
+            "length": 6,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "ID, United States"
+      },
+      "terms": [
+        {
+          "value": "Moscow",
+          "offset": 0
+        },
+        {
+          "value": "ID",
+          "offset": 8
+        },
+        {
+          "value": "United States",
+          "offset": 12
+        }
+      ],
+      "types": [
+        "locality",
+        "political",
+        "geocode"
+      ]
+    },
+    {
+      "description": "Moscow Mills, MO, United States",
+      "id": "df45f8865e9164273279e10d38efacd0d215d051",
+      "matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJA280k5i_3ocRe-IAInh_ilY",
+      "reference": "CkQ3AAAAVLRVniQ8pIyiecSSL6LofLpCJQAxwlsrXOT0R9nlJaIoUk01m5O5XQq9klcHbvrOZynDAnoTZRJ7D-8TkVag6BIQnfh7hDZlGcscMp8gGHe2MhoUj4tp5CcaTQssxAUzUmQvUpHjOwA",
+      "structured_formatting": {
+        "main_text": "Moscow Mills",
+        "main_text_matched_substrings": [
+          {
+            "length": 6,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "MO, United States"
+      },
+      "terms": [
+        {
+          "value": "Moscow Mills",
+          "offset": 0
+        },
+        {
+          "value": "MO",
+          "offset": 14
+        },
+        {
+          "value": "United States",
+          "offset": 18
+        }
+      ],
+      "types": [
+        "locality",
+        "political",
+        "geocode"
+      ]
+    },
+    {
+      "description": "Moscow, PA, United States",
+      "id": "e59cddca5a7bc807bef3e73323305a40a31b4d75",
+      "matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJDaDKkrXCxIkR16VXi1WamHU",
+      "reference": "CkQxAAAAuthjSthsAG3YPWXszLd6GIcg5V-iHs4RAOWXV1aHz-sYIS2mwLwiJOYHHerOxatNNeou90Tnn9ZfbWKlFF9qkBIQT0gFydzn3XQ2LYfC89Iv7BoUxTKFyxIq-c0h0qtGM5ruNHv5048",
+      "structured_formatting": {
+        "main_text": "Moscow",
+        "main_text_matched_substrings": [
+          {
+            "length": 6,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "PA, United States"
+      },
+      "terms": [
+        {
+          "value": "Moscow",
+          "offset": 0
+        },
+        {
+          "value": "PA",
+          "offset": 8
+        },
+        {
+          "value": "United States",
+          "offset": 12
+        }
+      ],
+      "types": [
+        "locality",
+        "political",
+        "geocode"
+      ]
+    },
+    {
+      "description": "Moscow, TN, United States",
+      "id": "71c4e3872e9cc2e3f6464b4a44857e721a782197",
+      "matched_substrings": [
+        {
+          "length": 6,
+          "offset": 0
+        }
+      ],
+      "place_id": "ChIJqTBezspSfogRRikRdHsBYOU",
+      "reference": "CkQxAAAAaRJYQJ_4kFCZZp-cBVfZrRYy0Sx5xF1N2Da4FqQhKiGdha15NIhZ36gbunMnskEHk5NhGed2sPBwIcCwl34DrBIQ2-T4yDVb0cunwDYmhscMTBoUN4DDKUNDiHd6WxW7fHI64Vxz5uU",
+      "structured_formatting": {
+        "main_text": "Moscow",
+        "main_text_matched_substrings": [
+          {
+            "length": 6,
+            "offset": 0
+          }
+        ],
+        "secondary_text": "TN, United States"
+      },
+      "terms": [
+        {
+          "value": "Moscow",
+          "offset": 0
+        },
+        {
+          "value": "TN",
+          "offset": 8
+        },
+        {
+          "value": "United States",
+          "offset": 12
+        }
+      ],
+      "types": [
+        "locality",
+        "political",
+        "geocode"
+      ]
+    }
+  ],
+  "status": "OK"
+}

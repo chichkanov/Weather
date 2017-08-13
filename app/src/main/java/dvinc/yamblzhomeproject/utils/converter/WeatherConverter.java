@@ -27,7 +27,7 @@ public class WeatherConverter implements SharedPreferences.OnSharedPreferenceCha
     private String pressureValue;
 
     @Inject
-    WeatherConverter(Context context) {
+    public WeatherConverter(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -135,5 +135,17 @@ public class WeatherConverter implements SharedPreferences.OnSharedPreferenceCha
 
     public String getPressureValue() {
         return pressureValue;
+    }
+
+    public void setTempValue(String tempValue) {
+        this.tempValue = tempValue;
+    }
+
+    public void setWindValue(String windValue) {
+        this.windValue = windValue;
+    }
+
+    public void setPressureValue(String pressureValue) {
+        this.pressureValue = pressureValue;
     }
 }

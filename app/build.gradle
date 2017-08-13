@@ -59,6 +59,11 @@ android {
         // Unit tests live in src/unitTest.
         test.java.srcDir 'src/unitTests/java'
         androidTest.setRoot('src/androidTest')
+        test.resources.srcDirs += 'src/unitTests/resources'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 

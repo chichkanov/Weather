@@ -3,87 +3,117 @@ package dvinc.yamblzhomeproject.ui.weather;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+
+import dvinc.yamblzhomeproject.R;
+import dvinc.yamblzhomeproject.data.model.predictions.predictionInfo.Location;
 import dvinc.yamblzhomeproject.data.model.weather.WeatherCombiner;
-import dvinc.yamblzhomeproject.data.model.weather.current.WeatherResponse;
+import dvinc.yamblzhomeproject.data.repository.CitiesRepositoryImpl;
 import dvinc.yamblzhomeproject.data.repository.WeatherRepositoryImpl;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
+import dvinc.yamblzhomeproject.data.uiModel.CurrentWeatherUi;
+import dvinc.yamblzhomeproject.db.entities.CityEntity;
+import dvinc.yamblzhomeproject.ui.BaseTestPresenter;
+import dvinc.yamblzhomeproject.utils.converter.ConverterValues;
+import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
+import io.reactivex.Flowable;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-public class WeatherPresenterTest {
+@RunWith(MockitoJUnitRunner.class)
+public class WeatherPresenterTest extends BaseTestPresenter{
 
     @Mock
-    WeatherView$$State weatherViewState;
+    WeatherRepositoryImpl weatherRepository;
     @Mock
-    WeatherRepositoryImpl repository;
+    WeatherConverter weatherConverter;
+    @Mock
+    CitiesRepositoryImpl citiesRepository;
 
-    private WeatherPresenter presenter;
+    @Mock
+    WeatherView$$State view;
+
+    @InjectMocks
+    WeatherPresenter weatherPresenter;
+
+    private CityEntity cityEntity;
 
     @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        presenter.setViewState(weatherViewState);
-
-        RxAndroidPlugins.setMainThreadSchedulerHandler(v -> Schedulers.trampoline());
-        RxJavaPlugins.setIoSchedulerHandler(v -> Schedulers.trampoline());
+    public void setUp(){
+        super.setUp();
+        cityEntity = new CityEntity(new Location(12, 12), "id", "ke", true);
+        weatherPresenter.setViewState(view);
     }
 
     @Test
-    public void shouldLoadAndShowWeatherWhenNetworkOnAndCacheExist() {
-        WeatherResponse response = mock(WeatherResponse.class);
-        WeatherCombiner response2 = mock(WeatherCombiner.class);
-        Observable<WeatherResponse> db = Observable.just(response);
-        Observable<WeatherCombiner> api = Observable.just(response2);
+    public void shouldShowWeatherWhenNetworkOkay(){
+        WeatherCombiner weatherCombiner = new WeatherCombiner(new CurrentWeatherUi(), new ArrayList<>(), new ArrayList<>());
+        weatherCombiner.setUpdatedTime(10000);
 
-        //when(repository.getData()).thenReturn(api);
-        presenter.getWeather();
+        when(weatherRepository.getWeatherData(cityEntity)).thenReturn(Flowable.just(weatherCombiner));
+        weatherPresenter.getWeather(cityEntity);
 
-        //verify(repository).getData();
-        verify(weatherViewState).updateWeatherDaily(any());
+        verify(view, times(1)).showLoading();
+        verify(view, times(1)).updateLastUpdateTime(10000);
+        verify(view, times(1)).updateWeatherCurrent(weatherCombiner.getCurrentWeather());
+        verify(view, times(1)).updateWeatherDaily(weatherCombiner.getDayWeather());
+        verify(view, times(1)).updateWeatherHourly(weatherCombiner.getHourWeather());
+        verify(view, times(1)).hideLoading();
     }
 
     @Test
-    public void shouldNotCrashOnFirstStartWithoutInternet() {
-        Observable<WeatherCombiner> api = Observable.error(new Throwable());
+    public void shouldShowErrorWhenNetworkOkay(){
+        when(weatherRepository.getWeatherData(cityEntity)).thenReturn(Flowable.error(new Throwable()));
+        weatherPresenter.getWeather(cityEntity);
 
-        //when(repository.getData()).thenReturn(api);
-        presenter.getWeather();
-
-        //verify(repository).getData();
-        verify(weatherViewState).showError();
+        verify(view, times(1)).showLoading();
+        verify(view, times(1)).showError();
+        verify(view, times(1)).showError();
     }
 
     @Test
-    public void shouldShowErrorWhenNetworkError() {
-        //when(repository.getData()).thenReturn(Observable.error(new Throwable()));
-
-        presenter.getWeather();
-
-        //verify(repository).getData();
-        verify(weatherViewState, only()).showError();
+    public void shouldReturnCorrectWindSpeedUnitTextForKm(){
+        when(weatherConverter.getWindValue()).thenReturn(ConverterValues.WIND_SPEED_KMH);
+        assertEquals(weatherPresenter.getWindSpeedUnitText(), R.string.weather_wind_speed_km);
     }
 
     @Test
-    public void shouldNotCrashWhenViewDetached(){
-        //when(repository.getData()).thenReturn(Observable.error(new Throwable()));
+    public void shouldReturnCorrectWindSpeedUnitTextForMiles(){
+        when(weatherConverter.getWindValue()).thenReturn(ConverterValues.WIND_SPEED_MILESH);
+        assertEquals(weatherPresenter.getWindSpeedUnitText(), R.string.weather_wind_speed_miles);
+    }
 
-        presenter.getWeather();
-        presenter.detachView(weatherViewState);
-        presenter.destroyView(weatherViewState);
+    @Test
+    public void shouldReturnCorrectWindSpeedUnitTextForMetres(){
+        when(weatherConverter.getWindValue()).thenReturn("defaultValue");
+        assertEquals(weatherPresenter.getWindSpeedUnitText(), R.string.weather_wind_speed_metr);
+    }
 
-        verify(weatherViewState).showError();
+
+    @Test
+    public void shouldReturnCorrectPressureUnitTextForMmHg(){
+        when(weatherConverter.getPressureValue()).thenReturn(ConverterValues.PRESSURE_MM);
+        assertEquals(weatherPresenter.getPressureUnitText(), R.string.weather_pressure_mm);
+    }
+
+    @Test
+    public void shouldReturnCorrectPressureUnitTextForHpa(){
+        when(weatherConverter.getPressureValue()).thenReturn("defaultValue");
+        assertEquals(weatherPresenter.getPressureUnitText(), R.string.weather_pressure_hpa);
+    }
+
+    @Test
+    public void testFirstAttachAndGotErrorCity(){
+        CityEntity cityEntity = new CityEntity(new Location(12, 12), "id", "ke", true);
+        when(citiesRepository.getActiveCity()).thenReturn(Flowable.error(new Throwable()));
+        weatherPresenter.onFirstViewAttach();
+        verify(view).showError();
     }
 
 }

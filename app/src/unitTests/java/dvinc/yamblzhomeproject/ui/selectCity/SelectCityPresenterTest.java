@@ -3,87 +3,59 @@ package dvinc.yamblzhomeproject.ui.selectCity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import dvinc.yamblzhomeproject.data.model.predictions.CityPrediction;
-import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 import dvinc.yamblzhomeproject.data.model.predictions.predictionInfo.PlaceInfoResponse;
 import dvinc.yamblzhomeproject.data.repository.SelectCityRepositoryImpl;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
+import dvinc.yamblzhomeproject.ui.BaseTestPresenter;
+import dvinc.yamblzhomeproject.utils.FileLoader;
+import io.reactivex.Single;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-public class SelectCityPresenterTest {
+@RunWith(MockitoJUnitRunner.class)
+public class SelectCityPresenterTest extends BaseTestPresenter {
 
     @Mock
-    private SelectCityRepositoryImpl repository;
-    @Mock
-    private SelectCityView$$State selectCityViewState;
+    SelectCityRepositoryImpl selectCityRepository;
 
-    private SelectCityPresenter presenter;
+    @Mock
+    SelectCityView$$State view;
+
+    @InjectMocks
+    SelectCityPresenter presenter;
+
+    private FileLoader fileLoader = new FileLoader();
 
     @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-/*
-        presenter = new SelectCityPresenter();
-*/
-        presenter.setViewState(selectCityViewState);
-
-        RxAndroidPlugins.setMainThreadSchedulerHandler(v -> Schedulers.trampoline());
-        RxJavaPlugins.setIoSchedulerHandler(v -> Schedulers.trampoline());
+    public void setUp() {
+        super.setUp();
+        presenter.setViewState(view);
     }
 
     @Test
-    public void shouldShowLoadAndShowDataWhenNetworkOn() {
-        when(repository.getPrediction(anyString())).thenReturn(Observable.just(new CityPrediction()));
-        presenter.setObservable(Observable.just("Any city"));
-
-        verify(repository).getPrediction(anyString());
-        verify(selectCityViewState).showList(any());
-        verify(selectCityViewState, never()).showError();
+    public void checkCitySelected() {
+        PlaceInfoResponse placeInfoResponse = fileLoader.loadTestData("PlaceInfoResponse.json", PlaceInfoResponse.class);
+        CityPrediction cityPrediction = fileLoader.loadTestData("CityPrediction.json", CityPrediction.class);
+        when(selectCityRepository.getPredictionCoord("ChIJybDUc_xKtUYRTM9XV8zWRD0")).thenReturn(Single.just(placeInfoResponse));
+        presenter.citySelected(cityPrediction.getPredictions().get(0));
     }
 
     @Test
-    public void shouldShowShowErrorWhenSomethingWrong() {
-        when(repository.getPrediction(anyString())).thenReturn(Observable.error(new Throwable()));
-        presenter.setObservable(Observable.just("Any city"));
-
-        verify(repository).getPrediction(anyString());
-        verify(selectCityViewState).showError();
+    public void checkClearButtonClear() {
+        presenter.clearButtonCLicked("Text");
+        verify(view, only()).clearText();
     }
 
     @Test
-    public void shouldAskForPlaceInfo() {
-        Observable<PlaceInfoResponse> info = Observable.just(mock(PlaceInfoResponse.class));
-
-        //when(repository.getPredictionCoord(any())).thenReturn(info);
-        presenter.citySelected(new Prediction());
-
-        verify(repository).getPredictionCoord(any());
+    public void checkClearButtonSwitchScreen() {
+        presenter.clearButtonCLicked("");
+        verify(view, only()).goToWeather();
     }
-
-    @Test
-    public void shouldNotCrashWhenViewDetached(){
-        when(repository.getPrediction(anyString())).thenReturn(Observable.error(new Throwable()));
-        presenter.setObservable(Observable.just("Any city"));
-
-        presenter.detachView(selectCityViewState);
-        presenter.destroyView(selectCityViewState);
-
-        verify(selectCityViewState).showError();
-    }
-
 
 }
