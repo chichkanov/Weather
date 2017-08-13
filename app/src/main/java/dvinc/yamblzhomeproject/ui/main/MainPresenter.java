@@ -52,7 +52,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
         observeMenuChanges();
     }
 
-    void setNavigationManager(FragmentManager fragmentManager) {
+    public void setNavigationManager(FragmentManager fragmentManager) {
         navigationManager = new NavigationManager(fragmentManager, R.id.fragmentContainer);
     }
 
@@ -76,7 +76,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
         navigationManager.navigateTo(SettingsFragment.newInstance());
     }
 
-    void openEditCitiesFragment() {
+    public void openEditCitiesFragment() {
         navigationManager.navigateTo(EditCitiesFragment.newInstance());
     }
 

@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_city_et"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:background="@drawable/border_city_et">
 
         <EditText
             android:id="@+id/et_select_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/ib_select_city_clear"
-            android:gravity="center_vertical"
             android:background="@color/transparent"
-            android:padding="10dp"
-            tools:text="testtesttesttesttesttesttesttesttesttestte"
+            android:gravity="center_vertical"
             android:hint="@string/select_city_hint"
             android:maxLines="1"
-            android:textSize="18sp" />
+            android:padding="10dp"
+            android:textSize="18sp"
+            tools:text="testtesttesttesttesttesttesttesttesttestte" />
 
         <ImageButton
             android:id="@+id/ib_select_city_clear"
@@ -40,5 +40,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_select_city"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/logo_yandex" />
 </LinearLayout>

@@ -7,10 +7,12 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+        classpath "com.dicedmelon.gradle:jacoco-android:$rootProject.jacoco_version"
     }
 }
 
@@ -21,6 +23,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 26
@@ -34,6 +37,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+    productFlavors {
+        free {}
+        paid {}
+    }
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
@@ -44,6 +51,7 @@ android {
     }
     buildTypes {
         release {
+            testCoverageEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -52,8 +60,8 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     sourceSets {
         // Unit tests live in src/unitTest.
@@ -133,4 +141,10 @@ dependencies {
     compile "com.github.curioustechizen.android-ago:library:$rootProject.android_ago_version"
     compile "com.jakewharton.timber:timber:$rootProject.timber_version"
 
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 }

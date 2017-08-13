@@ -45,7 +45,7 @@ public class SelectCityActivity extends MvpAppCompatActivity implements SelectCi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_city_select);
+        setContentView(R.layout.activity_city_select);
         ButterKnife.bind(this);
 
         setCityNameObservable();
