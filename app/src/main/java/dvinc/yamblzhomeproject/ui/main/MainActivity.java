@@ -126,7 +126,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_SELECT_CITY: {
-                    presenter.getCities(true);
+                    presenter.onNewCityAdded();
                     break;
                 }
             }

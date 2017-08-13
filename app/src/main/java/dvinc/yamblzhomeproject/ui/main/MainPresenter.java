@@ -43,7 +43,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getCities(true);
+        navigationManager.navigateTo(WeatherFragment.newInstance());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     Timber.d("Navigating to weather fragment");
-                    navigationManager.navigateTo(WeatherFragment.newInstance(cityEntity.getCityTitle()));
+                    navigationManager.navigateTo(WeatherFragment.newInstance());
                 });
         compositeDisposable.addAll(disposable);
     }
@@ -95,21 +95,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
         compositeDisposable.add(disposable);
     }
 
-    void getCities(boolean fireOnClick) {
-        Disposable disposable = citiesRepository.getMenuItems()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next -> {
-                    Timber.d("Cities loaded");
-                    getViewState().initCitiesInMenu(next, fireOnClick);
-                });
-        compositeDisposable.add(disposable);
-    }
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Timber.e("Destroyed");
         compositeDisposable.clear();
+    }
+
+    void onNewCityAdded() {
+        navigationManager.navigateTo(WeatherFragment.newInstance());
     }
 }

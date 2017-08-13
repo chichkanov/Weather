@@ -42,7 +42,7 @@ public class CitiesRepositoryImpl implements CitiesRepository {
     public Completable setActiveCity(CityEntity cityEntity) {
         return Completable.fromAction(() -> {
             CityEntity prevActive = appDatabase.cityDao().getActiveCity();
-            if (prevActive != null) {
+            if (prevActive != null && !prevActive.getCityId().equals(cityEntity.getCityId())) {
                 prevActive.setActive(false);
                 Timber.d("Previous active city: %s", prevActive.getCityTitle());
                 appDatabase.cityDao().updateCity(prevActive);
@@ -51,5 +51,10 @@ public class CitiesRepositoryImpl implements CitiesRepository {
             cityEntity.setActive(true);
             appDatabase.cityDao().updateCity(cityEntity);
         });
+    }
+
+    @Override
+    public Flowable<CityEntity> getActiveCity() {
+        return appDatabase.cityDao().getActiveCityFlowable();
     }
 }

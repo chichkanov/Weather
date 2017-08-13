@@ -16,4 +16,6 @@ public interface CitiesRepository {
     Single<List<CityEntity>> getMenuItems();
 
     Completable setActiveCity(CityEntity cityEntity);
+
+    Flowable<CityEntity> getActiveCity();
 }

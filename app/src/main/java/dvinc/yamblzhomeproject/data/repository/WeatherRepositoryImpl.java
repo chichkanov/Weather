@@ -21,7 +21,6 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import timber.log.Timber;
 
 public class WeatherRepositoryImpl implements WeatherRepository {
 
@@ -31,7 +30,6 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     private WeatherApi weatherApi;
     private AppDatabase database;
-    private CityEntity cityEntity;
     private WeatherMapper weatherMapper;
     private WeatherConverter weatherConverter;
 
@@ -40,43 +38,40 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         this.database = appDatabase;
         this.weatherMapper = weatherMapper;
         this.weatherConverter = weatherConverter;
-
-        this.database.cityDao().getActiveCityFlowable()
-                .subscribe(next -> {
-                    this.cityEntity = next;
-                    Timber.d("Current city in weather is %s", cityEntity.getCityTitle());
-                });
     }
 
     @Override
-    public Flowable<WeatherCombiner> getWeatherData() {
-        return Maybe.concat(getWeatherFromDb(), getWeatherFromApi().toMaybe());
+    public Flowable<WeatherCombiner> getWeatherData(CityEntity cityEntity) {
+        return Maybe.concat(getWeatherFromDb(cityEntity), getWeatherFromApi(cityEntity).toMaybe());
     }
 
     @Override
-    public Single<List<DailyWeatherUi>> getDailyForecast() {
+    public Single<List<DailyWeatherUi>> getDailyForecast(CityEntity cityEntity) {
         return weatherApi.getDailyForecast(String.valueOf(cityEntity.getLocation().getLatitude()),
                 String.valueOf(cityEntity.getLocation().getLongitude()), API_KEY, WeatherUtils.getLocale(), AMOUNT_OF_ELEMENTS_IN_DAILY_FORECAST)
                 .map(weather -> weatherMapper.transformDailyWeather(weather));
     }
 
     @Override
-    public Single<List<HourlyWeatherUi>> getHourlyForecast() {
+    public Single<List<HourlyWeatherUi>> getHourlyForecast(CityEntity cityEntity) {
         return weatherApi.getHourForecast(String.valueOf(cityEntity.getLocation().getLatitude()),
                 String.valueOf(cityEntity.getLocation().getLongitude()), API_KEY, WeatherUtils.getLocale(), AMOUNT_OF_ELEMENTS_IN_HOUR_FORECAST)
                 .map(weather -> weatherMapper.transformHourWeather(weather));
     }
 
     @Override
-    public Single<CurrentWeatherUi> getCurrentWeather() {
+    public Single<CurrentWeatherUi> getCurrentWeather(CityEntity cityEntity) {
         return weatherApi.getCurrentWeather(String.valueOf(cityEntity.getLocation().getLatitude()),
                 String.valueOf(cityEntity.getLocation().getLongitude()), API_KEY, WeatherUtils.getLocale())
                 .map(weather -> weatherMapper.transformCurrentWeather(weather));
     }
 
     @Override
-    public Single<WeatherCombiner> getWeatherFromApi() {
-        return Single.zip(getCurrentWeather(), getHourlyForecast(), getDailyForecast(), WeatherCombiner::new)
+    public Single<WeatherCombiner> getWeatherFromApi(CityEntity cityEntity) {
+        return Single.zip(getCurrentWeather(cityEntity),
+                getHourlyForecast(cityEntity),
+                getDailyForecast(cityEntity),
+                WeatherCombiner::new)
                 .map(mapper -> {
                     mapper.setUpdatedTime(System.currentTimeMillis());
                     database.weatherDao().insertWeather(new WeatherEntity(cityEntity.getCityId(), mapper));
@@ -85,7 +80,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     }
 
     @Override
-    public Maybe<WeatherCombiner> getWeatherFromDb() {
+    public Maybe<WeatherCombiner> getWeatherFromDb(CityEntity cityEntity) {
         return database.weatherDao().getWeatherForCityId(cityEntity.getCityId())
                 .map(weather -> weatherConverter.convert(weather.getWeatherCombiner()));
     }

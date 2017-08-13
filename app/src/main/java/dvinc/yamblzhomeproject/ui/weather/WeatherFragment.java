@@ -74,12 +74,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     private Unbinder unbinder;
 
-    public static WeatherFragment newInstance(String cityName) {
-        WeatherFragment weatherFragment = new WeatherFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(TITLE_KEY, cityName);
-        weatherFragment.setArguments(bundle);
-        return weatherFragment;
+    public static WeatherFragment newInstance() {
+        return new WeatherFragment();
     }
 
     @ProvidePresenter
@@ -161,8 +157,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     }
 
     @Override
-    public void showCityName() {
-        getActivity().setTitle(getArguments().getString(TITLE_KEY, getString(R.string.nav_head_weather)));
+    public void showCityName(String title) {
+        getActivity().setTitle(title);
     }
 
     @Override
@@ -183,6 +179,6 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void onRefresh() {
-        weatherPresenter.getWeather();
+        //weatherPresenter.getWeather();
     }
 }

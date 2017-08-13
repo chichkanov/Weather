@@ -7,10 +7,13 @@ import com.arellomobile.mvp.MvpPresenter;
 import javax.inject.Inject;
 
 import dvinc.yamblzhomeproject.R;
+import dvinc.yamblzhomeproject.data.repository.CitiesRepository;
 import dvinc.yamblzhomeproject.data.repository.WeatherRepository;
+import dvinc.yamblzhomeproject.db.entities.CityEntity;
 import dvinc.yamblzhomeproject.utils.converter.ConverterValues;
 import dvinc.yamblzhomeproject.utils.converter.WeatherConverter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -19,31 +22,38 @@ import timber.log.Timber;
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
     private WeatherRepository repository;
-    private Disposable dataSubscription;
     private WeatherConverter weatherConverter;
+    private CitiesRepository citiesRepository;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
-    public WeatherPresenter(WeatherRepository repository, WeatherConverter weatherConverter) {
+    public WeatherPresenter(WeatherRepository repository, CitiesRepository citiesRepository, WeatherConverter weatherConverter) {
         this.repository = repository;
         this.weatherConverter = weatherConverter;
+        this.citiesRepository = citiesRepository;
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getWeather();
+
+        Disposable disposable = citiesRepository.getActiveCity()
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next -> {
+                    Timber.e("Active is %s", next.getCityTitle());
+                    getWeather(next);
+                }, error -> getViewState().showError());
+
+        compositeDisposable.add(disposable);
     }
 
-    @Override
-    public void attachView(WeatherView view) {
-        super.attachView(view);
-        getViewState().showCityName();
-    }
-
-    void getWeather() {
+    void getWeather(CityEntity cityEntity) {
         Timber.d("Start loading weather");
         getViewState().showLoading();
-        dataSubscription = repository.getWeatherData()
+        Disposable disposable = repository.getWeatherData(cityEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(next -> {
@@ -52,20 +62,21 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                             getViewState().updateWeatherHourly(next.getHourWeather());
                             getViewState().updateWeatherDaily(next.getDayWeather());
                             getViewState().updateLastUpdateTime(next.getUpdatedTime());
+                            getViewState().showCityName(cityEntity.getCityTitle());
                         },
                         error -> {
                             getViewState().hideLoading();
                             Timber.e("Weather error");
                             getViewState().showError();
                         }, () -> getViewState().hideLoading());
+
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (dataSubscription != null) {
-            dataSubscription.dispose();
-        }
+        compositeDisposable.clear();
     }
 
     int getWindSpeedUnitText() {

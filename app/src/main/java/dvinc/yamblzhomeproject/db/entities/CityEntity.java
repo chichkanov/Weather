@@ -65,4 +65,20 @@ public class CityEntity {
         isActive = active;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CityEntity that = (CityEntity) o;
+        return cityId.equals(that.cityId) && cityTitle.equals(that.cityTitle);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cityId.hashCode();
+        result = 31 * result + cityTitle.hashCode();
+        return result;
+    }
 }

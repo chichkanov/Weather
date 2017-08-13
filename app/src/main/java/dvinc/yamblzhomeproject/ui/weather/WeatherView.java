@@ -23,7 +23,7 @@ interface WeatherView extends MvpView {
 
     void updateLastUpdateTime(long date);
 
-    void showCityName();
+    void showCityName(String title);
 
     @StateStrategyType(SkipStrategy.class)
     void showError();
