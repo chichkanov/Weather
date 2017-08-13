@@ -12,9 +12,12 @@ import dvinc.yamblzhomeproject.data.model.predictions.predictionInfo.PlaceInfoRe
 import dvinc.yamblzhomeproject.data.repository.SelectCityRepositoryImpl;
 import dvinc.yamblzhomeproject.ui.BaseTestPresenter;
 import dvinc.yamblzhomeproject.utils.FileLoader;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +39,21 @@ public class SelectCityPresenterTest extends BaseTestPresenter {
     public void setUp() {
         super.setUp();
         presenter.setViewState(view);
+    }
+
+    @Test
+    public void shouldSetObservaableCorrect() {
+        CityPrediction cityPrediction = fileLoader.loadTestData("CityPrediction.json", CityPrediction.class);
+        when(selectCityRepository.getPrediction(anyString())).thenReturn(Observable.just(cityPrediction));
+        presenter.setObservable(Observable.just("Items"));
+        verify(view, times(1)).showList(cityPrediction.getPredictions());
+    }
+
+    @Test
+    public void shouldShowErrorWhenObservaableInCorrect() {
+        when(selectCityRepository.getPrediction(anyString())).thenReturn(Observable.error(new Throwable()));
+        presenter.setObservable(Observable.just("Items"));
+        verify(view).showError();
     }
 
     @Test

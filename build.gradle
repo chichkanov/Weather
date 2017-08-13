@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'org.jacoco:org.jacoco.core:0.7.6.201602180812'
     }
 }
 
@@ -14,7 +15,6 @@ allprojects {
         jcenter()
     }
 }
-
 
 task clean(type: Delete) {
     delete rootProject.buildDir

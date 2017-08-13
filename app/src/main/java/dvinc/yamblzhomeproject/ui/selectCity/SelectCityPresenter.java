@@ -13,6 +13,7 @@ import dvinc.yamblzhomeproject.data.model.predictions.Prediction;
 import dvinc.yamblzhomeproject.data.repository.SelectCityRepository;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -21,8 +22,7 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
 
     private static final int API_CALL_DELAY = 400;
 
-    private Disposable subscriptionPlace;
-    private Disposable subscriptionPlaceCoords;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private SelectCityRepository repository;
 
     @Inject
@@ -31,18 +31,19 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
     }
 
     void setObservable(Observable<CharSequence> observable) {
-        subscriptionPlace = observable
+        Disposable disposable = observable
                 .subscribeOn(Schedulers.io())
                 .debounce(API_CALL_DELAY, TimeUnit.MILLISECONDS)
                 .switchMap(charSequence -> repository.getPrediction(charSequence.toString()).subscribeOn(Schedulers.io()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next -> getViewState().showList(next.getPredictions()),
                         error -> getViewState().showError());
+        compositeDisposable.add(disposable);
     }
 
     void citySelected(Prediction item) {
         Log.i("SelectCity", "City Selected");
-        subscriptionPlaceCoords = repository
+        Disposable disposable = repository
                 .getPredictionCoord(item.getPlaceId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,17 +51,13 @@ public class SelectCityPresenter extends MvpPresenter<SelectCityView> {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> getViewState().goToWeather(), error -> getViewState().showError()));
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (subscriptionPlace != null) {
-            subscriptionPlace.dispose();
-        }
-        if (subscriptionPlaceCoords != null) {
-            subscriptionPlaceCoords.dispose();
-        }
+        compositeDisposable.clear();
     }
 
     void clearButtonCLicked(String text) {
