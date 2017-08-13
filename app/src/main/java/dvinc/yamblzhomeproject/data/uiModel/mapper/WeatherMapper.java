@@ -19,7 +19,7 @@ import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
 public class WeatherMapper {
 
     @Inject
-    WeatherMapper() {
+    public WeatherMapper() {
 
     }
 
