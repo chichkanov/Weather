@@ -1,19 +1,46 @@
 apply plugin: 'com.android.application'
+apply from: '../jacoco.gradle'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'https://maven.google.com' }
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.google.com' }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'jacoco'
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "dvinc.yamblzhomeproject"
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion 15
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    productFlavors {
+        free {}
+        paid {}
     }
     signingConfigs {
         release {
@@ -25,30 +52,105 @@ android {
     }
     buildTypes {
         release {
+            testCoverageEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug { // тип сборки
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        debug {
+            testCoverageEnabled = true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        // Unit tests live in src/unitTest.
+        test.java.srcDir 'src/unitTests/java'
+        androidTest.setRoot('src/androidTest')
+        test.resources.srcDirs += 'src/unitTests/resources'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
         }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+
+    testCompile "junit:junit:$rootProject.junit_version"
+    testCompile "org.mockito:mockito-core:$rootProject.mockito_version"
+    testCompile "org.robolectric:robolectric:$rootProject.robolectric_version"
+    androidTestCompile ("com.android.support.test.espresso:espresso-core:$rootProject.espresso_version",{
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestCompile ('com.android.support.test:runner:0.5'){
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:rules:0.5'){
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile "org.mockito:mockito-android:$rootProject.mockito_version"
+
     compile "com.android.support:appcompat-v7:$rootProject.support_version"
     compile "com.android.support:design:$rootProject.support_version"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
+    compile "com.android.support:preference-v7:$rootProject.support_version"
+    compile "com.android.support:preference-v14:$rootProject.support_version"
+
+    compile "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout_version"
 
     compile "com.jakewharton:butterknife:$rootProject.butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife_version"
+
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.evernote:android-job:1.1.11'
-    compile "com.google.android.gms:play-services-gcm:10.2.6"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.gson_converter_version"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
+
+    compile "com.evernote:android-job:$rootProject.androidjob_version"
+
+    compile "com.google.android.gms:play-services-gcm:$rootProject.services_gcm_version"
+
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroid_version"
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava_version"
+    compile "com.jakewharton.rxbinding2:rxbinding:$rootProject.rxbindings_version"
+
+    compile "com.google.dagger:dagger:$rootProject.dagger2_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2_version"
+    provided "javax.annotation:jsr250-api:$rootProject.javaannotation_version"
+
+    compile "com.arello-mobile:moxy:$rootProject.moxy_version"
+    compile "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
+    annotationProcessor "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
+
+    compile "com.github.pwittchen:weathericonview:$rootProject.weatherviewicon_version"
+
+    compile "android.arch.persistence.room:runtime:$rootProject.room_version"
+    compile "android.arch.persistence.room:rxjava2:$rootProject.room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.room_version"
+
+    compile("com.mikepenz:materialdrawer:$rootProject.material_drawer_version") {
+        transitive = true
+    }
+
+    compile "com.facebook.stetho:stetho:$rootProject.stetho_version"
+
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leak_canary_version"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leak_canary_version"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leak_canary_version"
+
+    compile "com.github.curioustechizen.android-ago:library:$rootProject.android_ago_version"
+    compile "com.jakewharton.timber:timber:$rootProject.timber_version"
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 }

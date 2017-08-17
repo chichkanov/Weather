@@ -4,19 +4,30 @@ package dvinc.yamblzhomeproject.ui.about;
  * 13.07.2017
  */
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import dvinc.yamblzhomeproject.R;
 
-public class AboutFragment extends DialogFragment {
+public class AboutFragment extends Fragment {
 
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.about_dialog_head);
-        builder.setMessage(R.string.about_dialog_decs);
-        return builder.create();
+    public static AboutFragment newInstance() {
+        return new AboutFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_about, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.nav_head_about);
     }
 }

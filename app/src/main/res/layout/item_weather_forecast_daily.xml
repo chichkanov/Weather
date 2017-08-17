@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp">
+
+    <TextView
+        android:id="@+id/tv_item_forecast_daily_date"
+        style="@style/WeatherDailyInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weather_default_value" />
+
+    <ImageView
+        android:id="@+id/weather_icon_item_forecast_daily"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_item_forecast_daily_temp_max"
+        style="@style/WeatherDailyInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@+id/tv_item_forecast_daily_temp_min"
+        android:gravity="left"
+        android:text="@string/weather_default_value"
+        tools:ignore="RelativeOverlap" />
+
+    <TextView
+        android:id="@+id/tv_item_forecast_daily_temp_min"
+        style="@style/WeatherDailyInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:gravity="left"
+        android:text="@string/weather_default_value"
+        android:textColor="@color/md_grey_600" />
+</RelativeLayout>

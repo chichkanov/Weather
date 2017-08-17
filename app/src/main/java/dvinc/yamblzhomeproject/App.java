@@ -5,60 +5,70 @@ package dvinc.yamblzhomeproject;
  */
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.v7.app.AppCompatDelegate;
 
-import com.evernote.android.job.JobManager;
+import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
-import dvinc.yamblzhomeproject.net.RetrofitApi;
-import dvinc.yamblzhomeproject.net.background.BGJobCreator;
-import dvinc.yamblzhomeproject.net.background.BGSyncJob;
-import dvinc.yamblzhomeproject.repository.RepositoryImpl;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import javax.inject.Inject;
+
+import dvinc.yamblzhomeproject.di.AppComponent;
+import dvinc.yamblzhomeproject.di.DaggerAppComponent;
+import dvinc.yamblzhomeproject.di.modules.ApplicationModule;
+import dvinc.yamblzhomeproject.utils.UpdateSettings;
+import timber.log.Timber;
 
 public class App extends Application {
 
-    private Retrofit retrofit;
-    private RetrofitApi api;
-    private static final String BASE_URL = "http://api.openweathermap.org/";
+    private static AppComponent appComponent;
 
-    private RepositoryImpl repositoryImpl;
-
-    public static App get(@NonNull Context context) {
-        return (App) context.getApplicationContext();
-    }
-
-    public RetrofitApi getApi() {
-        return api;
-    }
-
-    public RepositoryImpl getRepositoryImpl(){
-        return repositoryImpl;
-    }
+    @Inject
+    UpdateSettings weatherSettings;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+        initDagger();
+        initTimber();
+        initStetho();
+        initLeakCanary();
+        initAutoUpdate();
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    private void initTimber() {
+        Timber.plant(new Timber.DebugTree());
+    }
+
+    private void initAutoUpdate() {
+        weatherSettings.scheduleAutoUpdate();
+    }
+
+    private void initDagger() {
+        appComponent = DaggerAppComponent.builder()
+                .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
-        api = retrofit.create(RetrofitApi.class);
-        JobManager.create(this).addJobCreator(new BGJobCreator());
-        SharedPreferences str = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE);
+        appComponent.inject(this);
+    }
 
-        // Initial setup of the application
-        if (str.getInt("UPDATE TIME", 0) == 0) {
-            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SETTINGS", MODE_PRIVATE).edit();
-            editor.putInt("UPDATE TIME", 15);
-            editor.putBoolean("AUTOUPDATE", true);
-            editor.apply();
-            // Run background task
-            BGSyncJob.schedulePeriodic(15);
+    private void initStetho() {
+        Stetho.initializeWithDefaults(this);
+    }
+
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
         }
+        LeakCanary.install(this);
+    }
 
-        repositoryImpl = new RepositoryImpl();
+    public static AppComponent getComponent() {
+        return appComponent;
+    }
+
+    @VisibleForTesting
+    public static void setAppComponent(AppComponent component) {
+        appComponent = component;
     }
 }

@@ -1,15 +1,35 @@
 package dvinc.yamblzhomeproject.ui.weather;
-/*
- * Created by DV on Space 5 
- * 20.07.2017
- */
 
-import dvinc.yamblzhomeproject.repository.model.WeatherResponse;
 
-public interface WeatherView {
+import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
-    void updateWeatherParameters(WeatherResponse weatherData);
+import java.util.List;
 
-    void showError(String string);
+import dvinc.yamblzhomeproject.data.uiModel.CurrentWeatherUi;
+import dvinc.yamblzhomeproject.data.uiModel.DailyWeatherUi;
+import dvinc.yamblzhomeproject.data.uiModel.HourlyWeatherUi;
+
+@StateStrategyType(AddToEndSingleStrategy.class)
+interface WeatherView extends MvpView {
+
+    void updateWeatherCurrent(CurrentWeatherUi currentWeather);
+
+    void updateWeatherHourly(List<HourlyWeatherUi> hourWeather);
+
+    void updateWeatherDaily(List<DailyWeatherUi> dayWeather);
+
+    void updateLastUpdateTime(long date);
+
+    void showCityName(String title);
+
+    @StateStrategyType(SkipStrategy.class)
+    void showError();
+
+    void showLoading();
+
+    void hideLoading();
 
 }
